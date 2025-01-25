@@ -38,15 +38,17 @@ Technologies Used
 
 Folder Structure
 
-├── src/
-│   ├── components/    # Reusable React components
-│   ├── pages/         # Page components (Login, Dashboard, etc.)
-│   ├── styles/        # CSS and theme files
-│   ├── utils/         # Helper functions
-│   ├── services/      # API service functions
-├── public/            # Static assets
-├── README.md          # Project documentation
-└── package.json       # Dependency management
+		FOLDER STRUCTURE:
+
+	├── src/
+	│   ├── components/    # Reusable React components
+	│   ├── pages/         # Page components (Login, Dashboard, etc.)
+	│   ├── styles/        # CSS and theme files
+	│   ├── utils/         # Helper functions
+	│   ├── services/      # API service functions
+	├── public/            # Static assets
+	├── README.md          # Project documentation
+	└── package.json       # Dependency management
 
 Weekly Progress Log
 
