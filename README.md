@@ -48,7 +48,9 @@ Folder Structure
 	│   ├── services/      # API service functions
 	├── public/            # Static assets
 	├── README.md          # Project documentation
-	└── package.json       # Dependency management
+	├── dependancy/
+ 	│   ├──  package.json  # Dependency management
+   	├──documentation/      # documentation management
 
 Weekly Progress Log
 
