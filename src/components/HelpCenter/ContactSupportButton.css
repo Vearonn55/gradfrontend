@@ -1,0 +1,13 @@
+.contact-support-btn {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-family: sans-serif;
+}
+
+.contact-support-btn:hover {
+    background-color: #218838;
+}

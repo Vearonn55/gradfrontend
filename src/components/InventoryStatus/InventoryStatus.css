@@ -1,0 +1,40 @@
+.inventory-status-container {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 16px;
+    margin-bottom: 16px;
+    font-family: sans-serif;
+}
+
+.inventory-status-container h3 {
+    margin-bottom: 12px;
+}
+
+.inventory-status-container ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.inventory-status-container li {
+    padding: 8px;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+}
+
+.inventory-status-container li:hover {
+    background-color: #fafafa;
+}
+
+.item-name {
+    font-weight: 600;
+}
+
+.item-stock {
+    color: #d9534f; /* kırmızımsı renk */
+}

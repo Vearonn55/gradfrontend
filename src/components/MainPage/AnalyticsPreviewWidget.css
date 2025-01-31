@@ -1,0 +1,21 @@
+.analytics-preview-widget {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 16px;
+    margin-bottom: 16px;
+}
+
+.analytics-preview-widget h3 {
+    margin-bottom: 12px;
+}
+
+.chart-placeholder {
+    background-color: #f2f2f2;
+    border: 2px dashed #ccc;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+}

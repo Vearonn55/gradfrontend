@@ -1,0 +1,24 @@
+.historical-log-container {
+    margin-top: 24px;
+    padding: 16px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-family: sans-serif;
+}
+
+.historical-log-container h3 {
+    margin-bottom: 12px;
+}
+
+.historical-log-container table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.historical-log-container th,
+.historical-log-container td {
+    border: 1px solid #eee;
+    padding: 8px;
+    text-align: left;
+}

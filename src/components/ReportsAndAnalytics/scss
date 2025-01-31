@@ -1,0 +1,18 @@
+src/
+  └─ components/
+       ├─ SalesTrendsChart/
+       │   ├─ SalesTrendsChart.tsx
+       │   └─ SalesTrendsChart.css
+       ├─ PriceHistoryChart/
+       │   ├─ PriceHistoryChart.tsx
+       │   └─ PriceHistoryChart.css
+       ├─ DateRangePicker/
+       │   ├─ DateRangePicker.tsx
+       │   └─ DateRangePicker.css
+       ├─ DownloadReportButton/
+       │   ├─ DownloadReportButton.tsx
+       │   └─ DownloadReportButton.css
+       ├─ ReportsAndAnalyticsPage/
+       │   ├─ ReportsAndAnalyticsPage.tsx
+       │   └─ ReportsAndAnalyticsPage.css
+       └─ ...

@@ -1,0 +1,26 @@
+.help-search-bar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    font-family: sans-serif;
+}
+
+.help-search-bar input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.help-search-bar button {
+    padding: 8px 16px;
+    border: none;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.help-search-bar button:hover {
+    background-color: #0056b3;
+}

@@ -1,0 +1,43 @@
+.price-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 16px;
+    margin-bottom: 16px;
+}
+
+.price-table thead {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+.price-table th,
+.price-table td {
+    border: 1px solid #ddd;
+    padding: 8px 12px;
+    text-align: left;
+}
+
+.price-table tr:hover {
+    background-color: #fafafa;
+}
+
+.price-input {
+    width: 100px;
+    padding: 4px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+.price-table button {
+    padding: 4px 8px;
+    border: none;
+    background-color: #28a745;
+    border-radius: 4px;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.price-table button:hover {
+    background-color: #218838;
+}

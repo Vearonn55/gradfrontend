@@ -1,0 +1,36 @@
+.tutorial-list-container {
+    margin-bottom: 16px;
+    font-family: sans-serif;
+}
+
+.tutorial-list-container ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.tutorial-item {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    padding: 12px;
+}
+
+.tutorial-item h4 {
+    margin: 0 0 8px 0;
+    font-size: 1.1rem;
+}
+
+.tutorial-item p {
+    margin: 0 0 8px 0;
+}
+
+.video-link {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.video-link:hover {
+    text-decoration: underline;
+}

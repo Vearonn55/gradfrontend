@@ -1,0 +1,17 @@
+.email-username-container {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 16px;
+    font-family: sans-serif;
+}
+
+.email-username-container label {
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.email-username-container input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}

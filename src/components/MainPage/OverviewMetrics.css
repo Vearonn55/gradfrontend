@@ -1,0 +1,24 @@
+.overview-metrics-container {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.metric-card {
+    flex: 1;
+    background-color: #ffffff;
+    padding: 16px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+.metric-card h4 {
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.metric-card p {
+    font-size: 1.2rem;
+    font-weight: bold;
+}

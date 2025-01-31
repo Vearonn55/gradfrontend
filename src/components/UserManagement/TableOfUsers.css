@@ -1,0 +1,23 @@
+.users-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 16px;
+    font-family: sans-serif;
+}
+
+.users-table th,
+.users-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.users-table thead {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+.users-table tr:hover {
+    background-color: #fafafa;
+    cursor: pointer;
+}

@@ -1,0 +1,39 @@
+.role-permissions-container {
+    margin-bottom: 16px;
+    font-family: sans-serif;
+}
+
+.role-permissions-container label {
+    font-weight: 600;
+    margin-right: 8px;
+}
+
+.role-permissions-container select {
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    margin-bottom: 8px;
+}
+
+.permissions-list {
+    margin-top: 8px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 12px;
+    background-color: #fff;
+}
+
+.permissions-list h4 {
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.permissions-list ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.permissions-list li {
+    margin-bottom: 4px;
+}

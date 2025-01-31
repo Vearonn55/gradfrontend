@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    ...
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    ...,
+    "jsx": "react"
+  }
+}
+{
+  "compilerOptions": {
+    "target": "ES2017",            // En az ES2017 olmalı (veya ES2018, ES2019 vb.)
+    "lib": ["DOM", "ES2017"],      // "lib"te de ES2017 ekliyoruz
+    // ... diğer ayarlar ...
+  }
+}
