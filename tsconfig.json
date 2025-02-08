@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    // "react" (React 17 ve öncesi) veya "react-jsx" (React 18) da kullanılabilir
+    "jsx": "react",
+
+    // import ... from 'react' vs. default importlar için
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+
+    // Genelde önerilen ayarlar
+    "target": "ES2017",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "strict": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+
+    // DOM API (document, window vb.) tanımak için
+    "lib": ["DOM", "DOM.Iterable", "ESNext"]
+  },
+  // "src" klasöründeki bütün .ts ve .tsx dosyalarını kapsa
+  "include": ["src/**/*"],
+  // Node modules vb. hariç bırak
+  "exclude": ["node_modules"]
+}
