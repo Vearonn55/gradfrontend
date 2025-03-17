@@ -1,5 +1,5 @@
 import React from 'react';
-import './FilterSortOptions.css';
+
 
 interface FilterSortOptionsProps {
     categories: string[];

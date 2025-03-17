@@ -1,5 +1,5 @@
 import React from 'react';
-import './TutorialList.css';
+
 
 export interface TutorialItem {
     id: number;

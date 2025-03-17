@@ -1,5 +1,4 @@
 import React from 'react';
-import './InventoryStatus.css';
 
 interface InventoryItem {
     id: number;

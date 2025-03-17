@@ -1,0 +1,108 @@
+/* Genel Sayfa Stili */
+.inventory-page-container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    font-family: "Arial", sans-serif;
+}
+
+/* Başlık */
+.inventory-page-container h2 {
+    text-align: center;
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Butonlar */
+.export-buttons-container {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.export-buttons-container button {
+    background: #4CAF50;
+    color: white;
+    padding: 10px 15px;
+    font-size: 14px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+}
+
+.export-buttons-container button:hover {
+    background: #45a049;
+}
+
+/* Stok Uyarıları */
+.inventory-status-container {
+    background: #ffeb3b;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.inventory-status-container ul {
+    list-style: none;
+    padding: 0;
+}
+
+.inventory-status-container li {
+    display: flex;
+    justify-content: space-between;
+    background: #fff3cd;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 5px;
+    transition: 0.3s ease-in-out;
+}
+
+.inventory-status-container li:hover {
+    background: #ffdb58;
+    cursor: pointer;
+}
+
+/* Ürün Detayları */
+.product-details-container {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.product-details-container .close-button {
+    float: right;
+    background: red;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.product-details-container .details-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+    font-size: 14px;
+}
+
+.product-details-container .details-item span:first-child {
+    font-weight: bold;
+}
+
+/* Duyarlı (Responsive) Tasarım */
+@media (max-width: 768px) {
+    .export-buttons-container {
+        flex-direction: column;
+        align-items: center;
+    }
+}

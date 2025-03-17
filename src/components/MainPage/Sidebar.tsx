@@ -1,5 +1,7 @@
-import React from 'react';
-import './Sidebar.css';
+import React from "react";
+import { Button } from "@mui/material";
+import { useNavigate, useLocation } from "react-router-dom";
+import "./Sidebar.css";
 
 interface SidebarProps {
     activeLink: string;
@@ -7,26 +9,55 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ activeLink, onLinkClick }) => {
-    const navLinks = [
-        { key: 'realtime', label: 'Real-Time Pricing' },
-        { key: 'inventory', label: 'Inventory' },
-        { key: 'alerts', label: 'Alerts' },
-        { key: 'analytics', label: 'Analytics' },
-        { key: 'settings', label: 'Settings' },
-        { key: 'help', label: 'Help' },
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    const menuItems = [
+        { name: "Real-Time Pricing", path: "/prices" },
+        { name: "Inventory", path: "/inventory" },
+        { name: "Alerts", path: "/alerts" },
+        { name: "Analytics", path: "/reports" },
+        { name: "Settings", path: "/users" },
+        { name: "Help", path: "/help" }
     ];
 
     return (
-        <div className="sidebar-container">
-            <div className="sidebar-logo">My Dashboard</div>
-            <ul className="sidebar-nav">
-                {navLinks.map((item) => (
-                    <li
-                        key={item.key}
-                        className={`nav-item ${activeLink === item.key ? 'active' : ''}`}
-                        onClick={() => onLinkClick(item.key)}
-                    >
-                        {item.label}
+        <div className="sidebar">
+            {/* Logout Butonu En Üste Alındı */}
+            <Button
+                className="logout-button"
+                onClick={() => navigate("/login")}
+                variant="contained"
+                color="error"
+            >
+                Logout
+            </Button>
+
+            <ul className="sidebar-menu">
+                {/* Dashboard Butonu (MainPage Dışında Görünecek) */}
+                {location.pathname !== "/dashboard" && (
+                    <li>
+                        <button
+                            className="dashboard-button"
+                            onClick={() => navigate("/dashboard")}
+                        >
+                            Dashboard
+                        </button>
+                    </li>
+                )}
+
+                {/* Diğer Sayfa Butonları */}
+                {menuItems.map((item) => (
+                    <li key={item.name}>
+                        <button
+                            className={activeLink === item.path ? "active" : ""}
+                            onClick={() => {
+                                onLinkClick(item.path);
+                                navigate(item.path);
+                            }}
+                        >
+                            {item.name}
+                        </button>
                     </li>
                 ))}
             </ul>
