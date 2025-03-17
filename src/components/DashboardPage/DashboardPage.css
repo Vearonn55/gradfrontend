@@ -1,46 +1,104 @@
 .dashboard-container {
-    width: 100%;
-    padding: 16px;
-    font-family: sans-serif;
-    background-color: #f9f9f9;
+    padding: 40px;
+    font-family: "Segoe UI", sans-serif;
+    background-color: #f4f7f9;
 }
 
-.dashboard-container h2 {
-    margin-bottom: 16px;
-}
-
-.dashboard-stats {
-    display: flex;
-    gap: 16px;
-    margin-bottom: 16px;
-}
-
-.stat-card {
-    flex: 1;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    padding: 12px;
-    text-align: center;
-}
-
-.stat-card h4 {
-    margin: 0;
-    font-size: 1rem;
-    font-weight: 600;
-    margin-bottom: 8px;
-}
-
-.stat-card p {
-    font-size: 1.2rem;
+.dashboard-title {
+    font-size: 32px;
     font-weight: bold;
-    color: #007bff;
-    margin: 0;
+    color: #2c3e50;
+    margin-bottom: 5px; /* Başlık ile altındaki yazı arasındaki boşluğu azalttım */
 }
 
-.dashboard-content {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    padding: 12px;
+.dashboard-subtitle {
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: #7f8c8d;
+}
+
+.dashboard-cards,
+.dashboard-charts {
+    display: flex;
+    justify-content: space-around; /* Kartlar ve grafikler arası boşluk */
+    margin-bottom: 20px;
+}
+
+.card,
+.chart {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    text-align: center;
+    margin: 0 10px; /* Kartlar ve grafikler arası yatay boşluk */
+}
+
+.card:first-child,
+.chart:first-child {
+    margin-left: 0;
+}
+
+.card:last-child,
+.chart:last-child {
+    margin-right: 0;
+}
+
+.card h2,
+.chart h3 {
+    font-size: 22px;
+    margin-bottom: 10px;
+    color: #34495e;
+}
+
+.card .count {
+    font-size: 28px;
+    font-weight: bold;
+    color: #3498db;
+}
+
+.card .count.warning {
+    color: #e74c3c;
+}
+
+.chart-placeholder {
+    height: 200px;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #777;
+}
+
+.dashboard-alerts {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-alerts h3 {
+    font-size: 20px;
+    margin-bottom: 15px;
+    color: #34495e;
+}
+
+.dashboard-alerts ul {
+    list-style: none;
+    padding: 0;
+    overflow-x: auto; /* Yatay kaydırma */
+    white-space: nowrap; /* Satırları tek satırda tutma */
+}
+
+.dashboard-alerts li {
+    display: inline-block; /* Yatay sıralama */
+    padding: 10px 15px;
+    border: 1px solid #eee;
+    border-radius: 5px;
+    margin-right: 10px; /* Kartlar arası boşluk */
+}
+
+.dashboard-alerts li:last-child {
+    margin-right: 0; /* Son öğenin sağ boşluğunu kaldır */
 }

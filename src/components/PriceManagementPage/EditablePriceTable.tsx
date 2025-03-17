@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './EditablePriceTable.css';
+
 
 interface Product {
     id: number;

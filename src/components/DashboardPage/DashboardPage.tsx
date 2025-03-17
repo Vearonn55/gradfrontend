@@ -1,36 +1,47 @@
-import React from 'react';
-import './DashboardPage.css'; // Stil dosyası importu
+import React from "react";
+import "./DashboardPage.css";
 
-/**
- * DashboardPage, uygulamanızın ana paneli gibi
- * davranan basit bir bileşendir.
- */
 const DashboardPage: React.FC = () => {
     return (
         <div className="dashboard-container">
-            <h2>Dashboard</h2>
-            <p>Welcome to the Dashboard!</p>
+            <h1 className="dashboard-title">Electronic Smart Labeling System</h1>
+            <p className="dashboard-subtitle">Etiketleme Sistemi Genel Bakış</p>
 
-            <div className="dashboard-stats">
-                <div className="stat-card">
-                    <h4>Total Users</h4>
-                    <p>120</p>
+            <div className="dashboard-cards">
+                <div className="card">
+                    <h2>Toplam Etiket Sayısı</h2>
+                    <p className="count">542</p>
                 </div>
-                <div className="stat-card">
-                    <h4>Active Sessions</h4>
-                    <p>15</p>
+                <div className="card">
+                    <h2>Aktif Etiketler</h2>
+                    <p className="count">489</p>
                 </div>
-                <div className="stat-card">
-                    <h4>Pending Tasks</h4>
-                    <p>8</p>
+                <div className="card">
+                    <h2>Uyarılar</h2>
+                    <p className="count warning">12</p>
                 </div>
             </div>
 
-            <div className="dashboard-content">
-                <p>
-                    Here you can monitor key metrics, navigate to different sections, and
-                    manage system settings.
-                </p>
+            <div className="dashboard-charts">
+                <div className="chart">
+                    <h3>Etiket Kullanım İstatistikleri</h3>
+                    {/* Buraya bir çizgi veya çubuk grafik eklenebilir */}
+                    <div className="chart-placeholder">Grafik Alanı</div>
+                </div>
+                <div className="chart">
+                    <h3>Etiket Durum Dağılımı</h3>
+                    {/* Buraya bir pasta grafik eklenebilir */}
+                    <div className="chart-placeholder">Grafik Alanı</div>
+                </div>
+            </div>
+
+            <div className="dashboard-alerts">
+                <h3>Son Uyarılar</h3>
+                <ul>
+                    <li>Etiket #123: Pil seviyesi düşük</li>
+                    <li>Etiket #456: Bağlantı sorunu</li>
+                    <li>Etiket #789: Sıcaklık anormal</li>
+                </ul>
             </div>
         </div>
     );

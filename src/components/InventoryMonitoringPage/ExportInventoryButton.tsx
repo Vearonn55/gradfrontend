@@ -1,5 +1,5 @@
 import React from 'react';
-import './ExportInventoryButton.css';
+
 
 interface InventoryItem {
     id: number;

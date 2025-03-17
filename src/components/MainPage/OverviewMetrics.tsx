@@ -1,5 +1,4 @@
 import React from 'react';
-import './OverviewMetrics.css';
 
 interface OverviewMetricsProps {
     totalESLs: number;
