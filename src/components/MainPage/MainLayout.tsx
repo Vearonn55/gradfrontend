@@ -1,3 +1,4 @@
+// src/components/MainPage/MainLayout.tsx
 import React, { useState } from "react";
 import { Routes, Route, Navigate, useLocation, useNavigate } from "react-router-dom";
 import Sidebar from "./Sidebar";
@@ -6,8 +7,9 @@ import PriceManagementPage from "../PriceManagementPage/PriceManagementPage";
 import ReportsAndAnalyticsPage from "../ReportsAndAnalyticsPage/ReportsAndAnalyticsPage";
 import AlertsManagementPage from "../AlertsManagement/AlertsManagementPage";
 import UserManagementPage from "../UserManagementPage/UserManagementPage";
+import SettingsPage from "../SettingsPage/SettingsPage";
 import HelpCenterPage from "../HelpCenterPage/HelpCenterPage";
-import InventoryPage from "../InventoryMonitoringPage/InventoryPage"; // Doğru sayfa!
+import InventoryPage from "../InventoryMonitoringPage/InventoryPage";
 
 const MainLayout: React.FC = () => {
     const location = useLocation();
@@ -32,8 +34,9 @@ const MainLayout: React.FC = () => {
                     <Route path="/reports" element={<ReportsAndAnalyticsPage />} />
                     <Route path="/alerts" element={<AlertsManagementPage />} />
                     <Route path="/users" element={<UserManagementPage />} />
+                    <Route path="/settings" element={<SettingsPage />} />    {/* Settings Route */}
                     <Route path="/help" element={<HelpCenterPage />} />
-                    <Route path="/inventory" element={<InventoryPage />} /> {/* DÜZELTİLDİ */}
+                    <Route path="/inventory" element={<InventoryPage />} />
                     <Route path="*" element={<Navigate to="/dashboard" />} />
                 </Routes>
             </div>

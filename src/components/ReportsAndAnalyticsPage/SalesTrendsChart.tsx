@@ -8,7 +8,7 @@ import {
     Tooltip,
     CartesianGrid,
 } from 'recharts';
-import './SalesTrendsChart.css';
+
 
 interface SalesData {
     date: string;

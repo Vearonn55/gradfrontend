@@ -1,15 +1,13 @@
-/* Genel Sayfa Stili */
 .inventory-page-container {
     max-width: 1200px;
     margin: 20px auto;
     padding: 20px;
     background: #fff;
     border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    font-family: "Arial", sans-serif;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    font-family: Arial, sans-serif;
 }
 
-/* Başlık */
 .inventory-page-container h2 {
     text-align: center;
     font-size: 24px;
@@ -17,36 +15,46 @@
     margin-bottom: 20px;
 }
 
-/* Butonlar */
-.export-buttons-container {
-    display: flex;
-    justify-content: center;
+.create-product-form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 15px;
     margin-bottom: 20px;
 }
 
-.export-buttons-container button {
-    background: #4CAF50;
-    color: white;
-    padding: 10px 15px;
+.create-product-form input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
     font-size: 14px;
+}
+
+.create-product-btn {
+    grid-column: span 2;
+    padding: 10px 15px;
+    background-color: #1abc9c;
+    color: #fff;
     border: none;
-    border-radius: 8px;
+    border-radius: 6px;
     cursor: pointer;
-    transition: 0.3s ease-in-out;
+    font-size: 14px;
+    font-weight: 600;
+    transition: background-color 0.2s;
 }
 
-.export-buttons-container button:hover {
-    background: #45a049;
+.create-product-btn:hover {
+    background-color: #16a085;
 }
 
-/* Stok Uyarıları */
 .inventory-status-container {
-    background: #ffeb3b;
+    background: #f8f9fa;
     padding: 15px;
     border-radius: 10px;
     margin-bottom: 20px;
-    font-size: 14px;
+}
+
+.inventory-status-container h3 {
+    margin-bottom: 10px;
 }
 
 .inventory-status-container ul {
@@ -57,52 +65,32 @@
 .inventory-status-container li {
     display: flex;
     justify-content: space-between;
-    background: #fff3cd;
-    padding: 10px;
-    border-radius: 5px;
-    margin-top: 5px;
-    transition: 0.3s ease-in-out;
+    align-items: center;
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
 }
 
-.inventory-status-container li:hover {
-    background: #ffdb58;
-    cursor: pointer;
+.inventory-status-container li:last-child {
+    border-bottom: none;
 }
 
-/* Ürün Detayları */
-.product-details-container {
-    background: #f8f9fa;
-    padding: 15px;
-    border-radius: 12px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.product-details-container .close-button {
-    float: right;
-    background: red;
-    color: white;
+.remove-btn {
+    background: #e74c3c;
+    color: #fff;
     border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
+    border-radius: 4px;
+    padding: 4px 8px;
     cursor: pointer;
     font-size: 12px;
 }
 
-.product-details-container .details-item {
+.remove-btn:hover {
+    background: #c0392b;
+}
+
+.export-buttons-container {
     display: flex;
-    justify-content: space-between;
-    padding: 5px 0;
-    font-size: 14px;
-}
-
-.product-details-container .details-item span:first-child {
-    font-weight: bold;
-}
-
-/* Duyarlı (Responsive) Tasarım */
-@media (max-width: 768px) {
-    .export-buttons-container {
-        flex-direction: column;
-        align-items: center;
-    }
+    justify-content: center;
+    gap: 20px;
+    margin-top: 10px;
 }

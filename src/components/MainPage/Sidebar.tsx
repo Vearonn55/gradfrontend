@@ -1,3 +1,4 @@
+// src/components/MainPage/Sidebar.tsx
 import React from "react";
 import { Button } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -12,12 +13,12 @@ const Sidebar: React.FC<SidebarProps> = ({ activeLink, onLinkClick }) => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const menuItems = [
+    const menuItems: { name: string; path: string }[] = [
         { name: "Real-Time Pricing", path: "/prices" },
-        { name: "Inventory", path: "/inventory" },
+        { name: "Inventory Management", path: "/inventory" },
         { name: "Alerts", path: "/alerts" },
         { name: "Analytics", path: "/reports" },
-        { name: "Settings", path: "/users" },
+        { name: "Settings", path: "/settings" },
         { name: "Help", path: "/help" }
     ];
 

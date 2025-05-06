@@ -1,26 +1,39 @@
+/* DashboardPage.css */
 .dashboard-container {
+    position: relative;
     padding: 40px;
     font-family: "Segoe UI", sans-serif;
     background-color: #f4f7f9;
+}
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.dashboard-header-text {
+    display: flex;
+    flex-direction: column;
 }
 
 .dashboard-title {
     font-size: 32px;
     font-weight: bold;
     color: #2c3e50;
-    margin-bottom: 5px; /* Başlık ile altındaki yazı arasındaki boşluğu azalttım */
+    margin: 0;
 }
 
 .dashboard-subtitle {
     font-size: 18px;
-    margin-bottom: 20px;
     color: #7f8c8d;
 }
 
 .dashboard-cards,
 .dashboard-charts {
     display: flex;
-    justify-content: space-around; /* Kartlar ve grafikler arası boşluk */
+    justify-content: space-around;
     margin-bottom: 20px;
 }
 
@@ -32,7 +45,7 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     flex: 1;
     text-align: center;
-    margin: 0 10px; /* Kartlar ve grafikler arası yatay boşluk */
+    margin: 0 10px;
 }
 
 .card:first-child,
@@ -87,18 +100,35 @@
 .dashboard-alerts ul {
     list-style: none;
     padding: 0;
-    overflow-x: auto; /* Yatay kaydırma */
-    white-space: nowrap; /* Satırları tek satırda tutma */
+    overflow-x: auto;
+    white-space: nowrap;
 }
 
 .dashboard-alerts li {
-    display: inline-block; /* Yatay sıralama */
+    display: inline-block;
     padding: 10px 15px;
     border: 1px solid #eee;
     border-radius: 5px;
-    margin-right: 10px; /* Kartlar arası boşluk */
+    margin-right: 10px;
 }
 
 .dashboard-alerts li:last-child {
-    margin-right: 0; /* Son öğenin sağ boşluğunu kaldır */
+    margin-right: 0;
+}
+
+.generate-product-btn {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
+    background: linear-gradient(90deg, #4ca1af, #398b90);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+}
+
+.generate-product-btn:hover {
+    background: linear-gradient(90deg, #398b90, #4ca1af);
+    transform: translateY(-2px);
 }

@@ -1,0 +1,162 @@
+/* src/components/SignUpPage/SignUpPage.css */
+
+/* ===== Temel Reset ve Boyutlar ===== */
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* ===== Tema Değişkenleri ===== */
+:root {
+    --primary-color: #4ca1af;
+    --primary-dark:  #398b90;
+    --bg-gradient-start: #2c3e50;
+    --bg-gradient-end:   #4ca1af;
+    --card-bg: rgba(255,255,255,0.95);
+    --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* ===== Ortak Container ===== */
+.auth-container {
+    width: 100vw;    /* Yatayda tam ekran */
+    height: 100vh;   /* Dikeyde tam ekran */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+    font-family: var(--font-family);
+    box-sizing: border-box;
+}
+
+/* ===== Kayıt Kartı ===== */
+.auth-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(6px);
+    padding: 2rem 2.5rem;
+    border-radius: 16px;
+    box-shadow: 0 12px 24px rgba(0,0,0,0.2);
+    width: 440px;      /* İhtiyaç halinde küçült ya da büyüt */
+    max-width: 95%;
+    margin: 0 auto;    /* Fallback: blok olarak da ortaya hizalar */
+    transition: transform .3s;
+}
+.auth-card:hover {
+    transform: translateY(-4px);
+}
+
+/* ===== Başlık ===== */
+.auth-card h2 {
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+    color: var(--primary-dark);
+    text-align: center;
+}
+
+/* ===== Form Elemanları ===== */
+.auth-card form div {
+    margin-bottom: 1rem;
+    text-align: left;
+}
+.auth-card label {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-size: 0.95rem;
+    color: #444;
+}
+.auth-card input[type="text"],
+.auth-card input[type="email"],
+.auth-card input[type="password"] {
+    width: 100%;
+    padding: 0.7rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: border-color .3s, box-shadow .3s;
+}
+.auth-card input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 8px rgba(76,161,175,0.4);
+    outline: none;
+}
+
+/* ===== Kullanım Şartları ===== */
+
+.auth-card .terms {
+    display: flex;          /* satır içinde esnek kutu */
+    align-items: center;    /* dikey ortala */
+    gap: 0.1rem;            /* checkbox ile yazı arasında boşluk */
+    margin: 1rem 0;         /* üst-alt boşluk */
+}
+
+
+.auth-card .terms label {
+    display: inline-block;
+    margin: 0px;
+    font-size: 0.9rem;
+    color: #555;
+}
+.auth-card .terms input[type="checkbox"] {
+    margin: 0;
+}
+
+/* ===== Hata Mesajı ===== */
+.error-message {
+    color: #e74c3c;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    text-align: center;
+}
+
+/* ===== Kayıt Butonu ===== */
+.auth-card button[type="submit"] {
+    width: 100%;
+    padding: 0.85rem 0;
+    margin-top: 0.5rem;
+    background: linear-gradient(90deg, var(--primary-color), var(--primary-dark));
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background .3s, transform .2s;
+}
+.auth-card button[type="submit"]:hover {
+    background: linear-gradient(90deg, var(--primary-dark), var(--primary-color));
+    transform: translateY(-2px);
+}
+
+/* ===== Girişe Dön Linki ===== */
+.auth-card .back-login {
+    margin-top: 1.25rem;
+    font-size: 0.95rem;
+    text-align: center;
+}
+.auth-card .back-login span {
+    color: #555;
+}
+.auth-card .back-login button {
+    margin-left: 0.5rem;
+    padding: 0.4rem 0.9rem;
+    background: transparent;
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    border-radius: 8px;
+    font-size: 0.9rem;
+    transition: background .3s, color .3s;
+    cursor: pointer;
+}
+.auth-card .back-login button:hover {
+    background: var(--primary-color);
+    color: #fff;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 420px) {
+    .auth-card {
+        padding: 1.5rem 1rem;
+        width: 95%;
+    }
+}
