@@ -1,6 +1,6 @@
 import React from 'react';
 import { AlertItem } from './types'; // Import yolu projenize göre değişebilir
-import './HistoricalLog.css';
+
 
 interface HistoricalLogProps {
     alerts: AlertItem[];

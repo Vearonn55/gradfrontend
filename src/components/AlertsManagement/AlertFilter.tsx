@@ -1,5 +1,5 @@
 import React from 'react';
-import './AlertFilter.css';
+
 
 interface AlertFilterProps {
     selectedType: string; // 'All', 'PriceThresholdExceeded', 'NearExpiry'

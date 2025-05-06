@@ -8,7 +8,6 @@ import {
     Tooltip,
     CartesianGrid,
 } from 'recharts';
-import './PriceHistoryChart.css';
 
 interface PriceHistoryData {
     date: string;

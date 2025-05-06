@@ -1,6 +1,6 @@
 import React from 'react';
 import { AlertItem } from './types'; // Burada tanımladıysanız import edin
-import './AlertList.css';
+
 
 interface AlertListProps {
     alerts: AlertItem[];
