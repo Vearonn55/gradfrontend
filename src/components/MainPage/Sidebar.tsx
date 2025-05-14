@@ -1,7 +1,6 @@
-// src/components/MainPage/Sidebar.tsx
 import React from "react";
 import { Button } from "@mui/material";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./Sidebar.css";
 
 interface SidebarProps {
@@ -11,7 +10,6 @@ interface SidebarProps {
 
 const Sidebar: React.FC<SidebarProps> = ({ activeLink, onLinkClick }) => {
     const navigate = useNavigate();
-    const location = useLocation();
 
     const menuItems: { name: string; path: string }[] = [
         { name: "Real-Time Pricing", path: "/prices" },
@@ -24,31 +22,20 @@ const Sidebar: React.FC<SidebarProps> = ({ activeLink, onLinkClick }) => {
 
     return (
         <div className="sidebar">
-            {/* Logout Butonu En Üste Alındı */}
-            <Button
-                className="logout-button"
-                onClick={() => navigate("/login")}
-                variant="contained"
-                color="error"
+            {/* Header */}
+            <div
+                className="sidebar-header"
+                onClick={() => {
+                    onLinkClick("/dashboard");
+                    navigate("/dashboard");
+                }}
             >
-                Logout
-            </Button>
+                Electronic Smart Labeling System
+            </div>
 
+            {/* Menu items and Logout */}
             <ul className="sidebar-menu">
-                {/* Dashboard Butonu (MainPage Dışında Görünecek) */}
-                {location.pathname !== "/dashboard" && (
-                    <li>
-                        <button
-                            className="dashboard-button"
-                            onClick={() => navigate("/dashboard")}
-                        >
-                            Dashboard
-                        </button>
-                    </li>
-                )}
-
-                {/* Diğer Sayfa Butonları */}
-                {menuItems.map((item) => (
+                {menuItems.map(item => (
                     <li key={item.name}>
                         <button
                             className={activeLink === item.path ? "active" : ""}
@@ -61,6 +48,17 @@ const Sidebar: React.FC<SidebarProps> = ({ activeLink, onLinkClick }) => {
                         </button>
                     </li>
                 ))}
+                <li>
+                    <Button
+                        className="logout-button-inline"
+                        onClick={() => navigate("/login")}
+                        variant="contained"
+                        color="error"
+                        fullWidth
+                    >
+                        Logout
+                    </Button>
+                </li>
             </ul>
         </div>
     );
