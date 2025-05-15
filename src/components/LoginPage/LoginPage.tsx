@@ -1,30 +1,28 @@
 import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
-import "./LoginPage.css";
+import "./LoginPage.css"; // CSS dosyasını içe aktar
 
 const LoginPage: React.FC = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [error, setError] = useState("");
     const { login } = useAuth();
     const navigate = useNavigate();
 
-    const handleLogin = (e: React.FormEvent) => {
+    const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
-        // Alan doğrulaması
-        if (!username.trim()) {
-            setError("Lütfen kullanıcı adınızı girin.");
-            return;
+        //console.log('🔑 Login button clicked');
+    
+        try {
+            await login(username, password);
+            //console.log('✅ Login complete, navigating to dashboard');
+            navigate("/dashboard");
+        } catch (err) {
+            console.error('❌ Login failed:', err);
+            // optionally display error to user
         }
-        if (!password) {
-            setError("Lütfen şifrenizi girin.");
-            return;
-        }
-        setError("");
-        login(username, password);
-        navigate("/dashboard");
     };
+    
 
     return (
         <div className="login-container">
@@ -43,21 +41,14 @@ const LoginPage: React.FC = () => {
                     onChange={(e) => setPassword(e.target.value)}
                 />
                 <button type="submit">Login</button>
-                {error && <p className="error-message">{error}</p>}
             </form>
-
-            <div className="login-links">
-                <Link to="/forgot-password" className="forgot-password">
-                    Forgot Password?
-                </Link>
-                <Link to="/signup">
-                    <button className="signup-button">Sign Up</button>
-                </Link>
-            </div>
-
+            <a href="#" className="forgot-password">
+                Forgot Password?
+            </a>
+            {/* Google ile Giriş Yap (Örnek) */}
             <div className="google-login">
                 <img
-                    src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
+                    src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" // Google logosu (örnek)
                     alt="Google"
                     className="google-icon"
                 />
