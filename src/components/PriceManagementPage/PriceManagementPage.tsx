@@ -1,55 +1,46 @@
-import React, { useState } from "react";
-import EditablePriceTable from "./EditablePriceTable";
-import FilterSortOptions from "./FilterSortOptions";
-import SearchBar from "./SearchBar";
-import "./PriceManagementPage.css"; // CSS dosyanın adı bu olacak, tasarım için bunu oluşturmalısın.
-
-const sampleProducts = [
-    { id: 1, name: "Product A", currentPrice: 100 },
-    { id: 2, name: "Product B", currentPrice: 150 },
-    { id: 3, name: "Product C", currentPrice: 200 },
-];
+import React, { useState, useEffect } from "react";
+import { useProducts, Product } from "../context/ProductContext";
+import SearchBar from "../PriceManagementPage/SearchBar";
+import EditablePriceTable, { TableProduct } from "./EditablePriceTable";
+import "./PriceManagementPage.css";
 
 export default function PriceManagementPage() {
-    const [products, setProducts] = useState(sampleProducts);
-    const [filteredProducts, setFilteredProducts] = useState(sampleProducts);
-    const [selectedCategory, setSelectedCategory] = useState("");
-    const [selectedStockLevel, setSelectedStockLevel] = useState("");
-    const [selectedSort, setSelectedSort] = useState("");
+    const { products, updateProduct } = useProducts();
+    const [searchResults, setSearchResults] = useState<TableProduct[]>([]);
 
-    const handlePriceUpdate = (productId: number, newPrice: number) => {
-        setProducts((prev) =>
-            prev.map((p) =>
-                p.id === productId ? { ...p, currentPrice: newPrice } : p
-            )
+    // map context → table rows (include ID)
+    const toTable = (p: Product): TableProduct => ({
+        id: p.id,
+        productId: p.id,
+        name: p.name,
+        currentPrice: p.price,
+    });
+
+    useEffect(() => {
+        setSearchResults(products.map(toTable));
+    }, [products]);
+
+    const handleSearch = (q: string) => {
+        const lq = q.trim().toLowerCase();
+        setSearchResults(
+            !lq
+                ? products.map(toTable)
+                : products.filter(p => p.name.toLowerCase().includes(lq)).map(toTable)
         );
     };
 
-    const handleSearch = (query: string) => {
-        const lowerQuery = query.toLowerCase();
-        setFilteredProducts(products.filter((p) => p.name.toLowerCase().includes(lowerQuery)));
+    const handlePriceUpdate = (productId: number, newPrice: number) => {
+        updateProduct(productId, { price: newPrice });
     };
 
     return (
         <div className="price-management-container">
-            <h2>Real Time Pricing</h2>
+            <h2>Real-Time Pricing</h2>
 
-            <SearchBar onSearch={handleSearch} />
-
-            <FilterSortOptions
-                categories={["Electronics", "Clothing", "Home Appliances"]}
-                selectedCategory={selectedCategory}
-                onCategoryChange={setSelectedCategory}
-                stockLevels={["In Stock", "Out of Stock"]}
-                selectedStockLevel={selectedStockLevel}
-                onStockLevelChange={setSelectedStockLevel}
-                sortOptions={["Price: Low to High", "Price: High to Low"]}
-                selectedSort={selectedSort}
-                onSortChange={setSelectedSort}
-            />
+            <SearchBar onSearch={handleSearch} placeholder="Ürün ara…" />
 
             <EditablePriceTable
-                products={filteredProducts}
+                products={searchResults}
                 onPriceUpdate={handlePriceUpdate}
             />
         </div>

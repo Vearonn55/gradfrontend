@@ -7,40 +7,40 @@ import SignUpPage from "./components/SignUpPage/SignUpPage";
 import ForgotPasswordPage from "./components/ForgotPasswordPage/ForgotPasswordPage";
 import MainLayout from "./components/MainPage/MainLayout";
 
-const App: React.FC = () => {
-    return (
-        <AuthProvider>
-            <Router>
-                <Routes>
-                    {/* Public Routes */}
-                    <Route path="/login" element={<LoginPage />} />
-                    <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-                    <Route path="/signup" element={<SignUpPage />} />
+// **DİKKAT**: contexts dizinindeki dosyalarıza göre path’leri düzenleyin
+import { ProductsProvider } from "./components/context/ProductContext";
+import { SalesProvider } from "./components/context/SalesContext";
 
-                    {/* Protected Routes */}
-                    <Route
-                        path="/*"
-                        element={
-                            <RequireAuth>
-                                <MainLayout />
-                            </RequireAuth>
-                        }
-                    />
-                </Routes>
-            </Router>
-        </AuthProvider>
-    );
-};
+const App: React.FC = () => (
+    <AuthProvider>
+        <ProductsProvider>
+            <SalesProvider>
+                <Router>
+                    <Routes>
+                        {/* Public Routes */}
+                        <Route path="/login" element={<LoginPage />} />
+                        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+                        <Route path="/signup" element={<SignUpPage />} />
 
-// Giriş kontrolü için HOC benzeri bileşen
+                        {/* Protected Routes */}
+                        <Route
+                            path="/*"
+                            element={
+                                <RequireAuth>
+                                    <MainLayout />
+                                </RequireAuth>
+                            }
+                        />
+                    </Routes>
+                </Router>
+            </SalesProvider>
+        </ProductsProvider>
+    </AuthProvider>
+);
+
 const RequireAuth: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const { isAuthenticated } = useAuth();
-    return isAuthenticated ? (
-        <>{children}</>
-    ) : (
-        // Eğer kullanıcı giriş yapmadıysa login sayfasına yönlendir
-        <Navigate to="/login" replace />
-    );
+    return isAuthenticated ? <>{children}</> : <Navigate to="/login" replace />;
 };
 
 export default App;
