@@ -1,3 +1,4 @@
+// src/components/MainPage/Sidebar.tsx
 import React from "react";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
@@ -12,17 +13,19 @@ const Sidebar: React.FC<SidebarProps> = ({ activeLink, onLinkClick }) => {
     const navigate = useNavigate();
 
     const menuItems: { name: string; path: string }[] = [
+        { name: "Dashboard", path: "/dashboard" },
         { name: "Real-Time Pricing", path: "/prices" },
         { name: "Inventory Management", path: "/inventory" },
         { name: "Alerts", path: "/alerts" },
         { name: "Analytics", path: "/reports" },
+        { name: "Sales", path: "/sales" },           // ← Yeni Sales butonu
         { name: "Settings", path: "/settings" },
         { name: "Help", path: "/help" }
     ];
 
     return (
         <div className="sidebar">
-            {/* Header */}
+            {/* Header as button */}
             <div
                 className="sidebar-header"
                 onClick={() => {
@@ -33,7 +36,6 @@ const Sidebar: React.FC<SidebarProps> = ({ activeLink, onLinkClick }) => {
                 Electronic Smart Labeling System
             </div>
 
-            {/* Menu items and Logout */}
             <ul className="sidebar-menu">
                 {menuItems.map(item => (
                     <li key={item.name}>
@@ -48,7 +50,9 @@ const Sidebar: React.FC<SidebarProps> = ({ activeLink, onLinkClick }) => {
                         </button>
                     </li>
                 ))}
-                <li>
+
+                {/* Logout at the very bottom */}
+                <li className="logout-wrapper">
                     <Button
                         className="logout-button-inline"
                         onClick={() => navigate("/login")}

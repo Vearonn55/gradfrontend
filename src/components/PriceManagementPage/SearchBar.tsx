@@ -1,31 +1,33 @@
 import React, { useState } from 'react';
 import './SearchBar.css';
 
-interface SearchBarProps {
+export interface SearchBarProps {
     onSearch: (query: string) => void;
+    placeholder?: string;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
+const SearchBar: React.FC<SearchBarProps> = ({ onSearch, placeholder }) => {
     const [searchQuery, setSearchQuery] = useState('');
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchQuery(e.target.value);
     };
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        onSearch(searchQuery);
+        onSearch(searchQuery.trim());
     };
 
     return (
         <form className="search-bar-container" onSubmit={handleSubmit}>
             <input
                 type="text"
-                placeholder="Search products..."
+                className="search-bar-input"
+                placeholder={placeholder || 'Search products...'}
                 value={searchQuery}
                 onChange={handleChange}
             />
-            <button type="submit">Search</button>
+            <button type="submit" className="search-bar-btn">🔍</button>
         </form>
     );
 };

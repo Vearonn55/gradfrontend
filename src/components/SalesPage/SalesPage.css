@@ -1,0 +1,87 @@
+/* src/components/SalesPage/SalesPage.css */
+
+.sales-page-container {
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 32px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+    font-family: 'Segoe UI', sans-serif;
+    color: #2f3e50;
+    text-align: center;
+}
+
+.sales-page-container h2 {
+    margin-bottom: 24px;
+    font-size: 1.8rem;
+}
+
+.sales-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    margin-bottom: 32px;
+}
+
+.sales-form select,
+.sales-form input,
+.sales-form button {
+    padding: 10px 14px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+.sales-form select:focus,
+.sales-form input:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52,152,219,0.2);
+}
+
+.sales-form button {
+    background: #3498db;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.sales-form button:hover {
+    background: #2980b9;
+}
+
+.sales-list h3 {
+    text-align: left;
+    margin-bottom: 16px;
+}
+
+.sales-list ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sales-list li {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 14px;
+    margin-bottom: 10px;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.95rem;
+}
+
+@media (max-width: 480px) {
+    .sales-form {
+        flex-direction: column;
+    }
+    .sales-list li {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

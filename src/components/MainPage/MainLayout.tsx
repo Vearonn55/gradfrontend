@@ -10,6 +10,7 @@ import UserManagementPage from "../UserManagementPage/UserManagementPage";
 import SettingsPage from "../SettingsPage/SettingsPage";
 import HelpCenterPage from "../HelpCenterPage/HelpCenterPage";
 import InventoryPage from "../InventoryMonitoringPage/InventoryPage";
+import SalesPage from "../SalesPage/SalesPage";  // ← Yeni SalesPage import
 
 const MainLayout: React.FC = () => {
     const location = useLocation();
@@ -23,10 +24,10 @@ const MainLayout: React.FC = () => {
 
     return (
         <div style={{ display: "flex", height: "100vh" }}>
-            {/* Sidebar Sabit Kalıyor */}
+            {/* Sidebar stays fixed */}
             <Sidebar activeLink={activeLink} onLinkClick={handleLinkClick} />
 
-            {/* İçerik Alanı */}
+            {/* Main content area */}
             <div style={{ flex: 1, padding: 20, overflowY: "auto" }}>
                 <Routes location={location} key={location.pathname}>
                     <Route path="/dashboard" element={<DashboardPage />} />
@@ -34,10 +35,11 @@ const MainLayout: React.FC = () => {
                     <Route path="/reports" element={<ReportsAndAnalyticsPage />} />
                     <Route path="/alerts" element={<AlertsManagementPage />} />
                     <Route path="/users" element={<UserManagementPage />} />
-                    <Route path="/settings" element={<SettingsPage />} />    {/* Settings Route */}
+                    <Route path="/settings" element={<SettingsPage />} />
                     <Route path="/help" element={<HelpCenterPage />} />
                     <Route path="/inventory" element={<InventoryPage />} />
-                    <Route path="*" element={<Navigate to="/dashboard" />} />
+                    <Route path="/sales" element={<SalesPage />} />      {/* ← Sales route */}
+                    <Route path="*" element={<Navigate to="/dashboard" replace />} />
                 </Routes>
             </div>
         </div>

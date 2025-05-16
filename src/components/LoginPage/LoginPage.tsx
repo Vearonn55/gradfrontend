@@ -1,7 +1,8 @@
+// src/components/LoginPage/LoginPage.tsx
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
-import "./LoginPage.css"; // CSS dosyasını içe aktar
+import "./LoginPage.css";
 
 const LoginPage: React.FC = () => {
     const [username, setUsername] = useState("");
@@ -9,20 +10,11 @@ const LoginPage: React.FC = () => {
     const { login } = useAuth();
     const navigate = useNavigate();
 
-    const handleLogin = async (e: React.FormEvent) => {
+    const handleLogin = (e: React.FormEvent) => {
         e.preventDefault();
-        //console.log('🔑 Login button clicked');
-    
-        try {
-            await login(username, password);
-            //console.log('✅ Login complete, navigating to dashboard');
-            navigate("/dashboard");
-        } catch (err) {
-            console.error('❌ Login failed:', err);
-            // optionally display error to user
-        }
+        login(username, password);
+        navigate("/dashboard");
     };
-    
 
     return (
         <div className="login-container">
@@ -42,13 +34,15 @@ const LoginPage: React.FC = () => {
                 />
                 <button type="submit">Login</button>
             </form>
-            <a href="#" className="forgot-password">
-                Forgot Password?
-            </a>
-            {/* Google ile Giriş Yap (Örnek) */}
+
+            {/* Burayı güncelledik: */}
+            <div className="forgot-password">
+                <Link to="/forgot-password">Forgot Password?</Link>
+            </div>
+
             <div className="google-login">
                 <img
-                    src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" // Google logosu (örnek)
+                    src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
                     alt="Google"
                     className="google-icon"
                 />
