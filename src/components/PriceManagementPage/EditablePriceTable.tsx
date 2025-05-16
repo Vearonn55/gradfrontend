@@ -1,78 +1,83 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from "react";
+import "./EditablePriceTable.css";
 
-
-interface Product {
-    id: number;
+export interface TableProduct {
+    id: number;        // React key
+    productId: number; // your product’s ID
     name: string;
     currentPrice: number;
-    newPrice?: number;
 }
 
 interface EditablePriceTableProps {
-    products: Product[];
+    products: TableProduct[];
     onPriceUpdate: (productId: number, newPrice: number) => void;
-    validationFn?: (price: number) => boolean;
 }
 
 const EditablePriceTable: React.FC<EditablePriceTableProps> = ({
                                                                    products,
                                                                    onPriceUpdate,
-                                                                   validationFn,
                                                                }) => {
-    // Sadece burayı değiştirdik:
-    const [editedProducts, setEditedProducts] = useState<Product[]>(products);
+    const [drafts, setDrafts] = useState<Record<number, string>>({});
 
-    const handlePriceChange = (id: number, value: string) => {
-        const updatedValue = parseFloat(value);
-        setEditedProducts((prev) =>
-            prev.map((p) =>
-                p.id === id ? { ...p, newPrice: isNaN(updatedValue) ? 0 : updatedValue } : p
-            )
-        );
+    useEffect(() => {
+        // clear out drafts when products list changes
+        setDrafts(prev => {
+            const next: Record<number, string> = {};
+            products.forEach(p => {
+                if (prev[p.id] !== undefined) next[p.id] = prev[p.id];
+            });
+            return next;
+        });
+    }, [products]);
+
+    const handleChange = (id: number, value: string) => {
+        setDrafts(d => ({ ...d, [id]: value }));
     };
 
-    const handleUpdateClick = (productId: number) => {
-        // Burada da find'i editedProducts üzerinden çağırıyoruz:
-        const productToUpdate = editedProducts.find((p) => p.id === productId);
-
-        if (!productToUpdate || productToUpdate.newPrice == null) return;
-
-        if (validationFn && !validationFn(productToUpdate.newPrice)) {
-            alert(`Price ${productToUpdate.newPrice} is not valid!`);
+    const handleUpdate = (row: TableProduct) => {
+        const raw = drafts[row.id]?.trim();
+        const num = raw === "" || raw == null ? row.currentPrice : parseFloat(raw);
+        if (isNaN(num)) {
+            alert("Lütfen geçerli bir sayı girin.");
             return;
         }
-
-        onPriceUpdate(productId, productToUpdate.newPrice);
+        onPriceUpdate(row.productId, num);
+        setDrafts(d => {
+            const c = { ...d };
+            delete c[row.id];
+            return c;
+        });
     };
 
     return (
         <table className="price-table">
             <thead>
             <tr>
-                <th>Product Name</th>
-                <th>Current Price</th>
-                <th>New Price</th>
-                <th>Update</th>
+                <th>ID</th>
+                <th>Ürün</th>
+                <th>Mevcut Fiyat</th>
+                <th>Yeni Fiyat</th>
+                <th>Güncelle</th>
             </tr>
             </thead>
             <tbody>
-            {/* Burada da map'i editedProducts üzerinden kullanıyoruz: */}
-            {editedProducts.map((product) => (
-                <tr key={product.id}>
-                    <td>{product.name}</td>
-                    <td>${product.currentPrice.toFixed(2)}</td>
+            {products.map(row => (
+                <tr key={row.id}>
+                    <td>#{row.productId}</td>
+                    <td>{row.name}</td>
+                    <td>${row.currentPrice.toFixed(2)}</td>
                     <td>
                         <input
                             type="number"
-                            value={product.newPrice ?? product.currentPrice}
-                            onChange={(e) => handlePriceChange(product.id, e.target.value)}
                             className="price-input"
+                            value={drafts[row.id] ?? ""}
+                            onChange={e => handleChange(row.id, e.target.value)}
+                            placeholder={row.currentPrice.toFixed(2)}
+                            step="0.01"
                         />
                     </td>
                     <td>
-                        <button onClick={() => handleUpdateClick(product.id)}>
-                            Update
-                        </button>
+                        <button onClick={() => handleUpdate(row)}>Update</button>
                     </td>
                 </tr>
             ))}
