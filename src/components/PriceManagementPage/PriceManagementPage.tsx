@@ -1,48 +1,89 @@
-import React, { useState, useEffect } from "react";
-import { useProducts, Product } from "../context/ProductContext";
-import SearchBar from "../PriceManagementPage/SearchBar";
-import EditablePriceTable, { TableProduct } from "./EditablePriceTable";
+import React, { useState, useEffect } from 'react';
+import { TextField, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import { useProducts } from "../context/ProductContext";
 import "./PriceManagementPage.css";
 
-export default function PriceManagementPage() {
+const PriceManagementPage: React.FC = () => {
     const { products, updateProduct } = useProducts();
-    const [searchResults, setSearchResults] = useState<TableProduct[]>([]);
 
-    // map context → table rows (include ID)
-    const toTable = (p: Product): TableProduct => ({
-        id: p.id,
-        productId: p.id,
-        name: p.name,
-        currentPrice: p.price,
-    });
+    const [searchQuery, setSearchQuery] = useState('');
+    const [filteredProducts, setFilteredProducts] = useState(products);
 
     useEffect(() => {
-        setSearchResults(products.map(toTable));
-    }, [products]);
+        const query = searchQuery.toLowerCase();
+        setFilteredProducts(products.filter(product =>
+            product.id.toString().includes(query) ||
+            product.categoryId.toString().includes(query) ||
+            product.name.toLowerCase().includes(query)
+        ));
+    }, [searchQuery, products]);
 
-    const handleSearch = (q: string) => {
-        const lq = q.trim().toLowerCase();
-        setSearchResults(
-            !lq
-                ? products.map(toTable)
-                : products.filter(p => p.name.toLowerCase().includes(lq)).map(toTable)
-        );
+    const handlePriceChange = (id: number, price: number) => {
+        updateProduct(id, { price });
     };
 
-    const handlePriceUpdate = (productId: number, newPrice: number) => {
-        updateProduct(productId, { price: newPrice });
+    const handleUpdate = (id: number) => {
+        alert('Price updated successfully!');
     };
 
     return (
-        <div className="price-management-container">
-            <h2>Real-Time Pricing</h2>
+        <div className="page-container">
+            <h1>Update Price</h1>
 
-            <SearchBar onSearch={handleSearch} placeholder="Ürün ara…" />
-
-            <EditablePriceTable
-                products={searchResults}
-                onPriceUpdate={handlePriceUpdate}
+            <TextField
+                label="Search by Product ID, Category ID, or Name"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
             />
+
+            <TableContainer component={Paper}>
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>ID</TableCell>
+                            <TableCell>Category ID</TableCell>
+                            <TableCell>Name</TableCell>
+                            <TableCell>Current Price ($)</TableCell>
+                            <TableCell>New Price ($)</TableCell>
+                            <TableCell>Actions</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {filteredProducts.map(product => (
+                            <TableRow key={product.id}>
+                                <TableCell>{product.id}</TableCell>
+                                <TableCell>{product.categoryId}</TableCell>
+                                <TableCell>{product.name}</TableCell>
+                                <TableCell>${product.price.toFixed(2)}</TableCell>
+                                <TableCell>
+                                    <TextField
+                                        type="number"
+                                        variant="outlined"
+                                        size="small"
+                                        placeholder={product.price.toFixed(2)}
+                                        onBlur={e => handlePriceChange(product.id, parseFloat(e.target.value))}
+                                    />
+                                </TableCell>
+                                <TableCell>
+                                    <Button 
+                                        variant="contained" 
+                                        color="primary" 
+                                        onClick={() => handleUpdate(product.id)}
+                                        className="action-btn primary-btn"
+                                    >
+                                        Update
+                                    </Button>
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
         </div>
     );
-}
+};
+
+export default PriceManagementPage;

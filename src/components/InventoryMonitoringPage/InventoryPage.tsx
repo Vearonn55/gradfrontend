@@ -1,185 +1,161 @@
-// src/components/InventoryMonitoringPage/InventoryPage.tsx
-import React, { useState, ChangeEvent, FormEvent } from "react";
-import { useProducts, Product } from "../context/ProductContext";
+import React, { useState } from "react";
+import { useProducts } from "../context/ProductContext";
 import "./InventoryPage.css";
 
 export default function InventoryPage() {
-    const { products, addProduct, updateProduct, deleteProduct } = useProducts();
-
-    const [form, setForm] = useState<{
-        id: string;
-        name: string;
-        category: string;
-        stock: string;
-        weight: string;
-        price: string;
-        description: string;
-        date: string;
-    }>({
-        id: "",
-        name: "",
-        category: "",
-        stock: "",
-        weight: "",
-        price: "",
-        description: "",
-        date: new Date().toISOString().slice(0, 10),
-    });
+    const { products, updateProduct, deleteProduct } = useProducts();
 
     const [editingId, setEditingId] = useState<number | null>(null);
+    const [editForm, setEditForm] = useState<any>({});
+    const [showEditForm, setShowEditForm] = useState(false);
 
-    const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setForm(prev => ({ ...prev, [name]: value }));
-    };
-
-    const handleSubmit = (e: FormEvent) => {
-        e.preventDefault();
-        const { id, name, category, stock, weight, price, description, date } = form;
-        if (!id.trim() || !name.trim() || !category.trim()) return;
-
-        // build the payload inline
-        const payload = {
-            id: parseInt(id, 10),
-            name: name.trim(),
-            category: category.trim(),
-            stock: Number(stock) || 0,
-            weight: Number(weight) || 0,
-            price: Number(price) || 0,
-            description: description.trim(),
-            createdAt: date,
-        };
-
-        if (editingId === null) {
-            addProduct(payload);
-        } else {
-            updateProduct(editingId, payload);
-            setEditingId(null);
+    const startEdit = (productId: number) => {
+        const product = products.find(p => p.id === productId);
+        if (product) {
+            setEditingId(productId);
+            setEditForm({ ...product });
+            setShowEditForm(true);
         }
-
-        setForm({
-            id: "",
-            name: "",
-            category: "",
-            stock: "",
-            weight: "",
-            price: "",
-            description: "",
-            date: new Date().toISOString().slice(0, 10),
-        });
     };
 
-    const startEdit = (p: Product) => {
-        setEditingId(p.id);
-        setForm({
-            id: p.id.toString(),
-            name: p.name,
-            category: p.category,
-            stock: p.stock.toString(),
-            weight: p.weight.toString(),
-            price: p.price.toString(),
-            description: p.description || "",
-            date: p.createdAt.slice(0, 10),
-        });
+    const cancelEdit = () => {
+        setEditingId(null);
+        setEditForm({});
+        setShowEditForm(false);
+    };
+
+    const saveEdit = () => {
+        if (editingId != null) {
+            const updatedProduct = {
+                ...editForm,
+                price: parseFloat(editForm.price),
+                categoryId: parseInt(editForm.categoryId),
+                stockQuantity: parseInt(editForm.stockQuantity)
+            };
+            updateProduct(editingId, updatedProduct);
+            cancelEdit();
+        }
+    };
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const { name, value } = e.target;
+        setEditForm((prev: any) => ({ ...prev, [name]: value }));
     };
 
     return (
-        <div className="inventory-page-container">
-            <h2>Inventory Management</h2>
-
-            <form className="inventory-form" onSubmit={handleSubmit}>
-                <input
-                    name="id"
-                    type="number"
-                    placeholder="#123"
-                    value={form.id}
-                    onChange={handleInputChange}
-                    required
-                />
-                <input
-                    name="name"
-                    type="text"
-                    placeholder="Ürün Adı"
-                    value={form.name}
-                    onChange={handleInputChange}
-                    required
-                />
-                <input
-                    name="category"
-                    type="text"
-                    placeholder="Kategori"
-                    value={form.category}
-                    onChange={handleInputChange}
-                    required
-                />
-                <input
-                    name="stock"
-                    type="number"
-                    placeholder="Adet"
-                    value={form.stock}
-                    onChange={handleInputChange}
-                    min={0}
-                    required
-                />
-                <input
-                    name="weight"
-                    type="number"
-                    placeholder="Birim"
-                    value={form.weight}
-                    onChange={handleInputChange}
-                    min={0}
-                    required
-                />
-                <input
-                    name="price"
-                    type="number"
-                    placeholder="Fiyat"
-                    step="0.01"
-                    value={form.price}
-                    onChange={handleInputChange}
-                    min={0}
-                    required
-                />
-                <input
-                    name="description"
-                    type="text"
-                    placeholder="Açıklama"
-                    value={form.description}
-                    onChange={handleInputChange}
-                />
-                <input
-                    name="date"
-                    type="date"
-                    value={form.date}
-                    onChange={handleInputChange}
-                    required
-                />
-                <button type="submit" className="submit-btn">
-                    {editingId === null ? "Oluştur" : "Kaydet"}
-                </button>
-            </form>
-
-            <div className="inventory-list">
-                <h3>Current Inventory</h3>
-                <ul>
+        <div className="page-container">
+            <h2>Inventory List</h2>
+            
+            {showEditForm ? (
+                <div className="edit-product-form">
+                    <h3>Edit Product #{editingId}</h3>
+                    <div className="form-row">
+                        <div className="form-group">
+                            <label>Product Name</label>
+                            <input 
+                                className="form-input" 
+                                name="name" 
+                                value={editForm.name} 
+                                onChange={handleChange} 
+                            />
+                            
+                            <label>Description</label>
+                            <textarea 
+                                className="form-textarea" 
+                                name="description" 
+                                value={editForm.description} 
+                                onChange={handleChange} 
+                            />
+                            
+                            <label>Nutritional Facts</label>
+                            <textarea 
+                                className="form-textarea" 
+                                name="nutritionalFacts" 
+                                value={editForm.nutritionalFacts} 
+                                onChange={handleChange} 
+                            />
+                        </div>
+                        
+                        <div className="form-group">
+                            <label>Category ID</label>
+                            <input 
+                                className="form-input" 
+                                name="categoryId" 
+                                type="number" 
+                                value={editForm.categoryId} 
+                                onChange={handleChange} 
+                            />
+                            
+                            <label>Price</label>
+                            <input 
+                                className="form-input" 
+                                name="price" 
+                                type="number" 
+                                step="0.01" 
+                                value={editForm.price} 
+                                onChange={handleChange} 
+                            />
+                            
+                            <label>Expiry Date</label>
+                            <input 
+                                className="form-input" 
+                                name="expiryDate" 
+                                type="date" 
+                                value={editForm.expiryDate} 
+                                onChange={handleChange} 
+                            />
+                            
+                            <label>Stock Quantity</label>
+                            <input 
+                                className="form-input" 
+                                name="stockQuantity" 
+                                type="number" 
+                                value={editForm.stockQuantity} 
+                                onChange={handleChange} 
+                            />
+                        </div>
+                    </div>
+                    
+                    <div className="button-container">
+                        <button className="action-btn success-btn" onClick={saveEdit}>Save Changes</button>
+                        <button className="action-btn secondary-btn" onClick={cancelEdit}>Cancel</button>
+                    </div>
+                </div>
+            ) : (
+                <table className="data-table">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Nutritional Facts</th>
+                        <th>Category ID</th>
+                        <th>Price</th>
+                        <th>Expiry Date</th>
+                        <th>Stock Quantity</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
                     {products.map(p => (
-                        <li key={p.id} className="item-row">
-                            <div className="item-info">
-                                <div className="item-text">
-                                    <strong>#{p.id}</strong> – {p.name} – {p.category} – {p.stock} adet –{" "}
-                                    {p.weight} birim – ${p.price.toFixed(2)} – eklendi:{" "}
-                                    {p.createdAt.slice(0, 10)}
-                                    {p.description && <em> ({p.description})</em>}
-                                </div>
-                                <div className="item-actions">
-                                    <button onClick={() => startEdit(p)}>Edit</button>
-                                    <button onClick={() => deleteProduct(p.id)}>Delete</button>
-                                </div>
-                            </div>
-                        </li>
+                        <tr key={p.id}>
+                            <td>{p.id}</td>
+                            <td>{p.name}</td>
+                            <td>{p.description}</td>
+                            <td>{p.nutritionalFacts}</td>
+                            <td>{p.categoryId}</td>
+                            <td>${typeof p.price === 'number' ? p.price.toFixed(2) : parseFloat(p.price).toFixed(2)}</td>
+                            <td>{p.expiryDate}</td>
+                            <td>{p.stockQuantity}</td>
+                            <td>
+                                <button className="action-btn primary-btn" onClick={() => startEdit(p.id)}>Edit</button>
+                                <button className="action-btn danger-btn" onClick={() => deleteProduct(p.id)}>Delete</button>
+                            </td>
+                        </tr>
                     ))}
-                </ul>
-            </div>
+                    </tbody>
+                </table>
+            )}
         </div>
     );
 }

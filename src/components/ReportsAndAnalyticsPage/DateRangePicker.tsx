@@ -28,6 +28,7 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({ onDateChange }) => {
                     type="date"
                     value={startDate}
                     onChange={handleStartChange}
+                    className="form-input"
                 />
             </div>
             <div className="date-input">
@@ -37,6 +38,7 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({ onDateChange }) => {
                     type="date"
                     value={endDate}
                     onChange={handleEndChange}
+                    className="form-input"
                 />
             </div>
         </div>

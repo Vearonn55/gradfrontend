@@ -41,66 +41,83 @@ const SettingsPage: React.FC = () => {
 
     return (
         <div className="settings-container">
-            <h1>Settings</h1>
-
-            <section className="settings-section">
-                <h2>Profile Information</h2>
-                <form onSubmit={handleProfileSubmit} className="settings-form">
-                    <div className="form-group">
-                        <label>Email:</label>
-                        <input type="email" value={email} onChange={e => setEmail(e.target.value)} required />
-                    </div>
-                    <button type="submit" className="btn">Save Profile</button>
-                </form>
-            </section>
-
-            <section className="settings-section">
-                <h2>Change Password</h2>
-                <form onSubmit={handlePasswordSubmit} className="settings-form">
-                    <div className="form-group">
-                        <label>Current Password:</label>
-                        <input type="password" value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} required />
-                    </div>
-                    <div className="form-group">
-                        <label>New Password:</label>
-                        <input type="password" value={newPassword} onChange={e => setNewPassword(e.target.value)} required />
-                    </div>
-                    <div className="form-group">
-                        <label>Confirm Password:</label>
-                        <input type="password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} required />
-                    </div>
-                    <button type="submit" className="btn">Change Password</button>
-                </form>
-            </section>
-
-            <section className="settings-section">
-                <h2>Preferences</h2>
-                <form onSubmit={handlePrefsSubmit} className="settings-form">
-                    <div className="form-group">
-                        <label>Email Notifications:</label>
-                        <input type="checkbox" checked={emailNotif} onChange={e => setEmailNotif(e.target.checked)} />
-                    </div>
-                    <div className="form-group">
-                        <label>SMS Notifications:</label>
-                        <input type="checkbox" checked={smsNotif} onChange={e => setSmsNotif(e.target.checked)} />
-                    </div>
-                    <div className="form-group">
-                        <label>Theme:</label>
-                        <select value={theme} onChange={e => setTheme(e.target.value as 'light' | 'dark')}>
-                            <option value="light">Light</option>
-                            <option value="dark">Dark</option>
-                        </select>
-                    </div>
-                    <div className="form-group">
-                        <label>Language:</label>
-                        <select value={language} onChange={e => setLanguage(e.target.value as 'en' | 'tr')}>
-                            <option value="en">English</option>
-                            <option value="tr">Türkçe</option>
-                        </select>
-                    </div>
-                    <button type="submit" className="btn">Save Preferences</button>
-                </form>
-            </section>
+            <h1>Settings</h1> 
+            
+            <div className="row">
+                <div className="col-6">
+                    <section className="settings-section">
+                        <h3>Profile Information</h3>
+                        <form onSubmit={handleProfileSubmit} className="settings-form">
+                            <div className="form-group">
+                                <label>Email:</label>
+                                <input type="email" value={email} onChange={e => setEmail(e.target.value)} required />
+                            </div>
+                            <button type="submit" className="btn">Save Profile</button>
+                        </form>
+                    </section>
+                </div>
+                <div className="col-6">
+                    <section className="settings-section">
+                        <h3>Change Password</h3>
+                        <form onSubmit={handlePasswordSubmit} className="settings-form">
+                            <div className="form-group">
+                                <label>Current Password:</label>
+                                <input type="password" value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} required />
+                            </div>
+                            <div className="form-group">
+                                <label>New Password:</label>
+                                <input type="password" value={newPassword} onChange={e => setNewPassword(e.target.value)} required />
+                            </div>
+                            <div className="form-group">
+                                <label>Confirm Password:</label>
+                                <input type="password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} required />
+                            </div>
+                            <button type="submit" className="btn">Change Password</button>
+                        </form>
+                    </section>
+                </div>
+            </div>
+            
+            <div className="row">
+                <div className="col-6">
+                    <section className="settings-section">
+                        <h3>Notification Preferences</h3>
+                        <form onSubmit={handlePrefsSubmit} className="settings-form">
+                            <div className="form-group">
+                                <label>Email Notifications:</label>
+                                <input type="checkbox" checked={emailNotif} onChange={e => setEmailNotif(e.target.checked)} />
+                            </div>
+                            <div className="form-group">
+                                <label>SMS Notifications:</label>
+                                <input type="checkbox" checked={smsNotif} onChange={e => setSmsNotif(e.target.checked)} />
+                            </div>
+                            <button type="submit" className="btn">Save Notifications</button>
+                        </form>
+                    </section>
+                </div>
+                <div className="col-6">
+                    <section className="settings-section">
+                        <h2>System Settings</h2>
+                        <form onSubmit={handlePrefsSubmit} className="settings-form">
+                            <div className="form-group">
+                                <label>Theme:</label>
+                                <select value={theme} onChange={e => setTheme(e.target.value as 'light' | 'dark')}>
+                                    <option value="light">Light</option>
+                                    <option value="dark">Dark</option>
+                                </select>
+                            </div>
+                            <div className="form-group">
+                                <label>Language:</label>
+                                <select value={language} onChange={e => setLanguage(e.target.value as 'en' | 'tr')}>
+                                    <option value="en">English</option>
+                                    <option value="tr">Türkçe</option>
+                                </select>
+                            </div>
+                            <button type="submit" className="btn">Save System Settings</button>
+                        </form>
+                    </section>
+                </div>
+            </div>
         </div>
     );
 };

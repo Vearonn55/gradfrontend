@@ -42,7 +42,7 @@ const LoginPage: React.FC = () => {
 
             <div className="google-login">
                 <img
-                    src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
+                    src="https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-09-512.png"
                     alt="Google"
                     className="google-icon"
                 />

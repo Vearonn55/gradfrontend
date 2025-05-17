@@ -1,6 +1,5 @@
 import React from 'react';
 
-
 interface AlertFilterProps {
     selectedType: string; // 'All', 'PriceThresholdExceeded', 'NearExpiry'
     onTypeChange: (type: string) => void;
@@ -8,10 +7,11 @@ interface AlertFilterProps {
 
 const AlertFilter: React.FC<AlertFilterProps> = ({ selectedType, onTypeChange }) => {
     return (
-        <div className="alert-filter-container">
+      <div className="alert-filter-container">
             <label htmlFor="alertTypeSelect">Filter by Type:</label>
             <select
                 id="alertTypeSelect"
+                className="form-input"
                 value={selectedType}
                 onChange={(e) => onTypeChange(e.target.value)}
             >

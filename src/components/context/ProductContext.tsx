@@ -1,18 +1,17 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 
 export interface Product {
-    id: number;
+    id: number; // ProductID
     name: string;
-    category: string;
-    stock: number;
-    weight: number;
-    price: number;
-    threshold: number;
     description?: string;
-    createdAt: string;
+    nutritionalFacts?: string;
+    categoryId: number;
+    price: number;
+    expiryDate: string;
+    stockQuantity: number;
 }
 
-type NewProduct = Omit<Product, "threshold">;
+type NewProduct = Omit<Product, "id">;
 
 interface ProductContextType {
     products: Product[];
@@ -35,10 +34,11 @@ export const ProductsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     }, [products]);
 
     const addProduct = (newProd: NewProduct) => {
-        setProducts(prev => [
-            ...prev,
-            { ...newProd, threshold: newProd.stock },
-        ]);
+        const newProduct: Product = {
+            id: Date.now(), // otomatik ID üret
+            ...newProd
+        };
+        setProducts(prev => [...prev, newProduct]);
     };
 
     const updateProduct = (id: number, payload: Partial<NewProduct>) => {
@@ -60,6 +60,6 @@ export const ProductsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
 export function useProducts() {
     const ctx = useContext(ProductContext);
-    if (!ctx) throw new Error("useProducts must be inside ProductsProvider");
+    if (!ctx) throw new Error("useProducts must be used within a ProductsProvider");
     return ctx;
 }

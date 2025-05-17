@@ -41,8 +41,8 @@ const DownloadReportButton: React.FC<DownloadReportButtonProps> = ({
 
     return (
         <div className="download-report-button">
-            <button onClick={handleDownloadCSV}>Download CSV</button>
-            <button onClick={handleDownloadPDF}>Download PDF</button>
+            <button className="action-btn primary-btn" onClick={handleDownloadCSV}>Download CSV</button>
+            <button className="action-btn primary-btn" onClick={handleDownloadPDF}>Download PDF</button>
         </div>
     );
 };

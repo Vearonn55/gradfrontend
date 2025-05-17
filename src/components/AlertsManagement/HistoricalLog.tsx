@@ -1,6 +1,5 @@
 import React from 'react';
-import { AlertItem } from './types'; // Import yolu projenize göre değişebilir
-
+import { AlertItem } from './AlertsManagementPage'; // Doğru import yolunu kullanıyorum
 
 interface HistoricalLogProps {
     alerts: AlertItem[];
@@ -13,16 +12,14 @@ const HistoricalLog: React.FC<HistoricalLogProps> = ({ alerts }) => {
     if (resolvedAlerts.length === 0) {
         return (
             <div className="historical-log-container">
-                <h3>Historical Log (Resolved Alerts)</h3>
                 <p>No resolved alerts yet.</p>
             </div>
         );
     }
 
     return (
-        <div className="historical-log-container">
-            <h3>Historical Log (Resolved Alerts)</h3>
-            <table>
+        <div className="historical-log-container"> 
+            <table className="data-table">
                 <thead>
                 <tr>
                     <th>Type</th>

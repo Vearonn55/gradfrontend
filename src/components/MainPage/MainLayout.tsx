@@ -1,4 +1,3 @@
-// src/components/MainPage/MainLayout.tsx
 import React, { useState } from "react";
 import { Routes, Route, Navigate, useLocation, useNavigate } from "react-router-dom";
 import Sidebar from "./Sidebar";
@@ -10,7 +9,9 @@ import UserManagementPage from "../UserManagementPage/UserManagementPage";
 import SettingsPage from "../SettingsPage/SettingsPage";
 import HelpCenterPage from "../HelpCenterPage/HelpCenterPage";
 import InventoryPage from "../InventoryMonitoringPage/InventoryPage";
-import SalesPage from "../SalesPage/SalesPage";  // ← Yeni SalesPage import
+import SalesPage from "../SalesPage/SalesPage";
+import AddProductPage from "../AddProduct/AddProductPage";
+import "./MainLayout.css";
 
 const MainLayout: React.FC = () => {
     const location = useLocation();
@@ -23,12 +24,12 @@ const MainLayout: React.FC = () => {
     };
 
     return (
-        <div style={{ display: "flex", height: "100vh" }}>
-            {/* Sidebar stays fixed */}
-            <Sidebar activeLink={activeLink} onLinkClick={handleLinkClick} />
-
-            {/* Main content area */}
-            <div style={{ flex: 1, padding: 20, overflowY: "auto" }}>
+        <div className="main-layout">
+            <div className="sidebar-container">
+                <Sidebar activeLink={activeLink} onLinkClick={handleLinkClick} />
+            </div>
+            
+            <div className="content-container">
                 <Routes location={location} key={location.pathname}>
                     <Route path="/dashboard" element={<DashboardPage />} />
                     <Route path="/prices" element={<PriceManagementPage />} />
@@ -38,7 +39,8 @@ const MainLayout: React.FC = () => {
                     <Route path="/settings" element={<SettingsPage />} />
                     <Route path="/help" element={<HelpCenterPage />} />
                     <Route path="/inventory" element={<InventoryPage />} />
-                    <Route path="/sales" element={<SalesPage />} />      {/* ← Sales route */}
+                    <Route path="/sales" element={<SalesPage />} />
+                    <Route path="/add-product" element={<AddProductPage />} />
                     <Route path="*" element={<Navigate to="/dashboard" replace />} />
                 </Routes>
             </div>

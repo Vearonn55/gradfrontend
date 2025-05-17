@@ -4,7 +4,7 @@ import AlertList from './AlertList';
 import HistoricalLog from './HistoricalLog';
 import './AlertsManagementPage.css';
 
-// Alert tipi tanımı (daha önce types dosyasındaysa burayı kaldırıp import edebilirsiniz)
+// Alert tipi tanımı
 export interface AlertItem {
     id: number;
     type: 'PriceThresholdExceeded' | 'NearExpiry';
@@ -32,17 +32,18 @@ const AlertsManagementPage: React.FC = () => {
     const activeAlerts = alerts.filter(a => !a.resolved && (filterType === 'All' || a.type === filterType));
 
     return (
-        <div className="alerts-management-container">
+        <div className="page-container">
             <h1>Alerts Management</h1>
             <div className="alerts-filter-section">
                 <AlertFilter selectedType={filterType} onTypeChange={handleTypeChange} />
             </div>
             <div className="alerts-content">
                 <section className="active-alerts-section">
-                    <h2>Active Alerts</h2>
+                    <h3>Active Alerts</h3>
                     <AlertList alerts={activeAlerts} onResolveAlert={handleResolveAlert} />
                 </section>
                 <section className="historical-log-section">
+                    <h3>Historical Log (Resolved Alerts)</h3>
                     <HistoricalLog alerts={alerts} />
                 </section>
             </div>

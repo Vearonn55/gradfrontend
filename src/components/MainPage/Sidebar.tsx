@@ -14,11 +14,12 @@ const Sidebar: React.FC<SidebarProps> = ({ activeLink, onLinkClick }) => {
 
     const menuItems: { name: string; path: string }[] = [
         { name: "Dashboard", path: "/dashboard" },
-        { name: "Real-Time Pricing", path: "/prices" },
-        { name: "Inventory Management", path: "/inventory" },
+        { name: "Sale", path: "/sales" },
+        { name: "Update Price", path: "/prices" },
+        { name: "Add Product", path: "/add-product" }, // ✅ Yeni Buton
+        { name: "Inventory List", path: "/inventory" },
         { name: "Alerts", path: "/alerts" },
         { name: "Analytics", path: "/reports" },
-        { name: "Sales", path: "/sales" },           // ← Yeni Sales butonu
         { name: "Settings", path: "/settings" },
         { name: "Help", path: "/help" }
     ];

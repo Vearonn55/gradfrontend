@@ -1,7 +1,10 @@
 /* DashboardPage.css */
 .dashboard-container {
     position: relative;
-    padding: 40px;
+    padding: 20px;
+    margin-top: 150px;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
     font-family: "Segoe UI", sans-serif;
     background-color: #f4f7f9;
 }
