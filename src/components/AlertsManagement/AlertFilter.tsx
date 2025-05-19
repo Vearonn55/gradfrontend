@@ -17,15 +17,7 @@ const AlertFilter: React.FC<AlertFilterProps> = ({ selectedType, onTypeChange })
             >
                 <option value="All">All Alerts</option>
                 <option value="PriceThresholdExceeded">Price Threshold Exceeded</option>
-                <option value="NearExpiry">Near Expiry</option>
-                <option value="OutOfStock">Out of Stock</option>
-                <option value="HighDemand">High Demand</option>
-                <option value="StorageTemperatureIssue">Storage Temperature Issue</option>
-                <option value="ShipmentDelay">Shipment Delay</option>
-                <option value="UnauthorizedAccess">Unauthorized Access</option>
-                <option value="LowBattery">Low Battery</option>
-                <option value="DataMismatch">Data Mismatch</option>
-                <option value="SensorFailure">Sensor Failure</option>
+             
             </select>
         </div>
     );

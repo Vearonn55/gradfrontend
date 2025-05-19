@@ -6,10 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="955dce90-4707-4fd5-9eb3-12ed35ca5014" name="Changes" comment=" frontend refind">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/LabelConfigure/LabelConfigure.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/LabelConfigure/LabelConfigure.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/MainPage/MainLayout.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/MainPage/MainLayout.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/MainPage/MainPage.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/MainPage/MainPage.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/AlertsManagement/AlertFilter.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/AlertsManagement/AlertFilter.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/AlertsManagement/AlertsManagementPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/AlertsManagement/AlertsManagementPage.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,7 +74,7 @@
       <workItem from="1747683108379" duration="23000" />
       <workItem from="1747683141695" duration="40000" />
       <workItem from="1747683187226" duration="1309000" />
-      <workItem from="1747684505276" duration="2328000" />
+      <workItem from="1747684505276" duration="4447000" />
     </task>
     <servers />
   </component>
