@@ -8,15 +8,7 @@ export interface AlertItem {
     id: number;
     type:
         | 'PriceThresholdExceeded'
-        | 'NearExpiry'
-        | 'OutOfStock'
-        | 'HighDemand'
-        | 'StorageTemperatureIssue'
-        | 'ShipmentDelay'
-        | 'UnauthorizedAccess'
-        | 'LowBattery'
-        | 'DataMismatch'
-        | 'SensorFailure';
+
     message: string;
     date: string;
     resolved: boolean;
@@ -30,20 +22,8 @@ const defaultAlerts: AlertItem[] = [
         date: '2025-05-06',
         resolved: false
     },
-    {
-        id: 2,
-        type: 'NearExpiry',
-        message: 'Ürün #456 son kullanma tarihine yakın',
-        date: '2025-05-07',
-        resolved: false
-    },
-    {
-        id: 3,
-        type: 'OutOfStock',
-        message: 'Ürün #789 stoğu tükendi',
-        date: '2025-05-08',
-        resolved: true
-    }
+
+
 ];
 
 const AlertsManagementPage: React.FC = () => {
@@ -172,15 +152,7 @@ const AlertsManagementPage: React.FC = () => {
                     onChange={e => setNewAlert(prev => ({ ...prev, type: e.target.value }))}
                 >
                     <option value="PriceThresholdExceeded">Price Threshold Exceeded</option>
-                    <option value="NearExpiry">Near Expiry</option>
-                    <option value="OutOfStock">Out of Stock</option>
-                    <option value="HighDemand">High Demand</option>
-                    <option value="StorageTemperatureIssue">Storage Temperature Issue</option>
-                    <option value="ShipmentDelay">Shipment Delay</option>
-                    <option value="UnauthorizedAccess">Unauthorized Access</option>
-                    <option value="LowBattery">Low Battery</option>
-                    <option value="DataMismatch">Data Mismatch</option>
-                    <option value="SensorFailure">Sensor Failure</option>
+
                 </select>
                 <input
                     type="text"
