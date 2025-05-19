@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 
 export interface Product {
-    id: number; // ProductID
+    id: number;
     name: string;
     description?: string;
     nutritionalFacts?: string;
@@ -11,12 +11,10 @@ export interface Product {
     stockQuantity: number;
 }
 
-type NewProduct = Omit<Product, "id">;
-
 interface ProductContextType {
     products: Product[];
-    addProduct: (p: NewProduct) => void;
-    updateProduct: (id: number, payload: Partial<NewProduct>) => void;
+    addProduct: (p: Product) => void;
+    updateProduct: (id: number, payload: Partial<Product>) => void;
     deleteProduct: (id: number) => void;
 }
 
@@ -33,15 +31,11 @@ export const ProductsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
     }, [products]);
 
-    const addProduct = (newProd: NewProduct) => {
-        const newProduct: Product = {
-            id: Date.now(), // otomatik ID üret
-            ...newProd
-        };
-        setProducts(prev => [...prev, newProduct]);
+    const addProduct = (product: Product) => {
+        setProducts(prev => [...prev, product]);
     };
 
-    const updateProduct = (id: number, payload: Partial<NewProduct>) => {
+    const updateProduct = (id: number, payload: Partial<Product>) => {
         setProducts(prev =>
             prev.map(p => (p.id === id ? { ...p, ...payload } : p))
         );

@@ -1,42 +1,34 @@
 import React from 'react';
-import { AlertItem } from './AlertsManagementPage'; // Doğru import yolunu kullanıyorum
+import { AlertItem } from './AlertsManagementPage';
 
 interface HistoricalLogProps {
     alerts: AlertItem[];
 }
 
+const formatAlertType = (type: string) => {
+    return type
+        .replace(/([A-Z])/g, ' $1')
+        .replace(/^./, str => str.toUpperCase());
+};
+
 const HistoricalLog: React.FC<HistoricalLogProps> = ({ alerts }) => {
-    // Sadece resolved olanları gösterelim
     const resolvedAlerts = alerts.filter((alert) => alert.resolved);
 
     if (resolvedAlerts.length === 0) {
-        return (
-            <div className="historical-log-container">
-                <p>No resolved alerts yet.</p>
-            </div>
-        );
+        return <p className="empty-message">No resolved alerts yet.</p>;
     }
 
     return (
-        <div className="historical-log-container"> 
-            <table className="data-table">
-                <thead>
-                <tr>
-                    <th>Type</th>
-                    <th>Message</th>
-                    <th>Date</th>
-                </tr>
-                </thead>
-                <tbody>
-                {resolvedAlerts.map((alert) => (
-                    <tr key={alert.id}>
-                        <td>{alert.type}</td>
-                        <td>{alert.message}</td>
-                        <td>{alert.date}</td>
-                    </tr>
-                ))}
-                </tbody>
-            </table>
+        <div className="historical-log-container">
+            {resolvedAlerts.map((alert) => (
+                <div key={alert.id} className="history-card">
+                    <div className="alert-card-header">
+                        <strong>{formatAlertType(alert.type)}</strong>
+                        <span className="alert-date">({alert.date})</span>
+                    </div>
+                    <div className="alert-message">{alert.message}</div>
+                </div>
+            ))}
         </div>
     );
 };

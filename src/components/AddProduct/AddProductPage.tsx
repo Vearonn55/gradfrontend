@@ -3,18 +3,17 @@ import { useProducts } from "../context/ProductContext";
 import "./AddProductPage.css";
 
 export default function AddProductPage() {
-    // Bugünün tarihini YYYY-MM-DD formatında alıyorum
     const today = new Date().toISOString().split('T')[0];
-
     const { addProduct } = useProducts();
 
     const [form, setForm] = useState({
+        id: "",
         name: "",
         description: "",
         nutritionalFacts: "",
         categoryId: "",
         price: "",
-        expiryDate: today, // Bugünün tarihini varsayılan değer olarak atıyorum
+        expiryDate: today,
         stockQuantity: ""
     });
 
@@ -27,6 +26,7 @@ export default function AddProductPage() {
         e.preventDefault();
 
         addProduct({
+            id: parseInt(form.id),
             name: form.name,
             description: form.description,
             nutritionalFacts: form.nutritionalFacts,
@@ -38,6 +38,7 @@ export default function AddProductPage() {
 
         alert("Product Added Successfully!");
         setForm({
+            id: "",
             name: "",
             description: "",
             nutritionalFacts: "",
@@ -54,19 +55,20 @@ export default function AddProductPage() {
             <form onSubmit={handleSubmit} className="add-product-form">
                 <div className="form-row">
                     <div className="form-group">
+                        <input className="form-input" name="id" type="number" placeholder="Product ID" value={form.id} onChange={handleChange} required />
                         <input className="form-input" name="name" placeholder="Product Name" value={form.name} onChange={handleChange} required />
                         <textarea className="form-textarea" name="description" placeholder="Description" value={form.description} onChange={handleChange} />
                         <textarea className="form-textarea" name="nutritionalFacts" placeholder="Nutritional Facts" value={form.nutritionalFacts} onChange={handleChange} />
                     </div>
-                    
+
                     <div className="form-group">
                         <input className="form-input" name="categoryId" type="number" placeholder="Category ID" value={form.categoryId} onChange={handleChange} required />
                         <input className="form-input" name="price" type="number" step="0.01" placeholder="Price" value={form.price} onChange={handleChange} required />
-                        <input className="form-input" name="expiryDate" type="date" placeholder="Expiry Date" value={form.expiryDate} onChange={handleChange} required />
+                        <input className="form-input" name="expiryDate" type="date" value={form.expiryDate} onChange={handleChange} required />
                         <input className="form-input" name="stockQuantity" type="number" placeholder="Stock Quantity" value={form.stockQuantity} onChange={handleChange} required />
                     </div>
                 </div>
-                
+
                 <div className="button-container">
                     <button type="submit" className="action-btn primary-btn">Add Product</button>
                 </div>

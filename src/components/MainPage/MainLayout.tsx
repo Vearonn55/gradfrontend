@@ -11,6 +11,9 @@ import HelpCenterPage from "../HelpCenterPage/HelpCenterPage";
 import InventoryPage from "../InventoryMonitoringPage/InventoryPage";
 import SalesPage from "../SalesPage/SalesPage";
 import AddProductPage from "../AddProduct/AddProductPage";
+import SaleReports from "../SaleReports/SaleReports";
+import LabelConfigure from "../LabelConfigure/LabelConfigure"; // ✅ Yeni route
+
 import "./MainLayout.css";
 
 const MainLayout: React.FC = () => {
@@ -28,7 +31,7 @@ const MainLayout: React.FC = () => {
             <div className="sidebar-container">
                 <Sidebar activeLink={activeLink} onLinkClick={handleLinkClick} />
             </div>
-            
+
             <div className="content-container">
                 <Routes location={location} key={location.pathname}>
                     <Route path="/dashboard" element={<DashboardPage />} />
@@ -41,6 +44,8 @@ const MainLayout: React.FC = () => {
                     <Route path="/inventory" element={<InventoryPage />} />
                     <Route path="/sales" element={<SalesPage />} />
                     <Route path="/add-product" element={<AddProductPage />} />
+                    <Route path="/sale-reports" element={<SaleReports />} />
+                    <Route path="/label-configure" element={<LabelConfigure />} /> {/* ✅ Yeni route */}
                     <Route path="*" element={<Navigate to="/dashboard" replace />} />
                 </Routes>
             </div>

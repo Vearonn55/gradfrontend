@@ -1,5 +1,4 @@
-// src/components/SalesPage/SalesPage.tsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useProducts, Product } from "../context/ProductContext";
 import { useSales, Sale } from "../context/SalesContext";
 import "./SalesPage.css";
@@ -9,57 +8,52 @@ const SalesPage: React.FC = () => {
     const { sales, addSale, updateSale, deleteSale } = useSales();
 
     const [form, setForm] = useState({
-        productId: products[0]?.id || 0,
-        quantity: 1,
-        unitPrice: products[0]?.price || 0,
-        date: new Date().toISOString().slice(0,16), // YYYY-MM-DDThh:mm
+        productId: "",
+        quantity: "",
+        unitPrice: 0,
+        date: new Date().toISOString().slice(0, 16)
     });
+
+    useEffect(() => {
+        const matched = products.find(p => p.id === parseInt(form.productId));
+        setForm(f => ({
+            ...f,
+            unitPrice: matched ? matched.price : 0
+        }));
+    }, [form.productId, products]);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (!form.productId || form.quantity < 1) return;
+        const id = parseInt(form.productId);
+        const qty = parseInt(form.quantity);
+        if (!id || !qty || qty < 1) return;
 
-        // Aynı ürünün bugün yapılmış satışını bul
-        const today = new Date().toISOString().split('T')[0];
-        const existingSale = sales.find(s =>
-            s.productId === form.productId &&
-            new Date(s.date).toISOString().split('T')[0] === today
+        const today = new Date().toISOString().split("T")[0];
+        const existing = sales.find(s =>
+            s.productId === id &&
+            new Date(s.date).toISOString().split("T")[0] === today
         );
 
-        if (existingSale) {
-            // Eğer aynı ürün bugün satılmışsa, miktarını güncelle
-            updateSale(existingSale.id, {
-                quantity: existingSale.quantity + form.quantity
-            });
-            // Kullanıcıya bilgi ver
-            alert(`Existing sale updated! New quantity: ${existingSale.quantity + form.quantity}`);
+        if (existing) {
+            updateSale(existing.id, { quantity: existing.quantity + qty });
+            alert(`Updated existing sale. New quantity: ${existing.quantity + qty}`);
         } else {
-            // Yeni satış ekle
             addSale({
-                productId: form.productId,
-                quantity: form.quantity,
+                productId: id,
+                quantity: qty,
                 unitPrice: form.unitPrice,
                 date: form.date
             });
         }
 
-        // Form miktarını sıfırla
-        setForm(f => ({ ...f, quantity: 1 }));
+        setForm(f => ({ ...f, quantity: "" }));
     };
 
-    const handleProductChange = (productId: number) => {
-        const selectedProduct = products.find(p => p.id === productId);
-        setForm(f => ({
-            ...f,
-            productId,
-            unitPrice: selectedProduct?.price || 0
-        }));
+    const handleDropdownChange = (id: number) => {
+        setForm(f => ({ ...f, productId: id.toString() }));
     };
 
-    // Calculate total sales
-    const totalSales = sales.reduce((sum, sale) =>
-        sum + (sale.quantity * sale.unitPrice), 0
-    );
+    const totalSales = sales.reduce((sum, s) => sum + (s.quantity * s.unitPrice), 0);
 
     return (
         <div className="sales-page-container">
@@ -67,65 +61,66 @@ const SalesPage: React.FC = () => {
             <form className="sales-form" onSubmit={handleSubmit}>
                 <div className="form-row">
                     <div className="form-group">
-                        <label>Product:</label>
+                        <label>Product</label>
                         <select
                             value={form.productId}
-                            onChange={e => handleProductChange(+e.target.value)}
+                            onChange={e => handleDropdownChange(+e.target.value)}
                         >
-                            {products.map((p:Product)=>
+                            <option value="">Select Product</option>
+                            {products.map(p => (
                                 <option key={p.id} value={p.id}>{p.name}</option>
-                            )}
+                            ))}
                         </select>
                     </div>
 
                     <div className="form-group">
-                        <label>Unit Price:</label>
+                        <label>Product ID</label>
+                        <input
+                            type="number"
+                            name="productId"
+                            value={form.productId}
+                            onChange={e => setForm(f => ({ ...f, productId: e.target.value }))}
+                            placeholder="Enter Product ID"
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <label>Unit Price</label>
                         <div className="price-display">${form.unitPrice.toFixed(2)}</div>
                     </div>
 
                     <div className="form-group">
-                        <label>Quantity:</label>
+                        <label>Quantity</label>
                         <div className="quantity-control">
-                            <button
-                                type="button"
-                                onClick={() => setForm(f => ({ ...f, quantity: Math.max(1, f.quantity - 1) }))}
-                                className="quantity-btn"
-                            >
-                                -
-                            </button>
                             <input
                                 type="number"
                                 min={1}
+                                name="quantity"
                                 value={form.quantity}
-                                onChange={e=>setForm(f=>({ ...f, quantity: +e.target.value }))}
-                                placeholder="Quantity"
+                                onChange={e => setForm(f => ({ ...f, quantity: e.target.value }))}
+                                placeholder="Enter Quantity"
                             />
-                            <button
-                                type="button"
-                                onClick={() => setForm(f => ({ ...f, quantity: f.quantity + 1 }))}
-                                className="quantity-btn"
-                            >
-                                +
-                            </button>
                         </div>
                     </div>
 
                     <div className="form-group">
-                        <label>Total:</label>
-                        <div className="price-display">${(form.quantity * form.unitPrice).toFixed(2)}</div>
+                        <label>Total</label>
+                        <div className="price-display">
+                            ${(Number(form.quantity) * form.unitPrice).toFixed(2)}
+                        </div>
                     </div>
 
                     <div className="form-group">
-                        <label>Date:</label>
+                        <label>Date</label>
                         <input
                             type="datetime-local"
                             value={form.date}
-                            onChange={e=>setForm(f=>({ ...f, date: e.target.value }))}
+                            onChange={e => setForm(f => ({ ...f, date: e.target.value }))}
                         />
                     </div>
-              
+                </div>
                 <button type="submit" className="submit-btn">Record Sale</button>
-             </div> </form>
+            </form>
 
             <div className="sales-list">
                 <h3>Recorded Sales</h3>
@@ -142,36 +137,29 @@ const SalesPage: React.FC = () => {
                         </div>
                     </div>
                     <div className="table-body">
-                        {sales.map((s:Sale) => {
-                            const prod = products.find(p=>p.id===s.productId);
+                        {sales.map((s: Sale, index) => {
+                            const prod = products.find(p => p.id === s.productId);
                             const total = s.quantity * s.unitPrice;
                             return (
                                 <div className="table-row" key={s.id}>
-                                    <div className="cell">#{s.id}</div>
+                                    <div className="cell">#{index + 1}</div>
                                     <div className="cell">{prod?.name || "—"}</div>
                                     <div className="cell quantity-cell">
                                         <button
                                             className="quantity-btn small"
                                             onClick={() => updateSale(s.id, { quantity: Math.max(1, s.quantity - 1) })}
-                                        >
-                                            -
-                                        </button>
+                                        >-</button>
                                         <span>{s.quantity}</span>
                                         <button
                                             className="quantity-btn small"
                                             onClick={() => updateSale(s.id, { quantity: s.quantity + 1 })}
-                                        >
-                                            +
-                                        </button>
+                                        >+</button>
                                     </div>
                                     <div className="cell">${s.unitPrice.toFixed(2)}</div>
                                     <div className="cell">${total.toFixed(2)}</div>
                                     <div className="cell">{new Date(s.date).toLocaleString()}</div>
                                     <div className="cell">
-                                        <button
-                                            className="delete-btn"
-                                            onClick={() => deleteSale(s.id)}
-                                        >
+                                        <button className="delete-btn" onClick={() => deleteSale(s.id)}>
                                             Delete
                                         </button>
                                     </div>

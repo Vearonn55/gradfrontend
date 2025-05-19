@@ -112,3 +112,20 @@
 .cancel-btn:hover {
     background-color: #5a6268;
 }
+
+
+.out-of-stock-table th {
+    background-color: #dc3545;
+}
+
+.out-of-stock-table td {
+    background-color: #fff5f5;
+    color: #c0392b;
+    font-weight: bold;
+}
+
+.empty-message {
+    font-style: italic;
+    color: #666;
+    padding: 10px;
+}

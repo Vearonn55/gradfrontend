@@ -1,5 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { TextField, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import {
+    TextField,
+    Button,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Paper
+} from '@mui/material';
 import { useProducts } from "../context/ProductContext";
 import "./PriceManagementPage.css";
 
@@ -8,22 +18,38 @@ const PriceManagementPage: React.FC = () => {
 
     const [searchQuery, setSearchQuery] = useState('');
     const [filteredProducts, setFilteredProducts] = useState(products);
+    const [priceUpdates, setPriceUpdates] = useState<{ [key: number]: number }>({});
 
     useEffect(() => {
         const query = searchQuery.toLowerCase();
-        setFilteredProducts(products.filter(product =>
-            product.id.toString().includes(query) ||
-            product.categoryId.toString().includes(query) ||
-            product.name.toLowerCase().includes(query)
-        ));
+
+        const filtered = products.filter(product =>
+            product.stockQuantity > 0 && // ❗️Stokta olmayanlar gösterilmeyecek
+            (
+                product.id.toString().includes(query) ||
+                product.name.toLowerCase().includes(query) ||
+                product.categoryId?.toString().includes(query)
+            )
+        );
+
+        // ID bazlı tekilleştirme
+        const uniqueById = Array.from(new Map(filtered.map(p => [p.id, p])).values());
+
+        setFilteredProducts(uniqueById);
     }, [searchQuery, products]);
 
-    const handlePriceChange = (id: number, price: number) => {
-        updateProduct(id, { price });
+    const handlePriceInput = (id: number, price: string) => {
+        const parsed = parseFloat(price);
+        if (!isNaN(parsed)) {
+            setPriceUpdates(prev => ({ ...prev, [id]: parsed }));
+        }
     };
 
     const handleUpdate = (id: number) => {
-        alert('Price updated successfully!');
+        if (priceUpdates[id] != null) {
+            updateProduct(id, { price: priceUpdates[id] });
+            alert(`Price updated for product #${id}`);
+        }
     };
 
     return (
@@ -31,7 +57,7 @@ const PriceManagementPage: React.FC = () => {
             <h1>Update Price</h1>
 
             <TextField
-                label="Search by Product ID, Category ID, or Name"
+                label="Search by Product ID, Name, or Category ID"
                 variant="outlined"
                 fullWidth
                 margin="normal"
@@ -55,24 +81,27 @@ const PriceManagementPage: React.FC = () => {
                         {filteredProducts.map(product => (
                             <TableRow key={product.id}>
                                 <TableCell>{product.id}</TableCell>
-                                <TableCell>{product.categoryId}</TableCell>
+                                <TableCell>{product.categoryId ?? '—'}</TableCell>
                                 <TableCell>{product.name}</TableCell>
-                                <TableCell>${product.price.toFixed(2)}</TableCell>
+                                <TableCell>
+                                    {typeof product.price === "number" && !isNaN(product.price)
+                                        ? `$${product.price.toFixed(2)}`
+                                        : "—"}
+                                </TableCell>
                                 <TableCell>
                                     <TextField
                                         type="number"
                                         variant="outlined"
                                         size="small"
-                                        placeholder={product.price.toFixed(2)}
-                                        onBlur={e => handlePriceChange(product.id, parseFloat(e.target.value))}
+                                        placeholder={typeof product.price === "number" ? product.price.toFixed(2) : "0.00"}
+                                        onChange={e => handlePriceInput(product.id, e.target.value)}
                                     />
                                 </TableCell>
                                 <TableCell>
-                                    <Button 
-                                        variant="contained" 
-                                        color="primary" 
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
                                         onClick={() => handleUpdate(product.id)}
-                                        className="action-btn primary-btn"
                                     >
                                         Update
                                     </Button>

@@ -22,7 +22,10 @@
     "recharts": "^2.15.1"
   },
   "devDependencies": {
+<<<<<<< HEAD
+=======
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+>>>>>>> sulkalar
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
     "typescript": "^4.9.5"

@@ -1,23 +1,58 @@
-.alerts-management-container {
-    max-width: 1000px;
-    margin: 20px 20px 20px 290px;
+.page-container {
+    max-width: 1200px;
+    margin: 0 auto;
     padding: 20px;
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    font-family: Arial, sans-serif;
+    font-family: "Segoe UI", sans-serif;
+    background: #f4f7f9;
 }
 
-.alerts-management-container h1 {
+h1 {
     text-align: center;
-    margin-bottom: 20px;
     color: #2c3e50;
 }
 
 .alerts-filter-section {
-    margin-bottom: 20px;
     display: flex;
-    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.form-input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.export-btn {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.export-btn:hover {
+    background-color: #0056b3;
+}
+
+.form-label {
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin: 10px 0;
+    color: #2c3e50;
+}
+
+.new-alert-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 30px;
+    align-items: center;
 }
 
 .alerts-content {
@@ -26,157 +61,68 @@
     gap: 20px;
 }
 
-.active-alerts-section,
-.historical-log-section {
-    background: #f8f9fa;
-    padding: 15px;
-    border-radius: 6px;
+.alert-card,
+.history-card {
+    background: #fff;
+    border-left: 6px solid #007bff;
+    padding: 14px 16px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease;
 }
 
-.active-alerts-section h2,
-.historical-log-section h3 {
-    margin-top: 0;
-    color: #34495e;
+.alert-card:hover,
+.history-card:hover {
+    transform: scale(1.01);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
-/* Alert filter stilleri */
-.alert-filter-container {
+.alert-card-header {
     display: flex;
-    align-items: center;
-    background-color: #f8f9fa;
-    padding: 12px 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    margin-bottom: 20px;
+    justify-content: space-between;
+    margin-bottom: 6px;
 }
 
-.alert-filter-container label {
-    margin-right: 12px;
-    font-weight: 600;
-    color: #495057;
-}
-
-.alert-filter-container select {
-    padding: 8px 12px;
-    border: 1px solid #ced4da;
-    border-radius: 4px;
-    background-color: white;
-    font-size: 14px;
-    min-width: 200px;
-    color: #495057;
-    appearance: none;
-    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23495057' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-    background-repeat: no-repeat;
-    background-position: right 8px center;
-    background-size: 16px;
-}
-
-.alert-filter-container select:focus {
-    outline: none;
-    border-color: #80bdff;
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-}
-
-.alert-filter-container select option {
-    padding: 10px;
-}
-
-/* Tablo stilleri */
-.alert-table {
-    width: 100%;
-    border-collapse: collapse;
-    background: #ffffff;
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-.alert-table th {
-    background-color: #007bff;
-    color: white;
-    font-weight: bold;
-    padding: 12px 16px;
-    text-align: left;
+.alert-message {
+    margin-bottom: 8px;
     font-size: 0.95rem;
+    color: #333;
 }
 
-.alert-table td {
-    padding: 10px 16px;
-    border-bottom: 1px solid #e0e0e0;
-    vertical-align: middle;
-    font-size: 14px;
-}
-
-.alert-table tr:hover {
-    background-color: #f8f9fa;
-}
-
-.empty-message {
-    text-align: center;
+.alert-date {
+    font-size: 0.85rem;
     color: #6c757d;
-    padding: 20px;
-}
-
-/* Badge stilleri */
-.resolved-badge {
-    display: inline-block;
-    padding: 3px 8px;
-    background-color: #6c757d;
-    color: white;
-    border-radius: 4px;
-    font-size: 12px;
-    font-weight: bold;
-}
-
-/* Buton stilleri */
-.resolve-btn,
-.filter-btn {
-    padding: 6px 12px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: bold;
-    margin-right: 4px;
-    font-size: 12px;
 }
 
 .resolve-btn {
     background-color: #28a745;
     color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 6px;
 }
 
 .resolve-btn:hover {
     background-color: #218838;
 }
 
-.filter-btn {
-    background-color: #6c757d;
-    color: white;
-}
-
-.filter-btn.active {
-    background-color: #007bff;
-}
-
-.filter-btn:hover {
-    background-color: #5a6268;
+.empty-message {
+    padding: 10px;
+    font-style: italic;
+    color: #999;
 }
 
 @media (max-width: 768px) {
     .alerts-content {
         grid-template-columns: 1fr;
     }
-    
-    .alert-filter-container {
+
+    .alerts-filter-section,
+    .new-alert-form {
         flex-direction: column;
-        align-items: flex-start;
-    }
-    
-    .alert-filter-container label {
-        margin-bottom: 8px;
-        margin-right: 0;
-    }
-    
-    .alert-filter-container select {
-        width: 100%;
+        align-items: stretch;
     }
 }

@@ -1,4 +1,3 @@
-// src/components/MainPage/Sidebar.tsx
 import React from "react";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
@@ -15,9 +14,11 @@ const Sidebar: React.FC<SidebarProps> = ({ activeLink, onLinkClick }) => {
     const menuItems: { name: string; path: string }[] = [
         { name: "Dashboard", path: "/dashboard" },
         { name: "Sale", path: "/sales" },
+        { name: "Sale Reports", path: "/sale-reports" },
         { name: "Update Price", path: "/prices" },
-        { name: "Add Product", path: "/add-product" }, // ✅ Yeni Buton
+        { name: "Add Product", path: "/add-product" },
         { name: "Inventory List", path: "/inventory" },
+        { name: "Label Configure", path: "/label-configure" }, // ✅ Yeni eklendi
         { name: "Alerts", path: "/alerts" },
         { name: "Analytics", path: "/reports" },
         { name: "Settings", path: "/settings" },
@@ -26,7 +27,6 @@ const Sidebar: React.FC<SidebarProps> = ({ activeLink, onLinkClick }) => {
 
     return (
         <div className="sidebar">
-            {/* Header as button */}
             <div
                 className="sidebar-header"
                 onClick={() => {
@@ -52,7 +52,6 @@ const Sidebar: React.FC<SidebarProps> = ({ activeLink, onLinkClick }) => {
                     </li>
                 ))}
 
-                {/* Logout at the very bottom */}
                 <li className="logout-wrapper">
                     <Button
                         className="logout-button-inline"

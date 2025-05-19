@@ -257,3 +257,10 @@
 .table-body .table-row:hover {
     background: #f8f9fa;
 }
+
+.quantity-control input[type="number"] {
+    width: 120px;
+    text-align: center;
+    font-size: 1.05rem;
+}
+
