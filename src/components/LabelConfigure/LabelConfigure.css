@@ -1,80 +1,69 @@
-.label-configure-page {
-    max-width: 960px;
-    margin: 40px auto;
-    padding: 30px;
-    background: #ffffff;
-    border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-    font-family: 'Segoe UI', sans-serif;
+.label-configure-wrapper {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: white;
 }
 
-.label-configure-page h2 {
-    font-size: 1.8rem;
+.label-configure-container {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    width: 1000px;
+    height: 1000px;
+    max-width: 90vw;
+    max-height: 90vh;
+    overflow: auto;
+    align-self: center;
+}
+
+.label-configure-container h2 {
     text-align: center;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
     color: #2c3e50;
 }
 
-.search-input {
+.label-search {
     width: 100%;
-    padding: 12px 16px;
+    padding: 10px 12px;
+    margin-bottom: 20px;
     font-size: 1rem;
     border: 1px solid #ccc;
-    border-radius: 10px;
-    margin-bottom: 24px;
-    transition: all 0.3s ease;
-}
-
-.search-input:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
-    outline: none;
+    border-radius: 6px;
 }
 
 .label-table {
     width: 100%;
     border-collapse: collapse;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+    background: white;
+
 }
 
 .label-table th {
-    background: #007bff;
+    background-color: #007bff;
     color: white;
-    padding: 14px 18px;
-    font-size: 1rem;
     text-align: left;
+    padding: 12px;
+    font-size: 0.95rem;
 }
 
 .label-table td {
-    padding: 12px 18px;
-    border-bottom: 1px solid #eee;
-    font-size: 0.95rem;
-    color: #333;
-}
-
-.label-table tr:hover {
-    background-color: #f8f9fa;
-}
-
-.edit-input {
-    width: 100%;
-    padding: 10px 12px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 0.95rem;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    vertical-align: middle;
 }
 
 .edit-btn,
-.save-btn {
-    padding: 8px 14px;
-    font-size: 0.9rem;
-    font-weight: 600;
+.save-btn,
+.delete-btn {
+    padding: 6px 12px;
+    font-size: 0.85rem;
     border: none;
-    border-radius: 8px;
+    border-radius: 6px;
     cursor: pointer;
-    transition: background 0.2s ease;
+    margin-right: 5px;
 }
 
 .edit-btn {
@@ -82,52 +71,12 @@
     color: white;
 }
 
-.edit-btn:hover {
-    background-color: #2980b9;
-}
-
 .save-btn {
     background-color: #28a745;
     color: white;
 }
 
-.save-btn:hover {
-    background-color: #218838;
-}
-
-@media (max-width: 768px) {
-    .label-configure-page {
-        padding: 20px;
-        margin: 20px;
-    }
-
-    .label-table th,
-    .label-table td {
-        font-size: 0.9rem;
-        padding: 10px;
-    }
-
-    .edit-btn,
-    .save-btn {
-        padding: 6px 10px;
-        font-size: 0.85rem;
-    }
-}
-
 .delete-btn {
-    margin-left: 8px;
-    background-color: #dc3545;
+    background-color: #e74c3c;
     color: white;
-    border: none;
-    padding: 8px 14px;
-    border-radius: 8px;
-    font-weight: bold;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: background-color 0.2s;
 }
-
-.delete-btn:hover {
-    background-color: #c82333;
-}
-
