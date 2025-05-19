@@ -1,0 +1,15 @@
+src/
+  └─ components/
+       ├─ AlertList/
+       │   ├─ AlertList.tsx
+       │   └─ AlertList.css
+       ├─ AlertFilter/
+       │   ├─ AlertFilter.tsx
+       │   └─ AlertFilter.css
+       ├─ HistoricalLog/
+       │   ├─ HistoricalLog.tsx
+       │   └─ HistoricalLog.css
+       ├─ AlertsManagementPage/
+       │   ├─ AlertsManagementPage.tsx
+       │   └─ AlertsManagementPage.css
+       └─ ...

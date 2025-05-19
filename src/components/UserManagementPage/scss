@@ -1,0 +1,15 @@
+src/
+  └─ components/
+       ├─ TableOfUsers/
+       │   ├─ TableOfUsers.tsx
+       │   └─ TableOfUsers.css
+       ├─ RolePermissions/
+       │   ├─ RolePermissions.tsx
+       │   └─ RolePermissions.css
+       ├─ AddUserModal/
+       │   ├─ AddUserModal.tsx
+       │   └─ AddUserModal.css
+       ├─ UserManagementPage/
+       │   ├─ UserManagementPage.tsx
+       │   └─ UserManagementPage.css
+       └─ ...

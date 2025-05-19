@@ -1,0 +1,15 @@
+src/
+  └─ components/
+       ├─ SearchBar/
+       │   ├─ SearchBar.tsx
+       │   └─ SearchBar.css
+       ├─ FilterSortOptions/
+       │   ├─ FilterSortOptions.tsx
+       │   └─ FilterSortOptions.css
+       ├─ EditablePriceTable/
+       │   ├─ EditablePriceTable.tsx
+       │   └─ EditablePriceTable.css
+       ├─ PriceManagementPage/
+       │   ├─ PriceManagementPage.tsx
+       │   └─ PriceManagementPage.css
+       └─ ...
