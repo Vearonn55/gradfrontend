@@ -1,0 +1,103 @@
+/* src/components/SettingsPage/SettingsPage.css */
+.settings-container {
+ 
+    padding: 20px;
+    
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+    font-family: Arial, sans-serif;
+}
+
+.settings-container h1 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 20px;
+}
+
+.settings-section {
+    margin-bottom: 10px;
+   
+}
+
+.settings-section h2 {
+    margin-bottom: 10px;
+    color: #34495e;
+}
+
+.settings-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.form-group input[type="email"],
+.form-group input[type="password"],
+.form-group select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.form-group input[type="checkbox"] {
+    margin-top: 5px;
+    width: 20px;
+    height: 20px;
+}
+
+.btn {
+    grid-column: span 2;
+    padding: 10px;
+    background-color: #1abc9c;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.2s;
+}
+
+.btn:hover {
+    background-color: #16a085;
+}
+
+@media (max-width: 768px) {
+    .settings-form { grid-template-columns: 1fr; }
+}
+
+/* İki sütunlu düzen için CSS */
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    margin: 0 -15px 30px -15px;
+}
+
+.col-6 {
+    flex: 0 0 50%;
+    max-width: 50%;
+    padding: 0 15px;
+    box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+    .col-6 {
+        flex: 0 0 100%;
+        max-width: 100%;
+        margin-bottom: 20px;
+    }
+    .row {
+        flex-direction: column;
+        margin-bottom: 0;
+    }
+}

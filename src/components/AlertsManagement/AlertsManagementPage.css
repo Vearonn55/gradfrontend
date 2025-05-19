@@ -1,0 +1,128 @@
+.page-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: "Segoe UI", sans-serif;
+    background: #f4f7f9;
+}
+
+h1 {
+    text-align: center;
+    color: #2c3e50;
+}
+
+.alerts-filter-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.form-input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.export-btn {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.export-btn:hover {
+    background-color: #0056b3;
+}
+
+.form-label {
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin: 10px 0;
+    color: #2c3e50;
+}
+
+.new-alert-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 30px;
+    align-items: center;
+}
+
+.alerts-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.alert-card,
+.history-card {
+    background: #fff;
+    border-left: 6px solid #007bff;
+    padding: 14px 16px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease;
+}
+
+.alert-card:hover,
+.history-card:hover {
+    transform: scale(1.01);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.alert-card-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+}
+
+.alert-message {
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+    color: #333;
+}
+
+.alert-date {
+    font-size: 0.85rem;
+    color: #6c757d;
+}
+
+.resolve-btn {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 6px;
+}
+
+.resolve-btn:hover {
+    background-color: #218838;
+}
+
+.empty-message {
+    padding: 10px;
+    font-style: italic;
+    color: #999;
+}
+
+@media (max-width: 768px) {
+    .alerts-content {
+        grid-template-columns: 1fr;
+    }
+
+    .alerts-filter-section,
+    .new-alert-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}

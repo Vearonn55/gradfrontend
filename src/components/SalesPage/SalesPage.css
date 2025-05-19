@@ -1,0 +1,266 @@
+/* src/components/SalesPage/SalesPage.css */
+
+.sales-page-container {
+
+    padding: 20px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+    font-family: 'Segoe UI', sans-serif;
+    color: #2f3e50;
+    text-align: center;
+}
+
+.sales-page-container h2 {
+    margin-bottom: 24px;
+    font-size: 1.8rem;
+}
+
+.sales-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 32px;
+    background: #fff;
+    padding: 24px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    align-items: start;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-weight: 600;
+    color: #2c3e50;
+    font-size: 0.9rem;
+}
+
+.price-display {
+    background: #f8f9fa;
+    padding: 10px 14px;
+    border-radius: 6px;
+    border: 1px solid #dee2e6;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.submit-btn {
+    background: #3498db;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    align-self: flex-end;
+}
+
+.submit-btn:hover {
+    background: #2980b9;
+}
+
+.sales-form select,
+.sales-form input,
+.sales-form button {
+    padding: 10px 14px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+.sales-form select:focus,
+.sales-form input:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52,152,219,0.2);
+}
+
+.sales-form button {
+    background: #3498db;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.sales-form button:hover {
+    background: #2980b9;
+}
+
+.quantity-control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.quantity-control input[type="number"] {
+    width: 80px;
+    text-align: center;
+}
+
+.quantity-btn {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 0;
+}
+
+.quantity-btn:hover {
+    background: #2980b9;
+}
+
+.quantity-btn:active {
+    transform: scale(0.95);
+}
+
+.quantity-btn.small {
+    width: 24px;
+    height: 24px;
+    font-size: 14px;
+}
+
+.sale-info {
+    display: flex;
+    flex: 1;
+    gap: 16px;
+    align-items: center;
+}
+
+.quantity-edit {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.delete-btn {
+    background: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 12px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.delete-btn:hover {
+    background: #c0392b;
+}
+
+.sales-total {
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 2px solid #eee;
+    text-align: right;
+}
+
+.sales-total h3 {
+    color: #2c3e50;
+    font-size: 1.4rem;
+}
+
+.sales-list h3 {
+    text-align: left;
+    margin-bottom: 16px;
+}
+
+.sales-list ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sales-list li {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 14px;
+    margin-bottom: 10px;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.95rem;
+}
+
+@media (max-width: 480px) {
+    .sales-form {
+        flex-direction: column;
+    }
+    .sales-list li {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+.sales-table {
+    width: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    background: white;
+}
+
+.table-header {
+    background: #f8f9fa;
+    font-weight: bold;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.table-row {
+    display: grid;
+    grid-template-columns: 0.5fr 1.5fr 1fr 1fr 1fr 1.5fr 1fr;
+    align-items: center;
+    padding: 12px 16px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.table-row:last-child {
+    border-bottom: none;
+}
+
+.cell {
+    padding: 8px;
+    text-align: left;
+}
+
+.quantity-cell {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: flex-start;
+}
+
+.quantity-cell span {
+    min-width: 30px;
+    text-align: center;
+}
+
+.table-body .table-row:hover {
+    background: #f8f9fa;
+}
+
+.quantity-control input[type="number"] {
+    width: 120px;
+    text-align: center;
+    font-size: 1.05rem;
+}
+

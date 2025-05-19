@@ -1,0 +1,24 @@
+src/
+  └─ components/
+       ├─ Sidebar/
+       │   ├─ Sidebar.tsx
+       │   └─ Sidebar.css
+       ├─ TopBar/
+       │   ├─ TopBar.tsx
+       │   └─ TopBar.css
+       ├─ OverviewMetrics/
+       │   ├─ OverviewMetrics.tsx
+       │   └─ OverviewMetrics.css
+       ├─ RealTimeUpdatesWidget/
+       │   ├─ RealTimeUpdatesWidget.tsx
+       │   └─ RealTimeUpdatesWidget.css
+       ├─ AlertsWidget/
+       │   ├─ AlertsWidget.tsx
+       │   └─ AlertsWidget.css
+       ├─ AnalyticsPreviewWidget/
+       │   ├─ AnalyticsPreviewWidget.tsx
+       │   └─ AnalyticsPreviewWidget.css
+       ├─ DashboardPage/
+       │   ├─ DashboardPage.tsx
+       │   └─ DashboardPage.css
+       └─ ... (başka bileşenler)
