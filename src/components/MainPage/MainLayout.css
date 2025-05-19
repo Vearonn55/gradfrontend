@@ -18,7 +18,11 @@
 .content-container {
     grid-area: content;
     padding: 20px;
-    overflow-y: auto; 
+    overflow-y: auto;
+    width: 1000px;
+    height: 1000px;
+    margin-top: 180px;
+    margin-left: 40px;
 }
 
 /* Tüm bileşenler için ortak konteyner stili */
