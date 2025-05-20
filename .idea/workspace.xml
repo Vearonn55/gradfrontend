@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="955dce90-4707-4fd5-9eb3-12ed35ca5014" name="Changes" comment=" frontend refind">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/SalesPage/SalesPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/SalesPage/SalesPage.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -73,7 +74,8 @@
       <workItem from="1747683141695" duration="40000" />
       <workItem from="1747683187226" duration="1309000" />
       <workItem from="1747684505276" duration="4623000" />
-      <workItem from="1747750895268" duration="345000" />
+      <workItem from="1747750895268" duration="6004000" />
+      <workItem from="1747763076135" duration="1464000" />
     </task>
     <servers />
   </component>
