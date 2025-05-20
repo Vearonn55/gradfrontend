@@ -86,7 +86,9 @@ const SalesPage: React.FC = () => {
 
                     <div className="form-group">
                         <label>Unit Price</label>
-                        <div className="price-display">${form.unitPrice.toFixed(2)}</div>
+                        <div className="price-display">
+                            ${typeof form.unitPrice === "number" ? form.unitPrice.toFixed(2) : "0.00"}
+                        </div>
                     </div>
 
                     <div className="form-group">
@@ -99,6 +101,7 @@ const SalesPage: React.FC = () => {
                                 value={form.quantity}
                                 onChange={e => setForm(f => ({ ...f, quantity: e.target.value }))}
                                 placeholder="Enter Quantity"
+                                style={{ width: "100px" }}
                             />
                         </div>
                     </div>
@@ -119,11 +122,11 @@ const SalesPage: React.FC = () => {
                         />
                     </div>
                 </div>
-                <button type="submit" className="submit-btn">Record Sale</button>
+                <button type="submit" className="submit-btn">Checkout</button>
             </form>
 
             <div className="sales-list">
-                <h3>Recorded Sales</h3>
+                <h3>Checkout</h3>
                 <div className="sales-table">
                     <div className="table-header">
                         <div className="table-row">
@@ -169,7 +172,8 @@ const SalesPage: React.FC = () => {
                     </div>
                 </div>
                 <div className="sales-total">
-                    <h3>Total Sales: ${totalSales.toFixed(2)}</h3>
+                    <h3>Subtotal: ${totalSales.toFixed(2)}</h3>
+                    <button className="submit-btn">Confirm</button>
                 </div>
             </div>
         </div>

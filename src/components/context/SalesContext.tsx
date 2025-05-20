@@ -14,6 +14,10 @@ export interface SalesContextType {
     addSale: (sale: Omit<Sale, "id">) => void;
     updateSale: (id: number, updatedSale: Partial<Sale>) => void;
     deleteSale: (id: number) => void;
+    confirmCheckout: () => void;
+    checkout: Omit<Sale, "id">[];
+    addToCheckout: (sale: Omit<Sale, "id">) => void;
+    clearCheckout: () => void;
 }
 
 const SalesContext = createContext<SalesContextType | undefined>(undefined);
@@ -24,6 +28,7 @@ export const SalesProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         return stored ? JSON.parse(stored) : [];
     });
 
+    const [checkout, setCheckout] = useState<Omit<Sale, "id">[]>([]);
     const { updateProduct, products } = useProducts(); // Stoklara müdahale için
 
     useEffect(() => {
@@ -34,7 +39,6 @@ export const SalesProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         const newSale: Sale = { id: Date.now(), ...sale };
         setSales(prev => [...prev, newSale]);
 
-        // 🔻 Stok azaltma işlemi
         const matched = products.find(p => p.id === sale.productId);
         if (matched) {
             const updatedQty = matched.stockQuantity - sale.quantity;
@@ -49,10 +53,9 @@ export const SalesProvider: React.FC<{ children: React.ReactNode }> = ({ childre
                     const oldQty = s.quantity;
                     const newQty = updatedSale.quantity ?? oldQty;
 
-                    // 🔄 Eğer miktar güncellendiyse stok da güncellenmeli
                     const matched = products.find(p => p.id === s.productId);
                     if (matched && updatedSale.quantity != null) {
-                        const diff = newQty - oldQty; // fark pozitifse artırılmıştır
+                        const diff = newQty - oldQty;
                         const newStock = matched.stockQuantity - diff;
                         updateProduct(matched.id, { stockQuantity: Math.max(0, newStock) });
                     }
@@ -66,11 +69,34 @@ export const SalesProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
     const deleteSale = (id: number) => {
         setSales(prev => prev.filter(s => s.id !== id));
-        // Not: silme sonrası stock geri iade etmek istersen ayrı mantık ekleyebilirim
+    };
+
+    const addToCheckout = (sale: Omit<Sale, "id">) => {
+        setCheckout(prev => [...prev, sale]);
+    };
+
+    const clearCheckout = () => {
+        setCheckout([]);
+    };
+
+    const confirmCheckout = () => {
+        checkout.forEach(item => addSale(item));
+        clearCheckout();
     };
 
     return (
-        <SalesContext.Provider value={{ sales, addSale, updateSale, deleteSale }}>
+        <SalesContext.Provider
+            value={{
+                sales,
+                addSale,
+                updateSale,
+                deleteSale,
+                confirmCheckout,
+                checkout,
+                addToCheckout,
+                clearCheckout
+            }}
+        >
             {children}
         </SalesContext.Provider>
     );
