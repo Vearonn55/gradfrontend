@@ -1,8 +1,7 @@
-// src/components/LoginPage/LoginPage.tsx
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
-import "./LoginPage.css";
+import "./LoginPage.css"; // CSS dosyasını içe aktar
 
 const LoginPage: React.FC = () => {
     const [username, setUsername] = useState("");
@@ -10,15 +9,24 @@ const LoginPage: React.FC = () => {
     const { login } = useAuth();
     const navigate = useNavigate();
 
-    const handleLogin = (e: React.FormEvent) => {
+    const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
-        login(username, password);
-        navigate("/dashboard");
+        //console.log('🔑 Login button clicked');
+    
+        try {
+            await login(username, password);
+            //console.log('✅ Login complete, navigating to dashboard');
+            navigate("/dashboard");
+        } catch (err) {
+            console.error('❌ Login failed:', err);
+            // optionally display error to user
+        }
     };
+    
 
     return (
         <div className="login-container">
-            <h2>LOGIN</h2>
+            <h2>Login</h2>
             <form onSubmit={handleLogin}>
                 <input
                     type="text"
@@ -34,15 +42,13 @@ const LoginPage: React.FC = () => {
                 />
                 <button type="submit">Login</button>
             </form>
-
-            {/* Burayı güncelledik: */}
-            <div className="forgot-password">
-                <Link to="/forgot-password">Forgot Password?</Link>
-            </div>
-
+            <a href="#" className="forgot-password">
+                Forgot Password?
+            </a>
+            {/* Google ile Giriş Yap (Örnek) */}
             <div className="google-login">
                 <img
-                    src="https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-09-512.png"
+                    src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" // Google logosu (örnek)
                     alt="Google"
                     className="google-icon"
                 />
