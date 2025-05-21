@@ -1,5 +1,5 @@
 import React from 'react';
-import { AlertItem } from './AlertsManagementPage';
+import { AlertItem } from './types';;
 
 interface HistoricalLogProps {
     alerts: AlertItem[];

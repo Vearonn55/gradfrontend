@@ -1,12 +1,30 @@
 import React from 'react';
-import { AlertItem } from './AlertsManagementPage'; // Doğru import yolunu kullanıyorum
+import { AlertItem } from './types';
 
 interface AlertListProps {
     alerts: AlertItem[];
-    onResolveAlert: (id: number) => void;
+    setAlerts: React.Dispatch<React.SetStateAction<AlertItem[]>>;
 }
 
-const AlertList: React.FC<AlertListProps> = ({ alerts, onResolveAlert }) => {
+const AlertList: React.FC<AlertListProps> = ({ alerts, setAlerts }) => {
+    const handleResolve = async (alertId: number) => {
+        try {
+            const res = await fetch(`/api/alerts/${alertId}/resolve`, {
+                method: 'PATCH'
+            });
+
+            if (res.ok) {
+                setAlerts(prev =>
+                    prev.map(alert =>
+                        alert.id === alertId ? { ...alert, resolved: true } : alert
+                    )
+                );
+            }
+        } catch (err) {
+            console.error('Failed to resolve alert:', err);
+        }
+    };
+
     return (
         <div className="alert-list-container">
             <ul>
@@ -21,7 +39,7 @@ const AlertList: React.FC<AlertListProps> = ({ alerts, onResolveAlert }) => {
                         {alert.resolved ? (
                             <span className="resolved-badge">Resolved</span>
                         ) : (
-                            <button onClick={() => onResolveAlert(alert.id)}>Resolve</button>
+                            <button onClick={() => handleResolve(alert.id)}>Resolve</button>
                         )}
                     </li>
                 ))}

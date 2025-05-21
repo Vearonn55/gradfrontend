@@ -1,191 +1,86 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import AlertFilter from './AlertFilter';
 import AlertList from './AlertList';
 import HistoricalLog from './HistoricalLog';
 import './AlertsManagementPage.css';
-
-export interface AlertItem {
-    id: number;
-    type:
-        | 'PriceThresholdExceeded'
-
-    message: string;
-    date: string;
-    resolved: boolean;
-}
-
-const defaultAlerts: AlertItem[] = [
-    {
-        id: 1,
-        type: 'PriceThresholdExceeded',
-        message: 'Ürün #123 fiyat eşiğini aştı',
-        date: '2025-05-06',
-        resolved: false
-    },
-
-
-];
+import { AlertItem } from './types';
 
 const AlertsManagementPage: React.FC = () => {
-    const [alerts, setAlerts] = useState<AlertItem[]>(() => {
-        const stored = localStorage.getItem('alerts');
-        return stored ? JSON.parse(stored) : defaultAlerts;
-    });
-
+    const [alerts, setAlerts] = useState<AlertItem[]>([]);
     const [filterType, setFilterType] = useState<string>('All');
-    const [searchQuery, setSearchQuery] = useState('');
-    const [startDate, setStartDate] = useState('');
-    const [endDate, setEndDate] = useState('');
-
-    const [newAlert, setNewAlert] = useState({
-        id: '',
-        type: 'PriceThresholdExceeded',
-        message: '',
-        date: new Date().toISOString().split('T')[0]
+    const [newAlertData, setNewAlertData] = useState({
+        productId: '',
+        alertType: 'PriceExceeded',
     });
 
     useEffect(() => {
-        localStorage.setItem('alerts', JSON.stringify(alerts));
-    }, [alerts]);
+        axios.get('/api/alerts')
+            .then(res => {
+                const transformed = res.data.map((alert: any) => ({
+                    id: alert.AlertID,
+                    type: alert.AlertType,
+                    message: `Alert for Product ID ${alert.ProductID}`,
+                    date: new Date(alert.AlertDateTime).toLocaleDateString(),
+                    resolved: alert.Status === 'Resolved'
+                }));
+                setAlerts(transformed);
+            })
+            .catch(err => console.error('Error fetching alerts:', err));
+    }, []);
 
-    const handleTypeChange = (type: string) => setFilterType(type);
-
-    const handleResolveAlert = (id: number) => {
-        setAlerts(prev => prev.map(a => (a.id === id ? { ...a, resolved: true } : a)));
+    const handleCreateAlert = async () => {
+        try {
+            const res = await axios.post('/api/alerts', {
+                ProductID: Number(newAlertData.productId),
+                AlertType: newAlertData.alertType,
+                Status: 'Pending'
+            });
+            const newAlert = res.data.alert;
+            setAlerts(prev => [
+                ...prev,
+                {
+                    id: newAlert.AlertID,
+                    type: newAlert.AlertType,
+                    message: `Alert for Product ID ${newAlert.ProductID}`,
+                    date: new Date(newAlert.AlertDateTime).toLocaleDateString(),
+                    resolved: newAlert.Status === 'Resolved'
+                }
+            ]);
+            setNewAlertData({ productId: '', alertType: 'PriceExceeded' });
+        } catch (error) {
+            console.error('Error creating alert:', error);
+        }
     };
 
-    const handleNewAlertSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        const newItem: AlertItem = {
-            id: parseInt(newAlert.id),
-            type: newAlert.type as AlertItem['type'],
-            message: newAlert.message,
-            date: newAlert.date,
-            resolved: false
-        };
-        setAlerts(prev => [...prev, newItem]);
-        setNewAlert({
-            id: '',
-            type: 'PriceThresholdExceeded',
-            message: '',
-            date: new Date().toISOString().split('T')[0]
-        });
-        setFilterType('All'); // Yeni alert eklendiğinde tümünü göster
-    };
-
-    const filteredAlerts = alerts.filter(alert => {
-        const matchesType = filterType === 'All' || alert.type === filterType;
-        const matchesQuery =
-            alert.message.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            alert.id.toString().includes(searchQuery);
-        const matchesStart = startDate ? alert.date >= startDate : true;
-        const matchesEnd = endDate ? alert.date <= endDate : true;
-        return !alert.resolved && matchesType && matchesQuery && matchesStart && matchesEnd;
-    });
-
-    const exportCSV = () => {
-        const header = 'ID,Type,Message,Date,Resolved\n';
-        const rows = alerts
-            .map(a => `${a.id},${a.type},${a.message},${a.date},${a.resolved}`)
-            .join('\n');
-        const blob = new Blob([header + rows], { type: 'text/csv;charset=utf-8;' });
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.setAttribute('download', 'alerts.csv');
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    };
-
-    const exportPDF = () => {
-        alert('PDF export not yet implemented. You can integrate jsPDF.');
-    };
+    const activeAlerts = alerts.filter(alert =>
+        !alert.resolved && (filterType === 'All' || alert.type === filterType)
+    );
 
     return (
-        <div className="page-container">
+        <div className="alerts-management-container">
             <h1>Alerts Management</h1>
 
-            <div className="alerts-filter-section">
-                <AlertFilter selectedType={filterType} onTypeChange={handleTypeChange} />
-                <input
-                    type="text"
-                    className="form-input search-input"
-                    placeholder="Search by ID or message..."
-                    value={searchQuery}
-                    onChange={e => setSearchQuery(e.target.value)}
-                />
-                <input
-                    type="date"
-                    className="form-input"
-                    value={startDate}
-                    onChange={e => setStartDate(e.target.value)}
-                />
-                <input
-                    type="date"
-                    className="form-input"
-                    value={endDate}
-                    onChange={e => setEndDate(e.target.value)}
-                />
-                <button className="export-btn" onClick={exportCSV}>
-                    Export CSV
-                </button>
-                <button className="export-btn" onClick={exportPDF}>
-                    Export PDF
-                </button>
-            </div>
-
-            <form className="new-alert-form" onSubmit={handleNewAlertSubmit}>
-                <div className="form-label">Create Alert</div>
+            <div className="create-alert">
                 <input
                     type="number"
-                    name="id"
                     placeholder="Product ID"
-                    className="form-input"
-                    required
-                    value={newAlert.id}
-                    onChange={e => setNewAlert(prev => ({ ...prev, id: e.target.value }))}
+                    value={newAlertData.productId}
+                    onChange={e => setNewAlertData({ ...newAlertData, productId: e.target.value })}
                 />
                 <select
-                    name="type"
-                    className="form-input"
-                    value={newAlert.type}
-                    onChange={e => setNewAlert(prev => ({ ...prev, type: e.target.value }))}
+                    value={newAlertData.alertType}
+                    onChange={e => setNewAlertData({ ...newAlertData, alertType: e.target.value })}
                 >
-                    <option value="PriceThresholdExceeded">Price Threshold Exceeded</option>
-
+                    <option value="PriceExceeded">Price Exceeded</option>
+                    <option value="NearExpiry">Near Expiry</option>
                 </select>
-                <input
-                    type="text"
-                    name="message"
-                    placeholder="Alert message"
-                    className="form-input"
-                    required
-                    value={newAlert.message}
-                    onChange={e => setNewAlert(prev => ({ ...prev, message: e.target.value }))}
-                />
-                <input
-                    type="date"
-                    name="date"
-                    className="form-input"
-                    value={newAlert.date}
-                    onChange={e => setNewAlert(prev => ({ ...prev, date: e.target.value }))}
-                    required
-                />
-                <button type="submit" className="resolve-btn">
-                    Add Alert
-                </button>
-            </form>
-
-            <div className="alerts-content">
-                <section className="active-alerts-section">
-                    <h3>Active Alerts</h3>
-                    <AlertList alerts={filteredAlerts} onResolveAlert={handleResolveAlert} />
-                </section>
-                <section className="historical-log-section">
-                    <h3>Historical Log (Resolved Alerts)</h3>
-                    <HistoricalLog alerts={alerts} />
-                </section>
+                <button onClick={handleCreateAlert}>Create Alert</button>
             </div>
+
+            <AlertFilter selectedType={filterType} onTypeChange={setFilterType} />
+            <AlertList alerts={activeAlerts} setAlerts={setAlerts} />
+            <HistoricalLog alerts={alerts.filter(alert => alert.resolved)} />
         </div>
     );
 };
