@@ -1,190 +1,150 @@
-import React, { useState } from "react";
-import { useProducts } from "../context/ProductContext";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import "./InventoryPage.css";
 
-export default function InventoryPage() {
-    const { products, updateProduct, deleteProduct } = useProducts();
+interface Product {
+    ProductID: number;
+    Name: string;
+    Description: string;
+    NutritionalFacts: string;
+    CategoryID: number;
+    Price: number;
+    ExpiryDate: string;
+    StockQuantity: number;
+    [key: string]: any;
+}
 
+export default function InventoryPage() {
+    const [products, setProducts] = useState<Product[]>([]);
     const [editingId, setEditingId] = useState<number | null>(null);
-    const [editForm, setEditForm] = useState<any>({});
+    const [editForm, setEditForm] = useState<Partial<Product>>({});
     const [showEditForm, setShowEditForm] = useState(false);
 
+    useEffect(() => {
+        fetchProducts();
+    }, []);
+
+    const fetchProducts = async () => {
+        const res = await fetch("http://localhost:5050/api/products");
+        const data = await res.json();
+        setProducts(data);
+    };
+
     const startEdit = (productId: number) => {
-        const product = products.find(p => p.id === productId);
+        const product = products.find(p => p.ProductID === productId);
         if (product) {
-            setEditingId(productId);
             setEditForm({ ...product });
+            setEditingId(productId);
             setShowEditForm(true);
         }
     };
 
-    const cancelEdit = () => {
-        setEditingId(null);
-        setEditForm({});
-        setShowEditForm(false);
-    };
-
-    const saveEdit = () => {
-        if (editingId != null) {
-            const updatedProduct = {
-                ...editForm,
-                price: parseFloat(editForm.price),
-                categoryId: parseInt(editForm.categoryId),
-                stockQuantity: parseInt(editForm.stockQuantity)
-            };
-            updateProduct(editingId, updatedProduct);
-            cancelEdit();
+    const handleSave = async () => {
+        try {
+            await axios.put(`http://localhost:5050/api/products/${editingId}`, {
+                ProductID: editForm.ProductID,
+                Name: editForm.Name,
+                Description: editForm.Description,
+                NutritionalFacts: editForm.NutritionalFacts,
+                Price: editForm.Price,
+                StockQuantity: editForm.StockQuantity
+            });
+            setShowEditForm(false);
+            setEditingId(null);
+            fetchProducts();
+        } catch (err) {
+            console.error("Failed to save:", err);
         }
     };
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const { name, value } = e.target;
-        setEditForm((prev: any) => ({ ...prev, [name]: value }));
+    const handleDelete = async (productId: number) => {
+        try {
+            await axios.delete(`http://localhost:5050/api/products/${productId}`);
+            fetchProducts();
+        } catch (err) {
+            console.error("Failed to delete product:", err);
+        }
     };
 
-    const outOfStock = products.filter(p => p.stockQuantity === 0);
-    const inStock = products.filter(p => p.stockQuantity > 0);
-
     return (
-        <div className="page-container">
-            <h2>Inventory List</h2>
+        <div className="inventory-page">
+            <div>
+                <h2>Inventory Management</h2>
 
-            {showEditForm ? (
-                <div className="edit-product-form">
-                    <h3>Edit Product #{editingId}</h3>
-                    <div className="form-row">
-                        <div className="form-group">
-                            <label>Product Name</label>
-                            <input
-                                className="form-input"
-                                name="name"
-                                value={editForm.name}
-                                onChange={handleChange}
-                            />
-
-                            <label>Description</label>
-                            <textarea
-                                className="form-textarea"
-                                name="description"
-                                value={editForm.description}
-                                onChange={handleChange}
-                            />
-
-                            <label>Nutritional Facts</label>
-                            <textarea
-                                className="form-textarea"
-                                name="nutritionalFacts"
-                                value={editForm.nutritionalFacts}
-                                onChange={handleChange}
-                            />
-                        </div>
-
-                        <div className="form-group">
-                            <label>Category ID</label>
-                            <input
-                                className="form-input"
-                                name="categoryId"
-                                type="number"
-                                value={editForm.categoryId}
-                                onChange={handleChange}
-                            />
-
-                            <label>Price</label>
-                            <input
-                                className="form-input"
-                                name="price"
-                                type="number"
-                                step="0.01"
-                                value={editForm.price}
-                                onChange={handleChange}
-                            />
-
-                            <label>Expiry Date</label>
-                            <input
-                                className="form-input"
-                                name="expiryDate"
-                                type="date"
-                                value={editForm.expiryDate}
-                                onChange={handleChange}
-                            />
-
-                            <label>Stock Quantity</label>
-                            <input
-                                className="form-input"
-                                name="stockQuantity"
-                                type="number"
-                                value={editForm.stockQuantity}
-                                onChange={handleChange}
-                            />
-                        </div>
+                {showEditForm && (
+                    <div className="edit-form">
+                        <input
+                            type="number"
+                            value={editForm.ProductID || ""}
+                            onChange={e => setEditForm({ ...editForm, ProductID: Number(e.target.value) })}
+                            placeholder="Product ID"
+                        />
+                        <input
+                            type="text"
+                            value={editForm.Name || ""}
+                            onChange={e => setEditForm({ ...editForm, Name: e.target.value })}
+                            placeholder="Name"
+                        />
+                        <input
+                            type="text"
+                            value={editForm.Description || ""}
+                            onChange={e => setEditForm({ ...editForm, Description: e.target.value })}
+                            placeholder="Description"
+                        />
+                        <input
+                            type="text"
+                            value={editForm.NutritionalFacts || ""}
+                            onChange={e => setEditForm({ ...editForm, NutritionalFacts: e.target.value })}
+                            placeholder="Nutritional Facts"
+                        />
+                        <input
+                            type="number"
+                            value={editForm.Price || ""}
+                            onChange={e => setEditForm({ ...editForm, Price: Number(e.target.value) })}
+                            placeholder="Price"
+                        />
+                        <input
+                            type="number"
+                            value={editForm.StockQuantity || ""}
+                            onChange={e => setEditForm({ ...editForm, StockQuantity: Number(e.target.value) })}
+                            placeholder="Stock Quantity"
+                        />
+                        <button onClick={handleSave}>Save</button>
+                        <button onClick={() => setShowEditForm(false)}>Cancel</button>
                     </div>
+                )}
 
-                    <div className="button-container">
-                        <button className="action-btn success-btn" onClick={saveEdit}>Save Changes</button>
-                        <button className="action-btn secondary-btn" onClick={cancelEdit}>Cancel</button>
-                    </div>
-                </div>
-            ) : (
-                <>
-                    <table className="data-table">
-                        <thead>
+                <table>
+                    <thead>
                         <tr>
-                            <th>ID</th>
+                            <th>ProductID</th>
                             <th>Name</th>
                             <th>Description</th>
                             <th>Nutritional Facts</th>
-                            <th>Category ID</th>
-                            <th>Price</th>
                             <th>Expiry Date</th>
-                            <th>Stock Quantity</th>
-                            <th>Actions</th>
+                            <th>Price</th>
+                            <th>Stock</th>
+                            <th>Edit</th>
+                            <th>Remove</th>
                         </tr>
-                        </thead>
-                        <tbody>
-                        {inStock.map(p => (
-                            <tr key={p.id}>
-                                <td>{p.id}</td>
-                                <td>{p.name}</td>
-                                <td>{p.description}</td>
-                                <td>{p.nutritionalFacts}</td>
-                                <td>{p.categoryId}</td>
-                                <td>${typeof p.price === 'number' ? p.price.toFixed(2) : parseFloat(p.price).toFixed(2)}</td>
-                                <td>{p.expiryDate}</td>
-                                <td>{p.stockQuantity}</td>
-                                <td>
-                                    <button className="action-btn primary-btn" onClick={() => startEdit(p.id)}>Edit</button>
-                                    <button className="action-btn danger-btn" onClick={() => deleteProduct(p.id)}>Delete</button>
-                                </td>
+                    </thead>
+                    <tbody>
+                        {products.map(product => (
+                            <tr key={product.ProductID}>
+                                <td>{product.ProductID}</td>
+                                <td>{product.Name}</td>
+                                <td>{product.Description}</td>
+                                <td>{product.NutritionalFacts}</td>
+                                <td>{product.ExpiryDate}</td>
+                                <td>{product.Price}</td>
+                                <td>{product.StockQuantity}</td>
+                                <td><button onClick={() => startEdit(product.ProductID)}>Edit</button></td>
+                                <td><button onClick={() => handleDelete(product.ProductID)}>Remove</button></td>
                             </tr>
                         ))}
-                        </tbody>
-                    </table>
-
-                    <h3 style={{ marginTop: "40px", color: "#e74c3c" }}>🔴 Out of Stock</h3>
-                    {outOfStock.length === 0 ? (
-                        <p className="empty-message">All products in stock ✅</p>
-                    ) : (
-                        <table className="data-table out-of-stock-table">
-                            <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Stock</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {outOfStock.map(p => (
-                                <tr key={p.id}>
-                                    <td>{p.id}</td>
-                                    <td>{p.name}</td>
-                                    <td><strong style={{ color: "#c0392b" }}>0 (Out of stock)</strong></td>
-                                </tr>
-                            ))}
-                            </tbody>
-                        </table>
-                    )}
-                </>
-            )}
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 }

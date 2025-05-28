@@ -1,8 +1,7 @@
 export interface AlertItem {
-    id: number;
-    type: 'PriceThresholdExceeded' | 'NearExpiry';
-    message: string;
-    date: string; // veya Date tipinde de tutabilirsiniz
-    resolved: boolean; // Çözümlenmiş mi?
+    AlertID: number;
+    ProductID: number;
+    AlertType: 'PriceExceeded' | 'NearExpiry';
+    AlertDateTime: string;
+    Status: 'Pending' | 'Resolved';
 }
-

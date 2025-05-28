@@ -1,23 +1,18 @@
 import React from 'react';
 
-interface AlertFilterProps {
-    selectedType: string;
-    onTypeChange: (type: string) => void;
+export interface AlertFilterProps {
+    filterType: string;
+    setFilterType: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const AlertFilter: React.FC<AlertFilterProps> = ({ selectedType, onTypeChange }) => {
+const AlertFilter: React.FC<AlertFilterProps> = ({ filterType, setFilterType }) => {
     return (
-        <div className="alert-filter-container">
-            <label htmlFor="alertTypeSelect">Filter by Type:</label>
-            <select
-                id="alertTypeSelect"
-                className="form-input"
-                value={selectedType}
-                onChange={(e) => onTypeChange(e.target.value)}
-            >
-                <option value="All">All Alerts</option>
-                <option value="PriceThresholdExceeded">Price Threshold Exceeded</option>
-             
+        <div>
+            <label>Filter:</label>
+            <select value={filterType} onChange={e => setFilterType(e.target.value)}>
+                <option value="All">All</option>
+                <option value="PriceExceeded">PriceExceeded</option>
+                <option value="NearExpiry">NearExpiry</option>
             </select>
         </div>
     );

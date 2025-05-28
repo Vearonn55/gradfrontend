@@ -1,28 +1,22 @@
 import React from 'react';
-import { AlertItem } from './AlertsManagementPage'; // Doğru import yolunu kullanıyorum
+import { AlertItem } from './types';
 
 interface AlertListProps {
     alerts: AlertItem[];
-    onResolveAlert: (id: number) => void;
+    filterType: string;
 }
 
-const AlertList: React.FC<AlertListProps> = ({ alerts, onResolveAlert }) => {
-    return (
-        <div className="alert-list-container">
-            <ul>
-                {alerts.map((alert) => (
-                    <li key={alert.id} className={alert.resolved ? 'resolved' : ''}>
-                        <div className="alert-content">
-                            <div className="alert-type">{alert.type}</div>
-                            <div className="alert-message">{alert.message}</div>
-                            <div className="alert-date">({alert.date})</div>
-                        </div>
+const AlertList: React.FC<AlertListProps> = ({ alerts, filterType }) => {
+    const filteredAlerts = filterType === 'All'
+        ? alerts
+        : alerts.filter(alert => alert.AlertType === filterType);
 
-                        {alert.resolved ? (
-                            <span className="resolved-badge">Resolved</span>
-                        ) : (
-                            <button onClick={() => onResolveAlert(alert.id)}>Resolve</button>
-                        )}
+    return (
+        <div>
+            <ul>
+                {filteredAlerts.map(alert => (
+                    <li key={alert.AlertID}>
+                        <strong>{alert.AlertType}</strong> — Product ID: {alert.ProductID} — {new Date(alert.AlertDateTime).toLocaleDateString()} — Status: {alert.Status}
                     </li>
                 ))}
             </ul>
