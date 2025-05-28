@@ -1,13 +1,10 @@
 import React, { useState } from "react";
-import { useProducts } from "../context/ProductContext";
 import "./AddProductPage.css";
 
 export default function AddProductPage() {
     const today = new Date().toISOString().split('T')[0];
-    const { addProduct } = useProducts();
 
     const [form, setForm] = useState({
-        id: "",
         name: "",
         description: "",
         nutritionalFacts: "",
@@ -17,62 +14,69 @@ export default function AddProductPage() {
         stockQuantity: ""
     });
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const handleChange = (
+        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => {
         const { name, value } = e.target;
         setForm(prev => ({ ...prev, [name]: value }));
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        addProduct({
-            id: parseInt(form.id),
-            name: form.name,
-            description: form.description,
-            nutritionalFacts: form.nutritionalFacts,
-            categoryId: parseInt(form.categoryId),
-            price: parseFloat(form.price),
-            expiryDate: form.expiryDate,
-            stockQuantity: parseInt(form.stockQuantity)
-        });
+        const newProduct = {
+            Name: form.name,
+            Description: form.description,
+            NutritionalFacts: form.nutritionalFacts,
+            CategoryID: parseInt(form.categoryId),
+            Price: parseFloat(form.price),
+            ExpiryDate: form.expiryDate,
+            StockQuantity: parseInt(form.stockQuantity)
+        };
 
-        alert("Product Added Successfully!");
-        setForm({
-            id: "",
-            name: "",
-            description: "",
-            nutritionalFacts: "",
-            categoryId: "",
-            price: "",
-            expiryDate: today,
-            stockQuantity: ""
-        });
+        try {
+            const res = await fetch("http://localhost:5050/api/products", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(newProduct)
+            });
+
+            if (res.ok) {
+                alert("Product added successfully.");
+                setForm({
+                    name: "",
+                    description: "",
+                    nutritionalFacts: "",
+                    categoryId: "",
+                    price: "",
+                    expiryDate: today,
+                    stockQuantity: ""
+                });
+            } else {
+                alert("Failed to add product.");
+            }
+        } catch (error) {
+            console.error("Error adding product:", error);
+        }
     };
 
     return (
-        <div className="page-container">
+        <form className="add-product-form" onSubmit={handleSubmit}>
             <h2>Add New Product</h2>
-            <form onSubmit={handleSubmit} className="add-product-form">
-                <div className="form-row">
-                    <div className="form-group">
-                        <input className="form-input" name="id" type="number" placeholder="Product ID" value={form.id} onChange={handleChange} required />
-                        <input className="form-input" name="name" placeholder="Product Name" value={form.name} onChange={handleChange} required />
-                        <textarea className="form-textarea" name="description" placeholder="Description" value={form.description} onChange={handleChange} />
-                        <textarea className="form-textarea" name="nutritionalFacts" placeholder="Nutritional Facts" value={form.nutritionalFacts} onChange={handleChange} />
-                    </div>
-
-                    <div className="form-group">
-                        <input className="form-input" name="categoryId" type="number" placeholder="Category ID" value={form.categoryId} onChange={handleChange} required />
-                        <input className="form-input" name="price" type="number" step="0.01" placeholder="Price" value={form.price} onChange={handleChange} required />
-                        <input className="form-input" name="expiryDate" type="date" value={form.expiryDate} onChange={handleChange} required />
-                        <input className="form-input" name="stockQuantity" type="number" placeholder="Stock Quantity" value={form.stockQuantity} onChange={handleChange} required />
-                    </div>
+            <div className="form-grid">
+                <div className="form-left">
+                    <input name="name" value={form.name} onChange={handleChange} placeholder="Product Name" required />
+                    <textarea name="description" value={form.description} onChange={handleChange} placeholder="Description" />
+                    <textarea name="nutritionalFacts" value={form.nutritionalFacts} onChange={handleChange} placeholder="Nutritional Facts" />
                 </div>
-
-                <div className="button-container">
-                    <button type="submit" className="action-btn primary-btn">Add Product</button>
+                <div className="form-right">
+                    <input name="categoryId" type="number" value={form.categoryId} onChange={handleChange} placeholder="Category ID" required />
+                    <input name="price" type="number" value={form.price} onChange={handleChange} placeholder="Price" required />
+                    <input name="expiryDate" type="date" value={form.expiryDate} onChange={handleChange} />
+                    <input name="stockQuantity" type="number" value={form.stockQuantity} onChange={handleChange} placeholder="Stock Quantity" required />
                 </div>
-            </form>
-        </div>
+            </div>
+            <button type="submit">Add Product</button>
+        </form>
     );
 }

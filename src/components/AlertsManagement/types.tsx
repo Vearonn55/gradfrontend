@@ -1,8 +1,7 @@
 export interface AlertItem {
-  id: number;
-  type: string;
-  message: string;
-  date: string;
-  resolved: boolean;
+    AlertID: number;
+    ProductID: number;
+    AlertType: 'PriceExceeded' | 'NearExpiry';
+    AlertDateTime: string;
+    Status: 'Pending' | 'Resolved';
 }
-

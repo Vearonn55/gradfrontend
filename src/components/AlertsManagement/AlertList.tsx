@@ -3,44 +3,20 @@ import { AlertItem } from './types';
 
 interface AlertListProps {
     alerts: AlertItem[];
-    setAlerts: React.Dispatch<React.SetStateAction<AlertItem[]>>;
+    filterType: string;
 }
 
-const AlertList: React.FC<AlertListProps> = ({ alerts, setAlerts }) => {
-    const handleResolve = async (alertId: number) => {
-        try {
-            const res = await fetch(`/api/alerts/${alertId}/resolve`, {
-                method: 'PATCH'
-            });
-
-            if (res.ok) {
-                setAlerts(prev =>
-                    prev.map(alert =>
-                        alert.id === alertId ? { ...alert, resolved: true } : alert
-                    )
-                );
-            }
-        } catch (err) {
-            console.error('Failed to resolve alert:', err);
-        }
-    };
+const AlertList: React.FC<AlertListProps> = ({ alerts, filterType }) => {
+    const filteredAlerts = filterType === 'All'
+        ? alerts
+        : alerts.filter(alert => alert.AlertType === filterType);
 
     return (
-        <div className="alert-list-container">
+        <div>
             <ul>
-                {alerts.map((alert) => (
-                    <li key={alert.id} className={alert.resolved ? 'resolved' : ''}>
-                        <div className="alert-content">
-                            <div className="alert-type">{alert.type}</div>
-                            <div className="alert-message">{alert.message}</div>
-                            <div className="alert-date">({alert.date})</div>
-                        </div>
-
-                        {alert.resolved ? (
-                            <span className="resolved-badge">Resolved</span>
-                        ) : (
-                            <button onClick={() => handleResolve(alert.id)}>Resolve</button>
-                        )}
+                {filteredAlerts.map(alert => (
+                    <li key={alert.AlertID}>
+                        <strong>{alert.AlertType}</strong> — Product ID: {alert.ProductID} — {new Date(alert.AlertDateTime).toLocaleDateString()} — Status: {alert.Status}
                     </li>
                 ))}
             </ul>
