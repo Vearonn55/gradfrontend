@@ -1,0 +1,15 @@
+src/
+  └─ components/
+       ├─ HelpSearchBar/
+       │   ├─ HelpSearchBar.tsx
+       │
+       ├─ TutorialList/
+       │   ├─ TutorialList.tsx
+       │
+       ├─ ContactSupportButton/
+       │   ├─ ContactSupportButton.tsx
+       │
+       ├─ HelpCenterPage/
+       │   ├─ HelpCenterPage.tsx
+       │
+       └─ ...

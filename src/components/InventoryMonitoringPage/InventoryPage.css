@@ -1,0 +1,118 @@
+.inventory-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+}
+
+.inventory-page > div {
+    background-color: white;
+    border-radius: 10px;
+    padding: 30px;
+    max-width: 95%;
+    width: 1200px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+.inventory-page h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 26px;
+    font-weight: 600;
+    color: #1d2d44;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    color: #1d2d44;
+}
+
+th, td {
+    border-bottom: 1px solid #ccc;
+    text-align: left;
+    padding: 12px 8px;
+}
+
+th {
+    background-color: #e8f0fe;
+    font-weight: 600;
+    color: #1d2d44;
+}
+
+tr:hover {
+    background-color: #f1faff;
+}
+
+.edit-form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    background-color: #f7faff;
+    padding: 16px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 24px;
+}
+
+.edit-form input,
+.edit-form textarea {
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    min-width: 150px;
+}
+
+.edit-form textarea {
+    resize: none;
+    height: 38px;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    min-width: 150px;
+}
+
+.edit-form button {
+    padding: 8px 14px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    border: none;
+}
+
+.edit-form button:first-of-type {
+    background-color: #28a745;
+    color: white;
+}
+
+.edit-form button:last-of-type {
+    background-color: #dc3545;
+    color: white;
+}
+
+table button {
+    padding: 6px 12px;
+    font-size: 13px;
+    border-radius: 6px;
+    border: none;
+    color: white;
+    background-color: #007bff;
+    cursor: pointer;
+}
+
+table button:hover {
+    background-color: #0056b3;
+}
+
+table td:last-child button {
+    background-color: #dc3545;
+}
+
+table td:last-child button:hover {
+    background-color: #c82333;
+}

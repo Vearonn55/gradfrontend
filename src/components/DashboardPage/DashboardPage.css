@@ -1,0 +1,137 @@
+/* DashboardPage.css */
+.dashboard-container {
+    position: relative;
+    padding: 20px;
+    margin-top: 150px;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+    font-family: "Segoe UI", sans-serif;
+    background-color: #f4f7f9;
+}
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.dashboard-header-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.dashboard-title {
+    font-size: 32px;
+    font-weight: bold;
+    color: #2c3e50;
+    margin: 0;
+}
+
+.dashboard-subtitle {
+    font-size: 18px;
+    color: #7f8c8d;
+}
+
+.dashboard-cards,
+.dashboard-charts {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+.card,
+.chart {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    text-align: center;
+    margin: 0 10px;
+}
+
+.card:first-child,
+.chart:first-child {
+    margin-left: 0;
+}
+
+.card:last-child,
+.chart:last-child {
+    margin-right: 0;
+}
+
+.card h2,
+.chart h3 {
+    font-size: 22px;
+    margin-bottom: 10px;
+    color: #34495e;
+}
+
+.card .count {
+    font-size: 28px;
+    font-weight: bold;
+    color: #3498db;
+}
+
+.card .count.warning {
+    color: #e74c3c;
+}
+
+.chart-placeholder {
+    height: 200px;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #777;
+}
+
+.dashboard-alerts {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-alerts h3 {
+    font-size: 20px;
+    margin-bottom: 15px;
+    color: #34495e;
+}
+
+.dashboard-alerts ul {
+    list-style: none;
+    padding: 0;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.dashboard-alerts li {
+    display: inline-block;
+    padding: 10px 15px;
+    border: 1px solid #eee;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.dashboard-alerts li:last-child {
+    margin-right: 0;
+}
+
+.generate-product-btn {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
+    background: linear-gradient(90deg, #4ca1af, #398b90);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+}
+
+.generate-product-btn:hover {
+    background: linear-gradient(90deg, #398b90, #4ca1af);
+    transform: translateY(-2px);
+}

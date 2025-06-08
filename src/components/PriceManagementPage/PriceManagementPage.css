@@ -1,0 +1,54 @@
+.price-management-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 32px;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.price-management-container h1 {
+    text-align: center;
+    margin-bottom: 32px;
+    color: #2c3e50;
+    font-size: 2rem;
+}
+
+.price-table-container {
+    overflow-x: auto;
+}
+
+.price-table th,
+.price-table td {
+    padding: 16px;
+    border-bottom: 1px solid #e0e0e0;
+    text-align: left;
+}
+
+.price-table th {
+    background-color: #007bff;
+    color: white;
+    font-size: 1rem;
+}
+
+.price-input {
+    width: 120px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+button {
+    padding: 8px 16px;
+    border: none;
+    background: #28a745;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+button:hover {
+    background: #218838;
+}

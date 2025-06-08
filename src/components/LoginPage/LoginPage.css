@@ -1,0 +1,128 @@
+/* ===== Tema Değişkenleri ===== */
+:root {
+    --primary-color: #4ca1af;
+    --primary-dark: #398b90;
+    --bg-gradient-start: #2c3e50;
+    --bg-gradient-end: #4ca1af;
+    --card-bg: rgba(255,255,255,0.9);
+    --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* ===== Genel Stil ===== */
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    font-family: var(--font-family);
+    background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ===== Login Kartı ===== */
+.login-container {
+    background: var(--card-bg);
+    backdrop-filter: blur(8px);
+    padding: 2.5rem 2rem;
+    border-radius: 16px;
+    box-shadow: 0 12px 24px rgba(0,0,0,0.2);
+    width: 400px;
+    max-width: 90%;
+    text-align: center;
+    transition: transform .3s;
+}
+.login-container:hover {
+    transform: translateY(-4px);
+}
+
+/* Başlık */
+.login-container h2 {
+    margin-bottom: 1.5rem;
+    font-size: 1.75rem;
+    color: var(--primary-dark);
+}
+
+/* Form Girdi Alanları */
+.login-container input {
+    width: 85%;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: border-color .3s, box-shadow .3s;
+}
+.login-container input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 8px rgba(76,161,175,0.4);
+    outline: none;
+}
+
+/* Giriş Butonu */
+.login-container button {
+    width: 100%;
+    padding: 0.85rem 0;
+    margin-top: 0.5rem;
+    background: linear-gradient(90deg, var(--primary-color), var(--primary-dark));
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background .3s, transform .2s;
+}
+.login-container button:hover {
+    background: linear-gradient(90deg, var(--primary-dark), var(--primary-color));
+    transform: translateY(-2px);
+}
+
+/* Bağlantılar ve Alt Butonlar */
+.login-links {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+}
+.forgot-password,
+.signup-button {
+    font-size: 0.9rem;
+    text-decoration: none;
+    color: var(--primary-color);
+    transition: color .2s;
+}
+.forgot-password:hover,
+.signup-button:hover {
+    color: var(--primary-dark);
+}
+
+/* Google ile Giriş */
+.google-login {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1rem;
+    margin-top: 1.25rem;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: box-shadow .3s, transform .2s;
+}
+.google-login:hover {
+    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+    transform: translateY(-2px);
+}
+.google-login .google-icon {
+    width: 24px;
+    height: 24px;
+}
+
+/* Responsive */
+@media (max-width: 400px) {
+    .login-container {
+        padding: 2rem 1rem;
+        width: 95%;
+    }
+}

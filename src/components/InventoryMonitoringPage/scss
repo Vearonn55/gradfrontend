@@ -1,0 +1,15 @@
+src/
+  └─ components/
+       ├─ InventoryStatus/
+       │   ├─ InventoryStatus.tsx
+       │   └─ InventoryStatus.css
+       ├─ ProductDetailsView/
+       │   ├─ ProductDetailsView.tsx
+       │   └─ ProductDetailsView.css
+       ├─ ExportInventoryButton/
+       │   ├─ ExportInventoryButton.tsx
+       │   └─ ExportInventoryButton.css
+       ├─ InventoryMonitoringPage/
+       │   ├─ InventoryMonitoringPage.tsx
+       │   └─ InventoryMonitoringPage.css
+       └─ ...
