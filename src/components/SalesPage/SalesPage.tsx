@@ -108,7 +108,7 @@ const SalesPage: React.FC = () => {
   return (
   <div className="sales-page-container">
     <div className="sales-card">
-      <h2>Sales</h2>
+      <h2>Make a Sale</h2>
 
       <div className="sales-form">
         <select value={productID} onChange={handleProductChange}>
