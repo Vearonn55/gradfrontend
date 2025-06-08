@@ -1,31 +1,65 @@
-import React, { useState, useMemo } from "react";
-import { useSales } from "../context/SalesContext";
-import { useProducts } from "../context/ProductContext";
+import React, { useEffect, useState, useMemo } from "react";
+import axios from "axios";
 import "./SaleReports.css";
 
+interface Product {
+    ProductID: number;
+    ProductName: string;
+    CategoryID: number;
+}
+
+interface Sale {
+    SaleID: number;
+    ProductID: number;
+    Quantity: number;
+    UnitPrice: number;
+    Total: number;
+    SaleDate: string;
+    Product: Product;
+}
+
 const SaleReports: React.FC = () => {
-    const { sales } = useSales();
-    const { products } = useProducts();
+    const [sales, setSales] = useState<Sale[]>([]);
     const [searchQuery, setSearchQuery] = useState("");
+
+    useEffect(() => {
+        const fetchSalesReport = async () => {
+            try {
+                const token = localStorage.getItem("authToken");
+                const response = await axios.post(
+                    "/api/reports",
+                    { type: "Sales" },
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
+                );
+                console.log("🧪 Response data:", response.data);
+                setSales(response.data.data);
+            } catch (error) {
+                console.error("Failed to fetch sales report:", error);
+            }
+        };
+        fetchSalesReport();
+    }, []);
 
     const filteredSales = useMemo(() => {
         const query = searchQuery.toLowerCase();
-        return sales.filter(sale => {
-            const product = products.find(p => p.id === sale.productId);
+        return (sales || []).filter((sale) => {
             return (
-                (sale.productId?.toString() || "").includes(query) ||
-                (product?.name?.toLowerCase() || "").includes(query) ||
-                (product?.categoryId?.toString() || "").includes(query)
+                (sale.Product?.ProductName?.toLowerCase() || "").includes(query) ||
+                (sale.Product?.CategoryID?.toString() || "").includes(query) ||
+                (sale.Product?.ProductID?.toString() || "").includes(query)
             );
         });
-    }, [sales, products, searchQuery]);
+    }, [sales, searchQuery]);
 
     const exportCSV = () => {
-        const header = "Product ID,Product Name,Category ID,Quantity,Unit Price,Total,Date\n";
-        const rows = filteredSales.map(sale => {
-            const product = products.find(p => p.id === sale.productId);
-            const total = sale.quantity * sale.unitPrice;
-            return `${sale.productId},${product?.name || "Unknown"},${product?.categoryId || "-"},${sale.quantity},${sale.unitPrice},${total},${sale.date}`;
+        const header = "Product ID,Product Name,Category ID,Sale Quantity,Unit Price,Total Sold,Date\n";
+        const rows = filteredSales.map((sale) => {
+            const total = (sale.Quantity ?? 0) * (sale.UnitPrice ?? 0);
+            return `${sale.Product?.ProductID},${sale.Product?.ProductName || "Unknown"},${sale.Product?.CategoryID || "-"},${sale.Quantity},${sale.UnitPrice},${total},${sale.SaleDate}`;
         }).join("\n");
 
         const blob = new Blob([header + rows], { type: "text/csv;charset=utf-8;" });
@@ -59,32 +93,33 @@ const SaleReports: React.FC = () => {
 
             <table className="sales-report-table">
                 <thead>
-                <tr>
-                    <th>Product ID</th>
-                    <th>Name</th>
-                    <th>Category ID</th>
-                    <th>Quantity</th>
-                    <th>Unit Price</th>
-                    <th>Total</th>
-                    <th>Date</th>
-                </tr>
+                    <tr>
+                        <th>Product ID</th>
+                        <th>Name</th>
+                        <th>Category ID</th>
+                        <th>Sale Quantity</th>
+                        <th>Unit Price</th>
+                        <th>Total Sold</th>
+                        <th>Date</th>
+                    </tr>
                 </thead>
                 <tbody>
-                {filteredSales.map(sale => {
-                    const product = products.find(p => p.id === sale.productId);
-                    const total = sale.quantity * sale.unitPrice;
-                    return (
-                        <tr key={sale.id}>
-                            <td>{sale.productId}</td>
-                            <td>{product?.name || "—"}</td>
-                            <td>{product?.categoryId || "—"}</td>
-                            <td>{sale.quantity}</td>
-                            <td>${sale.unitPrice.toFixed(2)}</td>
-                            <td>${total.toFixed(2)}</td>
-                            <td>{new Date(sale.date).toLocaleString()}</td>
-                        </tr>
-                    );
-                })}
+                    {filteredSales.map((sale) => {
+                        const unitPrice = sale.UnitPrice ?? 0;
+                        const quantity = sale.Quantity ?? 0;
+                        const total = quantity * unitPrice;
+                        return (
+                            <tr key={sale.SaleID}>
+                                <td>{sale.Product?.ProductID}</td>
+                                <td>{sale.Product?.ProductName || "—"}</td>
+                                <td>{sale.Product?.CategoryID || "—"}</td>
+                                <td>{quantity}</td>
+                                <td>${unitPrice.toFixed(2)}</td>
+                                <td>${total.toFixed(2)}</td>
+                                <td>{new Date(sale.SaleDate).toLocaleString()}</td>
+                            </tr>
+                        );
+                    })}
                 </tbody>
             </table>
         </div>
