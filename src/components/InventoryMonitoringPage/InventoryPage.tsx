@@ -16,18 +16,31 @@ interface Product {
 
 export default function InventoryPage() {
     const [products, setProducts] = useState<Product[]>([]);
+    const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+    const [searchTerm, setSearchTerm] = useState<string>('');
     const [editingId, setEditingId] = useState<number | null>(null);
     const [editForm, setEditForm] = useState<Partial<Product>>({});
     const [showEditForm, setShowEditForm] = useState(false);
+    const token = localStorage.getItem("authToken");
 
     useEffect(() => {
         fetchProducts();
     }, []);
 
     const fetchProducts = async () => {
-        const res = await fetch("http://localhost:5050/api/products");
-        const data = await res.json();
-        setProducts(data);
+        try {
+            const res = await axios.get("http://localhost:5050/api/products/get", {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                }
+            });
+            if (Array.isArray(res.data)) {
+                setProducts(res.data);
+                setFilteredProducts(res.data);
+            }
+        } catch (err) {
+            console.error("Failed to fetch products:", err);
+        }
     };
 
     const startEdit = (productId: number) => {
@@ -46,8 +59,13 @@ export default function InventoryPage() {
                 Name: editForm.Name,
                 Description: editForm.Description,
                 NutritionalFacts: editForm.NutritionalFacts,
+                ExpiryDate: editForm.ExpiryDate,
                 Price: editForm.Price,
                 StockQuantity: editForm.StockQuantity
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                }
             });
             setShowEditForm(false);
             setEditingId(null);
@@ -59,11 +77,26 @@ export default function InventoryPage() {
 
     const handleDelete = async (productId: number) => {
         try {
-            await axios.delete(`http://localhost:5050/api/products/${productId}`);
+            await axios.delete(`http://localhost:5050/api/products/${productId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                }
+            });
             fetchProducts();
         } catch (err) {
             console.error("Failed to delete product:", err);
         }
+    };
+
+    const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const term = e.target.value.toLowerCase();
+        setSearchTerm(term);
+        const filtered = products.filter(p =>
+            p.Name.toLowerCase().includes(term) ||
+            p.Description?.toLowerCase().includes(term) ||
+            p.NutritionalFacts?.toLowerCase().includes(term)
+        );
+        setFilteredProducts(filtered);
     };
 
     return (
@@ -71,44 +104,23 @@ export default function InventoryPage() {
             <div>
                 <h2>Inventory Management</h2>
 
+                <input
+                    type="text"
+                    placeholder="Search products..."
+                    value={searchTerm}
+                    onChange={handleSearch}
+                    className="search-bar"
+                />
+
                 {showEditForm && (
                     <div className="edit-form">
-                        <input
-                            type="number"
-                            value={editForm.ProductID || ""}
-                            onChange={e => setEditForm({ ...editForm, ProductID: Number(e.target.value) })}
-                            placeholder="Product ID"
-                        />
-                        <input
-                            type="text"
-                            value={editForm.Name || ""}
-                            onChange={e => setEditForm({ ...editForm, Name: e.target.value })}
-                            placeholder="Name"
-                        />
-                        <input
-                            type="text"
-                            value={editForm.Description || ""}
-                            onChange={e => setEditForm({ ...editForm, Description: e.target.value })}
-                            placeholder="Description"
-                        />
-                        <input
-                            type="text"
-                            value={editForm.NutritionalFacts || ""}
-                            onChange={e => setEditForm({ ...editForm, NutritionalFacts: e.target.value })}
-                            placeholder="Nutritional Facts"
-                        />
-                        <input
-                            type="number"
-                            value={editForm.Price || ""}
-                            onChange={e => setEditForm({ ...editForm, Price: Number(e.target.value) })}
-                            placeholder="Price"
-                        />
-                        <input
-                            type="number"
-                            value={editForm.StockQuantity || ""}
-                            onChange={e => setEditForm({ ...editForm, StockQuantity: Number(e.target.value) })}
-                            placeholder="Stock Quantity"
-                        />
+                        <input type="number" value={editForm.ProductID || ""} onChange={e => setEditForm({ ...editForm, ProductID: Number(e.target.value) })} placeholder="Product ID" />
+                        <input type="text" value={editForm.Name || ""} onChange={e => setEditForm({ ...editForm, Name: e.target.value })} placeholder="Name" />
+                        <input type="text" value={editForm.Description || ""} onChange={e => setEditForm({ ...editForm, Description: e.target.value })} placeholder="Description" />
+                        <input type="text" value={editForm.NutritionalFacts || ""} onChange={e => setEditForm({ ...editForm, NutritionalFacts: e.target.value })} placeholder="Nutritional Facts" />
+                        <input type="text" value={editForm.ExpiryDate || ""} onChange={e => setEditForm({ ...editForm, ExpiryDate: e.target.value })} placeholder="Expiry Date" />
+                        <input type="number" value={editForm.Price || ""} onChange={e => setEditForm({ ...editForm, Price: Number(e.target.value) })} placeholder="Price" />
+                        <input type="number" value={editForm.StockQuantity || ""} onChange={e => setEditForm({ ...editForm, StockQuantity: Number(e.target.value) })} placeholder="Stock Quantity" />
                         <button onClick={handleSave}>Save</button>
                         <button onClick={() => setShowEditForm(false)}>Cancel</button>
                     </div>
@@ -129,14 +141,14 @@ export default function InventoryPage() {
                         </tr>
                     </thead>
                     <tbody>
-                        {products.map(product => (
+                        {filteredProducts.map(product => (
                             <tr key={product.ProductID}>
                                 <td>{product.ProductID}</td>
                                 <td>{product.Name}</td>
                                 <td>{product.Description}</td>
                                 <td>{product.NutritionalFacts}</td>
                                 <td>{product.ExpiryDate}</td>
-                                <td>{product.Price}</td>
+                                <td>{typeof product.Price === 'number' ? product.Price.toFixed(2) : product.Price}</td>
                                 <td>{product.StockQuantity}</td>
                                 <td><button onClick={() => startEdit(product.ProductID)}>Edit</button></td>
                                 <td><button onClick={() => handleDelete(product.ProductID)}>Remove</button></td>
