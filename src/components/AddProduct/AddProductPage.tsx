@@ -24,6 +24,8 @@ export default function AddProductPage() {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
+         const token = localStorage.getItem("authToken");
+
         const newProduct = {
             Name: form.name,
             Description: form.description,
@@ -37,7 +39,7 @@ export default function AddProductPage() {
         try {
             const res = await fetch("http://localhost:5050/api/products", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` }, 
                 body: JSON.stringify(newProduct)
             });
 

@@ -3,6 +3,8 @@ import axios from 'axios';
 import './AlertsManagementPage.css';
 import { AlertItem } from './types';
 
+const token = localStorage.getItem("authToken");
+
 const AlertsManagementPage: React.FC = () => {
     const [alerts, setAlerts] = useState<AlertItem[]>([]);
     const [filterType, setFilterType] = useState<string>('All');
@@ -13,7 +15,11 @@ const AlertsManagementPage: React.FC = () => {
     });
 
     const fetchAlerts = () => {
-        axios.get('/api/alerts')
+        axios.get('/api/alerts', {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        })
             .then(res => setAlerts(res.data))
             .catch(err => console.error("Failed to fetch alerts:", err));
     };
@@ -28,6 +34,10 @@ const AlertsManagementPage: React.FC = () => {
                 ProductID: parseInt(newAlertData.productId),
                 AlertType: newAlertData.alertType,
                 Status: "Pending"
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                }
             });
             fetchAlerts();
             setNewAlertData({ productId: '', alertType: 'PriceExceeded' });
@@ -38,7 +48,11 @@ const AlertsManagementPage: React.FC = () => {
 
     const handleResolveAlert = async (alertId: number) => {
         try {
-            await axios.patch(`/api/alerts/${alertId}/resolve`);
+            await axios.patch(`/api/alerts/${alertId}/resolve`, {}, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                }
+            });
             setAlerts(prev =>
                 prev.map(alert =>
                     alert.AlertID === alertId ? { ...alert, Status: "Resolved" } : alert
@@ -53,6 +67,9 @@ const AlertsManagementPage: React.FC = () => {
         try {
             const res = await axios.get('/api/alerts/export/csv', {
                 responseType: 'blob',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                }
             });
 
             const url = window.URL.createObjectURL(new Blob([res.data]));
@@ -71,6 +88,9 @@ const AlertsManagementPage: React.FC = () => {
         try {
             const res = await axios.get('/api/alerts/export/pdf', {
                 responseType: 'blob',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                }
             });
 
             const url = window.URL.createObjectURL(new Blob([res.data]));
