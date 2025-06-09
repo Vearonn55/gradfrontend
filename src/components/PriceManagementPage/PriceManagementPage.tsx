@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import {
     TextField,
     Button,
@@ -10,98 +11,111 @@ import {
     TableRow,
     Paper
 } from '@mui/material';
-import { useProducts } from "../context/ProductContext";
-import "./PriceManagementPage.css";
+import './PriceManagementPage.css';
+
+interface Product {
+    ProductID: number;
+    Name: string;
+    CategoryID: number;
+    Price: number;
+}
 
 const PriceManagementPage: React.FC = () => {
-    const { products, updateProduct } = useProducts();
-
-    const [searchQuery, setSearchQuery] = useState('');
-    const [filteredProducts, setFilteredProducts] = useState(products);
+    const [products, setProducts] = useState<Product[]>([]);
     const [priceUpdates, setPriceUpdates] = useState<{ [key: number]: number }>({});
+    const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
-        const query = searchQuery.toLowerCase();
+        axios.get('/api/products', {
+            headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` }
+        })
+            .then(response => {
+                setProducts(response.data);
+            })
+            .catch(error => {
+                console.error('Error fetching products:', error);
+            });
+    }, []);
 
-        const filtered = products.filter(product =>
-            product.stockQuantity > 0 && // ❗️Stokta olmayanlar gösterilmeyecek
-            (
-                product.id.toString().includes(query) ||
-                product.name.toLowerCase().includes(query) ||
-                product.categoryId?.toString().includes(query)
-            )
-        );
-
-        // ID bazlı tekilleştirme
-        const uniqueById = Array.from(new Map(filtered.map(p => [p.id, p])).values());
-
-        setFilteredProducts(uniqueById);
-    }, [searchQuery, products]);
-
-    const handlePriceInput = (id: number, price: string) => {
-        const parsed = parseFloat(price);
-        if (!isNaN(parsed)) {
-            setPriceUpdates(prev => ({ ...prev, [id]: parsed }));
-        }
+    const handlePriceChange = (productId: number, newPrice: number) => {
+        setPriceUpdates(prev => ({ ...prev, [productId]: newPrice }));
     };
 
-    const handleUpdate = (id: number) => {
-        if (priceUpdates[id] != null) {
-            updateProduct(id, { price: priceUpdates[id] });
-            alert(`Price updated for product #${id}`);
-        }
+    const handleUpdatePrice = (productId: number) => {
+        const updatedPrice = priceUpdates[productId];
+        if (updatedPrice == null || isNaN(updatedPrice)) return;
+
+        axios.put(`/api/products/${productId}/price`, { Price: updatedPrice }, {
+            headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` }
+        })
+            .then(() => {
+                setProducts(prev =>
+                    prev.map(product =>
+                        product.ProductID === productId
+                            ? { ...product, Price: updatedPrice }
+                            : product
+                    )
+                );
+                setPriceUpdates(prev => {
+                    const updated = { ...prev };
+                    delete updated[productId];
+                    return updated;
+                });
+            })
+            .catch(error => {
+                console.error('Error updating price:', error);
+            });
     };
 
     return (
-        <div className="page-container">
-            <h1>Update Price</h1>
-
+        <div className="price-management-container">
+            <h2>Price Management</h2>
             <TextField
-                label="Search by Product ID, Name, or Category ID"
+                label="Search by ID or Name"
                 variant="outlined"
+                size="small"
                 fullWidth
-                margin="normal"
-                value={searchQuery}
-                onChange={e => setSearchQuery(e.target.value)}
+                style={{ marginBottom: '1rem' }}
+                onChange={(e) => setSearchQuery(e.target.value)}
             />
-
             <TableContainer component={Paper}>
                 <Table>
                     <TableHead>
                         <TableRow>
-                            <TableCell>ID</TableCell>
+                            <TableCell>Product ID</TableCell>
+                            <TableCell>Product Name</TableCell>
                             <TableCell>Category ID</TableCell>
-                            <TableCell>Name</TableCell>
-                            <TableCell>Current Price ($)</TableCell>
-                            <TableCell>New Price ($)</TableCell>
-                            <TableCell>Actions</TableCell>
+                            <TableCell>Current Price</TableCell>
+                            <TableCell>New Price</TableCell>
+                            <TableCell>Action</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {filteredProducts.map(product => (
-                            <TableRow key={product.id}>
-                                <TableCell>{product.id}</TableCell>
-                                <TableCell>{product.categoryId ?? '—'}</TableCell>
-                                <TableCell>{product.name}</TableCell>
-                                <TableCell>
-                                    {typeof product.price === "number" && !isNaN(product.price)
-                                        ? `$${product.price.toFixed(2)}`
-                                        : "—"}
-                                </TableCell>
+                        {products.filter(product => {
+                            const query = searchQuery.toLowerCase();
+                            return (
+                                product.ProductID.toString().includes(query) ||
+                                product.Name.toLowerCase().includes(query)
+                            );
+                        }).map(product => (
+                            <TableRow key={product.ProductID}>
+                                <TableCell>{product.ProductID}</TableCell>
+                                <TableCell>{product.Name}</TableCell>
+                                <TableCell>{product.CategoryID}</TableCell>
+                                <TableCell>{Number(product.Price).toFixed(2)}</TableCell>
                                 <TableCell>
                                     <TextField
                                         type="number"
-                                        variant="outlined"
+                                        value={priceUpdates[product.ProductID] ?? ''}
+                                        onChange={(e) => handlePriceChange(product.ProductID, parseFloat(e.target.value))}
                                         size="small"
-                                        placeholder={typeof product.price === "number" ? product.price.toFixed(2) : "0.00"}
-                                        onChange={e => handlePriceInput(product.id, e.target.value)}
                                     />
                                 </TableCell>
                                 <TableCell>
                                     <Button
                                         variant="contained"
                                         color="primary"
-                                        onClick={() => handleUpdate(product.id)}
+                                        onClick={() => handleUpdatePrice(product.ProductID)}
                                     >
                                         Update
                                     </Button>
