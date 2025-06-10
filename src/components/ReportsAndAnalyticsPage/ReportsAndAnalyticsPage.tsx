@@ -1,11 +1,10 @@
-// src/components/ReportsAndAnalyticsPage/ReportsAndAnalyticsPage.tsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import DateRangePicker from './DateRangePicker';
 import PriceHistoryChart from './PriceHistoryChart';
 import SalesTrendsChart from './SalesTrendsChart';
 import DownloadReportButton from './DownloadReportButton';
-import { useProducts } from '../context/ProductContext';
 import './ReportsAndAnalyticsPage.css';
+import axios from 'axios';
 
 interface PriceHistoryData {
     date: string;
@@ -22,91 +21,125 @@ interface SalesData {
 }
 
 const ReportsAndAnalyticsPage: React.FC = () => {
-    const [startDate, setStartDate] = useState<string>('2025-05-01');
-    const [endDate, setEndDate] = useState<string>('2025-05-07');
-    const { products } = useProducts();
+    const [startDate, setStartDate] = useState<string>('2025-01-01');
+    const [endDate, setEndDate] = useState<string>('2025-12-31');
     const [productIdInput, setProductIdInput] = useState<string>('');
+    const [priceHistory, setPriceHistory] = useState<PriceHistoryData[]>([]);
+    const [salesData, setSalesData] = useState<SalesData[]>([]);
+    const [token, setToken] = useState<string | null>(null);
 
-    const selectedProducts = productIdInput
-        .split(',')
-        .map(id => parseInt(id.trim()))
-        .filter(id => !isNaN(id));
+    const selectedProductIds = productIdInput
+    .split(',')
+    .map(id => parseInt(id.trim()))
+    .filter(id => !isNaN(id));
 
-    const allPriceHistory: PriceHistoryData[] = products.flatMap(product => [
-        { date: '2025-05-01', price: product.price, product: product.name, stock: product.stockQuantity },
-        { date: '2025-05-02', price: product.price * 1.1, product: product.name, stock: product.stockQuantity },
-        { date: '2025-05-03', price: product.price * 0.9, product: product.name, stock: product.stockQuantity },
-        { date: '2025-05-04', price: product.price * 1.05, product: product.name, stock: product.stockQuantity },
-        { date: '2025-05-05', price: product.price * 1.15, product: product.name, stock: product.stockQuantity },
-        { date: '2025-05-06', price: product.price * 1.1, product: product.name, stock: product.stockQuantity },
-        { date: '2025-05-07', price: product.price * 1.2, product: product.name, stock: product.stockQuantity },
-    ]);
+    useEffect(() => {
+        const savedToken = localStorage.getItem('token');
+        if (savedToken) setToken(savedToken);
+    }, []);
 
-    const allSales: SalesData[] = products.flatMap(product => [
-        { date: '2025-05-01', sales: Math.floor(product.stockQuantity * 0.1), product: product.name, stock: product.stockQuantity },
-        { date: '2025-05-02', sales: Math.floor(product.stockQuantity * 0.15), product: product.name, stock: product.stockQuantity },
-        { date: '2025-05-03', sales: Math.floor(product.stockQuantity * 0.08), product: product.name, stock: product.stockQuantity },
-        { date: '2025-05-04', sales: Math.floor(product.stockQuantity * 0.12), product: product.name, stock: product.stockQuantity },
-        { date: '2025-05-05', sales: Math.floor(product.stockQuantity * 0.1), product: product.name, stock: product.stockQuantity },
-        { date: '2025-05-06', sales: Math.floor(product.stockQuantity * 0.18), product: product.name, stock: product.stockQuantity },
-        { date: '2025-05-07', sales: Math.floor(product.stockQuantity * 0.09), product: product.name, stock: product.stockQuantity },
-    ]);
+        useEffect(() => {
+            if (!token || selectedProductIds.length === 0) return;
 
-    const handleDateChange = (start: string, end: string) => {
-        setStartDate(start);
-        setEndDate(end);
-    };
+            const fetchAllData = async () => {
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    console.warn("⚠ No token found in localStorage.");
+                    return;
+                }
+                const priceResult: PriceHistoryData[] = [];
+                const salesResult: SalesData[] = [];
 
-    const filteredPriceHistory = allPriceHistory.filter(d => {
-        const prod = products.find(p => p.name === d.product);
+                for (const id of selectedProductIds) {
+                    try {
+                        const productRes = await axios.get(`http://localhost:5050/api/products/${id}`, {
+                            headers: { Authorization: `Bearer ${token}` }
+                        });
+                        const product = productRes.data;
+
+                        const priceRes = await axios.get(
+                            `http://localhost:5050/api/analytics/price-history/${id}?startDate=${startDate}&endDate=${endDate}`,
+                            { headers: { Authorization: `Bearer ${token}` } }
+                        );
+                        priceRes.data.forEach((entry: any) => {
+                            priceResult.push({
+                                date: entry.date.split('T')[0],
+                                price: parseFloat(product.Price), // ✅ fix: ensure number
+                                             product: product.Name,
+                                             stock: product.StockQuantity
+                            });
+                        });
+
+                        const salesRes = await axios.get(
+                            `http://localhost:5050/api/analytics/sales-trends/${id}?startDate=${startDate}&endDate=${endDate}`,
+                            { headers: { Authorization: `Bearer ${token}` } }
+                        );
+                        salesRes.data.forEach((entry: any) => {
+                            salesResult.push({
+                                date: entry.date.split('T')[0],
+                                sales: parseInt(entry.totalSold),
+                                             product: product.Name,
+                                             stock: product.StockQuantity
+                            });
+                        });
+                    } catch (error) {
+                        console.error(`Failed to fetch data for product ID ${id}`, error);
+                    }
+                }
+
+                console.log("✅ Sales data pushed:", salesResult);
+                console.log("✅ Price data pushed:", priceResult);
+                setPriceHistory(priceResult);
+                setSalesData(salesResult);
+            };
+
+            fetchAllData();
+        }, [startDate, endDate, productIdInput, token]);
+
         return (
-            d.date >= startDate &&
-            d.date <= endDate &&
-            (selectedProducts.length === 0 || (prod && selectedProducts.includes(prod.id)))
-        );
-    });
+            <div className="reports-container">
+            <h1>Reports and Analytics</h1>
 
-    const filteredSales = allSales.filter(d => {
-        const prod = products.find(p => p.name === d.product);
-        return (
-            d.date >= startDate &&
-            d.date <= endDate &&
-            (selectedProducts.length === 0 || (prod && selectedProducts.includes(prod.id)))
-        );
-    });
-
-    return (
-        <div className="reports-container">
-            <h1>Reports & Analytics</h1>
             <div className="filters-container">
-                <div className="date-picker-wrapper">
-                    <DateRangePicker onDateChange={handleDateChange} />
-                </div>
-                <div className="product-selector">
-                    <label htmlFor="productIdInput">Enter Product ID(s):</label>
-                    <input
-                        type="text"
-                        id="productIdInput"
-                        value={productIdInput}
-                        onChange={e => setProductIdInput(e.target.value)}
-                        placeholder="e.g. 12 or 12,15,20"
-                        className="product-id-input"
-                    />
-                </div>
+            <div className="date-picker-wrapper">
+            <DateRangePicker
+            onDateChange={(start, end) => {
+                setStartDate(start);
+                setEndDate(end);
+            }}
+            />
+            </div>
+
+            <div className="product-selector">
+            <label htmlFor="productIdInput">Enter Product IDs:</label>
+            <input
+            id="productIdInput"
+            type="text"
+            placeholder="e.g. 1, 3, 5"
+            className="product-id-input"
+            value={productIdInput}
+            onChange={(e) => setProductIdInput(e.target.value)}
+            />
+            </div>
             </div>
 
             <div className="charts-grid">
-                <div className="chart-card">
-                    <PriceHistoryChart data={filteredPriceHistory} />
-                    <DownloadReportButton reportName="PriceHistory" data={filteredPriceHistory} />
-                </div>
-                <div className="chart-card">
-                    <SalesTrendsChart data={filteredSales} />
-                    <DownloadReportButton reportName="SalesTrends" data={filteredSales} />
-                </div>
+            <div className="chart-card">
+            <PriceHistoryChart data={priceHistory} />
+            <div className="download-report-button">
+            <DownloadReportButton reportName="PriceHistory" data={priceHistory} />
             </div>
-        </div>
-    );
+            </div>
+
+            <div className="chart-card">
+            <SalesTrendsChart data={salesData} />
+            <div className="download-report-button">
+            <DownloadReportButton reportName="SalesTrends" data={salesData} />
+            </div>
+            </div>
+            </div>
+            </div>
+        );
 };
 
 export default ReportsAndAnalyticsPage;

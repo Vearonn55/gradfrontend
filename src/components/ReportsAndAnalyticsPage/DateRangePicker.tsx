@@ -1,47 +1,24 @@
-import React, { useState } from 'react';
-
+import React from 'react';
 
 interface DateRangePickerProps {
-    onDateChange: (startDate: string, endDate: string) => void;
+    onDateChange: (start: string, end: string) => void;
 }
 
 const DateRangePicker: React.FC<DateRangePickerProps> = ({ onDateChange }) => {
-    const [startDate, setStartDate] = useState('');
-    const [endDate, setEndDate] = useState('');
+    const today = new Date().toISOString().split('T')[0];
 
-    const handleStartChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setStartDate(e.target.value);
-        onDateChange(e.target.value, endDate);
-    };
-
-    const handleEndChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setEndDate(e.target.value);
-        onDateChange(startDate, e.target.value);
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const form = e.currentTarget.form!;
+        const start = (form[0] as HTMLInputElement).value;
+        const end = (form[1] as HTMLInputElement).value;
+        onDateChange(start, end);
     };
 
     return (
-        <div className="date-range-picker">
-            <div className="date-input">
-                <label htmlFor="startDate">Start Date:</label>
-                <input
-                    id="startDate"
-                    type="date"
-                    value={startDate}
-                    onChange={handleStartChange}
-                    className="form-input"
-                />
-            </div>
-            <div className="date-input">
-                <label htmlFor="endDate">End Date:</label>
-                <input
-                    id="endDate"
-                    type="date"
-                    value={endDate}
-                    onChange={handleEndChange}
-                    className="form-input"
-                />
-            </div>
-        </div>
+        <form style={{ display: 'flex', gap: '0.5rem' }}>
+            <input type="date" defaultValue={today} onChange={handleChange} />
+            <input type="date" defaultValue={today} onChange={handleChange} />
+        </form>
     );
 };
 
