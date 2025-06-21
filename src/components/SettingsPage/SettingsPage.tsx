@@ -1,4 +1,5 @@
 /* src/components/SettingsPage/SettingsPage.tsx */
+import { API_BASE_URL } from '../../config';
 import React, { useState } from 'react';
 import './SettingsPage.css';
 

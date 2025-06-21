@@ -13,6 +13,7 @@ import SalesPage from "../SalesPage/SalesPage";
 import AddProductPage from "../AddProduct/AddProductPage";
 import SaleReports from "../SaleReports/SaleReports";
 import LabelConfigure from "../LabelConfigure/LabelConfigure"; // ✅ Yeni route
+import { API_BASE_URL } from '../../config';
 
 import "./MainLayout.css";
 

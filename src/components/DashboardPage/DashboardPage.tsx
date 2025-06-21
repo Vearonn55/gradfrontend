@@ -1,5 +1,6 @@
 import React from "react";
 import "./DashboardPage.css";
+import { API_BASE_URL } from '../../config';
 
 const DashboardPage: React.FC = () => {
     return (

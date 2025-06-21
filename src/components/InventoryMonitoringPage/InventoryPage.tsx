@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../../config';
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./InventoryPage.css";
@@ -29,7 +30,7 @@ export default function InventoryPage() {
 
     const fetchProducts = async () => {
         try {
-            const res = await axios.get("http://localhost:5050/api/products/get", {
+            const res = await axios.get(`${API_BASE_URL}/api/products/get`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 }

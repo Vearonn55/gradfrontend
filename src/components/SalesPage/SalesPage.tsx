@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './SalesPage.css';
+import { API_BASE_URL } from '../../config';
 
 interface Product {
   ProductID: number;
@@ -20,7 +21,7 @@ const SalesPage: React.FC = () => {
   const fetchSales = async () => {
     try {
       const token = localStorage.getItem('authToken');
-      const response = await axios.get('/api/sales', {
+      const response = await axios.get(`${API_BASE_URL}/api/sales`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setSales(response.data);
@@ -32,7 +33,7 @@ const SalesPage: React.FC = () => {
   const fetchProducts = async () => {
     try {
       const token = localStorage.getItem('authToken');
-      const response = await axios.get('/api/products', {
+      const response = await axios.get(`${API_BASE_URL}/api/products`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setProducts(response.data);

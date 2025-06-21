@@ -1,6 +1,7 @@
 // LabelConfigure.tsx
 import React, { useEffect, useState } from "react";
 import "./LabelConfigure.css";
+import { API_BASE_URL } from '../../config';
 
 interface LabelData {
     labelId: string;

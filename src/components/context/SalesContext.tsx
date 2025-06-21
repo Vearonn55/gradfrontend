@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { useProducts } from "./ProductContext"; // Stok güncellemek için ürünlere erişim
+import { API_BASE_URL } from '../../config';
 
 export interface Sale {
     id: number;

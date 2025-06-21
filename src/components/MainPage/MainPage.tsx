@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Sidebar from "./Sidebar";
 import "./MainPage.css";
+import { API_BASE_URL } from '../../config';
 
 const MainPage: React.FC = () => {
     const [activeLink, setActiveLink] = useState("Real-Time Pricing");

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 import "./LoginPage.css"; // CSS dosyasını içe aktar
+import { API_BASE_URL } from '../../config';
 
 const LoginPage: React.FC = () => {
     const [username, setUsername] = useState("");

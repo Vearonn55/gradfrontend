@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { API_BASE_URL } from '../../config';
 import axios from 'axios';
 import {
     TextField,
@@ -26,7 +27,7 @@ const PriceManagementPage: React.FC = () => {
     const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
-        axios.get('/api/products', {
+        axios.get(`${API_BASE_URL}/api/products`, {
             headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` }
         })
             .then(response => {

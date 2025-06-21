@@ -1,3 +1,5 @@
+import { API_BASE_URL } from '../../config';
+
 import React, { useState, useEffect } from 'react';
 import DateRangePicker from './DateRangePicker';
 import PriceHistoryChart from './PriceHistoryChart';

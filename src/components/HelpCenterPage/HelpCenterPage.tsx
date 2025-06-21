@@ -3,6 +3,7 @@ import HelpSearchBar from "./HelpSearchBar";
 import TutorialList, { TutorialItem } from "./TutorialList";
 import ContactSupportButton from "./ContactSupportButton";
 import "./HelpCenterPage.css";
+import { API_BASE_URL } from '../../config';
 
 
 const HelpCenterPage: React.FC = () => {

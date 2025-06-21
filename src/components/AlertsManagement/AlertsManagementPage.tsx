@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './AlertsManagementPage.css';
 import { AlertItem } from './types';
+import { API_BASE_URL } from '../../config';
 
 const token = localStorage.getItem("authToken");
 
@@ -15,7 +16,7 @@ const AlertsManagementPage: React.FC = () => {
     });
 
     const fetchAlerts = () => {
-        axios.get('/api/alerts', {
+        axios.get(`${API_BASE_URL}/api/alerts`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             }
@@ -30,7 +31,7 @@ const AlertsManagementPage: React.FC = () => {
                 alert("Please enter a valid Product ID.");
                 return;
             }
-            await axios.post('/api/alerts', {
+            await axios.post(`${API_BASE_URL}/api/alerts`, {
                 ProductID: parseInt(newAlertData.productId),
                 AlertType: newAlertData.alertType,
                 Status: "Pending"
@@ -65,7 +66,7 @@ const AlertsManagementPage: React.FC = () => {
 
     const handleExportCSV = async () => {
         try {
-            const res = await axios.get('/api/alerts/export/csv', {
+            const res = await axios.get(`${API_BASE_URL}/api/alerts/export/csv`, {
                 responseType: 'blob',
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -86,7 +87,7 @@ const AlertsManagementPage: React.FC = () => {
 
     const handleExportPDF = async () => {
         try {
-            const res = await axios.get('/api/alerts/export/pdf', {
+            const res = await axios.get(`${API_BASE_URL}/api/alerts/export/pdf`, {
                 responseType: 'blob',
                 headers: {
                     Authorization: `Bearer ${token}`,
