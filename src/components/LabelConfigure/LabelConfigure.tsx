@@ -1,129 +1,119 @@
-import React, { useEffect, useState } from "react";
-import "./LabelConfigure.css";
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import './LabelConfigure.css';
 import { API_BASE_URL } from '../../config';
 
-interface LabelData {
-    labelId: string;
-    productName: string;
-    productId: number;
+interface ESLTag {
+  ESLID: number;
+  MACAddress: string;
+  ProductID: number | null;
+}
+
+interface Product {
+  ProductID: number;
+  Name: string;
 }
 
 const LabelConfigure: React.FC = () => {
-    const [labels, setLabels] = useState<LabelData[]>([]);
-    const [searchTerm, setSearchTerm] = useState("");
-    const [editingLabelId, setEditingLabelId] = useState<string | null>(null);
-    const [editedProduct, setEditedProduct] = useState("");
+  const [eslTags, setEslTags] = useState<ESLTag[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [selectedProducts, setSelectedProducts] = useState<Record<number, number>>({});
 
-    useEffect(() => {
-        const storedProducts = localStorage.getItem("inventory");
-        if (storedProducts) {
-            const products = JSON.parse(storedProducts);
-            const generatedLabels: LabelData[] = products.map((p: any, idx: number) => ({
-                labelId: `LBL-${(idx + 1).toString().padStart(3, "0")}`,
-                productName: p.name,
-                productId: p.id
-            }));
-            setLabels(generatedLabels);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const token = localStorage.getItem('authToken');
+        const [eslRes, productRes] = await Promise.all([
+          axios.get(`${API_BASE_URL}/api/esltag`, {
+            headers: { Authorization: `Bearer ${token}` }
+          }),
+          axios.get(`${API_BASE_URL}/api/products`, {
+            headers: { Authorization: `Bearer ${token}` }
+          })
+        ]);
+
+        setEslTags(eslRes.data);
+        setProducts(productRes.data);
+      } catch (err: any) {
+        console.error("Error fetching data:", err.response?.data || err.message);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const handleAssignProduct = async (mac: string, newProductID: number) => {
+  try {
+    const token = localStorage.getItem('authToken');
+    await axios.patch(
+      `${API_BASE_URL}/api/esltag/mac/${mac}`,
+      { ProductID: newProductID },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
         }
-    }, []);
-
-    useEffect(() => {
-        localStorage.setItem("labels", JSON.stringify(labels));
-    }, [labels]);
-
-    const handleEdit = (labelId: string, product: string) => {
-        setEditingLabelId(labelId);
-        setEditedProduct(product);
-    };
-
-    const handleSave = (labelId: string) => {
-        setLabels(prev =>
-            prev.map(label =>
-                label.labelId === labelId ? { ...label, productName: editedProduct } : label
-            )
-        );
-        setEditingLabelId(null);
-        setEditedProduct("");
-    };
-
-    const handleDelete = (labelId: string) => {
-        const updated = labels.filter(label => label.labelId !== labelId);
-        setLabels(updated);
-    };
-
-    const filtered = labels.filter(label =>
-        label.labelId.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        label.productName.toLowerCase().includes(searchTerm.toLowerCase())
+      }
     );
 
-    return (
-        <div className="label-configure-container">
-            <h2>Label Configure</h2>
-            <input
-                type="text"
-                placeholder="Search by Label ID or Product"
-                value={searchTerm}
-                onChange={e => setSearchTerm(e.target.value)}
-                className="search-input"
-            />
+    const updatedEslTags = await axios.get(`${API_BASE_URL}/api/esltag`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    setEslTags(updatedEslTags.data);
 
-            <div className="table-scroll-wrapper">
-                <table className="label-table">
-                    <thead>
-                    <tr>
-                        <th>Label #</th>
-                        <th>Product</th>
-                        <th>Product ID</th>
-                        <th>Actions</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {filtered.map(label => (
-                        <tr key={label.labelId}>
-                            <td>{label.labelId}</td>
-                            <td>
-                                {editingLabelId === label.labelId ? (
-                                    <input
-                                        type="text"
-                                        value={editedProduct}
-                                        onChange={e => setEditedProduct(e.target.value)}
-                                        className="edit-input"
-                                    />
-                                ) : (
-                                    label.productName
-                                )}
-                            </td>
-                            <td>{label.productId}</td>
-                            <td>
-                                {editingLabelId === label.labelId ? (
-                                    <button
-                                        onClick={() => handleSave(label.labelId)}
-                                        className="save-btn"
-                                    >
-                                        Save
-                                    </button>
-                                ) : (
-                                    <button
-                                        onClick={() => handleEdit(label.labelId, label.productName)}
-                                        className="edit-btn"
-                                    >
-                                        Edit
-                                    </button>
-                                )}
-                                <button
-                                    onClick={() => handleDelete(label.labelId)}
-                                    className="delete-btn"
-                                >
-                                    Delete
-                                </button>
-                            </td>
-                        </tr>
-                    ))}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    );
+    alert('Updated successfully!');
+  } catch (error: any) {
+    console.error("Update failed:", error.response?.data || error.message);
+  }
+};
+
+  return (
+    <div className="label-configure-container">
+      <h2>ESL Tag Configuration</h2>
+      <table className="label-configure-table">
+        <thead>
+          <tr>
+            <th>MAC Address</th>
+            <th>Current Product</th>
+            <th>New Product</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {eslTags.map((tag) => (
+            <tr key={tag.ESLID}>
+              <td>{tag.MACAddress}</td>
+              <td>{products.find(p => p.ProductID === tag.ProductID)?.Name || 'Unassigned'}</td>
+              <td>
+                <select
+                  value={selectedProducts[tag.ESLID] || ''}
+                  onChange={(e) =>
+                    setSelectedProducts(prev => ({
+                      ...prev,
+                      [tag.ESLID]: parseInt(e.target.value)
+                    }))
+                  }
+                >
+                  <option value="">Select Product</option>
+                  {products.map((p) => (
+                    <option key={p.ProductID} value={p.ProductID}>{p.Name}</option>
+                  ))}
+                </select>
+              </td>
+              <td>
+                <button
+                  onClick={() => handleAssignProduct(tag.MACAddress, selectedProducts[tag.ESLID])}
+                  disabled={!selectedProducts[tag.ESLID]}
+                >
+                  Assign
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
 };
 
 export default LabelConfigure;
