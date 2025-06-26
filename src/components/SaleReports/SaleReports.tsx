@@ -19,8 +19,8 @@ const SaleReports: React.FC = () => {
         const fetchSalesReport = async () => {
             try {
                 const token = localStorage.getItem("authToken");
-                const response = await axios.post(
-                    "/api/reports",
+                const response = await axios.get(
+                    `${API_BASE_URL}/api/sales`,
                     { type: "Sales" },
                     {
                         headers: {

@@ -55,7 +55,7 @@ export default function InventoryPage() {
 
     const handleSave = async () => {
         try {
-            await axios.put(`http://localhost:5050/api/products/${editingId}`, {
+            await axios.put(`${API_BASE_URL}/api/products/${editingId}`, {
                 ProductID: editForm.ProductID,
                 Name: editForm.Name,
                 Description: editForm.Description,
@@ -78,7 +78,7 @@ export default function InventoryPage() {
 
     const handleDelete = async (productId: number) => {
         try {
-            await axios.delete(`http://localhost:5050/api/products/${productId}`, {
+            await axios.delete(`${API_BASE_URL}/api/products/${productId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 }

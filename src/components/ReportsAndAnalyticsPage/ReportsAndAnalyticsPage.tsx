@@ -44,7 +44,7 @@ const ReportsAndAnalyticsPage: React.FC = () => {
             if (!token || selectedProductIds.length === 0) return;
 
             const fetchAllData = async () => {
-                const token = localStorage.getItem('token');
+                const token = localStorage.getItem('authToken');
                 if (!token) {
                     console.warn("⚠ No token found in localStorage.");
                     return;
@@ -54,13 +54,13 @@ const ReportsAndAnalyticsPage: React.FC = () => {
 
                 for (const id of selectedProductIds) {
                     try {
-                        const productRes = await axios.get(`http://localhost:5050/api/products/${id}`, {
+                        const productRes = await axios.get(`${API_BASE_URL}/api/products/${id}`, {
                             headers: { Authorization: `Bearer ${token}` }
                         });
                         const product = productRes.data;
 
                         const priceRes = await axios.get(
-                            `http://localhost:5050/api/analytics/price-history/${id}?startDate=${startDate}&endDate=${endDate}`,
+                            `${API_BASE_URL}/api/analytics/price-history/${id}?startDate=${startDate}&endDate=${endDate}`,
                             { headers: { Authorization: `Bearer ${token}` } }
                         );
                         priceRes.data.forEach((entry: any) => {
@@ -73,7 +73,7 @@ const ReportsAndAnalyticsPage: React.FC = () => {
                         });
 
                         const salesRes = await axios.get(
-                            `http://localhost:5050/api/analytics/sales-trends/${id}?startDate=${startDate}&endDate=${endDate}`,
+                            `${API_BASE_URL}/api/analytics/sales-trends/${id}?startDate=${startDate}&endDate=${endDate}`,
                             { headers: { Authorization: `Bearer ${token}` } }
                         );
                         salesRes.data.forEach((entry: any) => {

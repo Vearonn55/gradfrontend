@@ -46,7 +46,7 @@ const PriceManagementPage: React.FC = () => {
         const updatedPrice = priceUpdates[productId];
         if (updatedPrice == null || isNaN(updatedPrice)) return;
 
-        axios.put(`/api/products/${productId}/price`, { Price: updatedPrice }, {
+        axios.put(`${API_BASE_URL}/api/products/${productId}/price`, { Price: updatedPrice }, {
             headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` }
         })
             .then(() => {

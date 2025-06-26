@@ -49,7 +49,7 @@ const AlertsManagementPage: React.FC = () => {
 
     const handleResolveAlert = async (alertId: number) => {
         try {
-            await axios.patch(`/api/alerts/${alertId}/resolve`, {}, {
+            await axios.patch(`${API_BASE_URL}/api/alerts/${alertId}/resolve`, {}, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 }

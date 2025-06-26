@@ -20,9 +20,8 @@ const SalesPage: React.FC = () => {
 
   const fetchSales = async () => {
     try {
-      const token = localStorage.getItem('authToken');
       const response = await axios.get(`${API_BASE_URL}/api/sales`, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` }
       });
       setSales(response.data);
     } catch (error) {
@@ -32,9 +31,8 @@ const SalesPage: React.FC = () => {
 
   const fetchProducts = async () => {
     try {
-      const token = localStorage.getItem('authToken');
       const response = await axios.get(`${API_BASE_URL}/api/products`, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` }
       });
       setProducts(response.data);
     } catch (error) {
@@ -72,39 +70,49 @@ const SalesPage: React.FC = () => {
   };
 
   const handleCheckout = async () => {
-    if (!productID || !quantity) {
-      alert('Please select a product and enter quantity.');
-      return;
-    }
+  if (!productID || !quantity) {
+    alert('Please select a product and enter quantity.');
+    return;
+  }
 
-    try {
-      const token = localStorage.getItem('authToken');
-      await axios.post(
-        '/api/sales',
-        {
-          ProductID: parseInt(productID),
-          Quantity: parseInt(quantity),
-          SaleDateTime: saleDate ? new Date(saleDate).toISOString() : new Date().toISOString()
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
+  const token = localStorage.getItem('authToken');
+  if (!token) {
+    alert("You are not logged in.");
+    return;
+  }
+
+  try {
+    const response = await axios.post(
+      `${API_BASE_URL}/api/sales`,
+      {
+        ProductID: parseInt(productID),
+        Quantity: parseInt(quantity),
+        SaleDateTime: saleDate ? new Date(saleDate).toISOString() : new Date().toISOString(),
+        UnitPrice: unitPrice,
+        Total: totalPrice
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
         }
-      );
+      }
+    );
 
-      // Reset fields
-      setProductID('');
-      setQuantity('');
-      setUnitPrice(0);
-      setTotalPrice(0);
-      setSaleDate('');
-      fetchSales();
-    } catch (error) {
-      console.error('Error logging sale:', error);
-      alert('Sale failed. Please check inputs and login status.');
-    }
-  };
+    console.log("Sale response:", response.data);
+
+    // Reset fields
+    setProductID('');
+    setQuantity('');
+    setUnitPrice(0);
+    setTotalPrice(0);
+    setSaleDate('');
+    fetchSales();
+  } catch (error: any) {
+    console.error('Error logging sale:', error?.response?.data || error.message);
+    alert('Sale failed. ' + (error?.response?.data?.message || "Please check inputs and login status."));
+  }
+};
+
 
   return (
   <div className="sales-page-container">
