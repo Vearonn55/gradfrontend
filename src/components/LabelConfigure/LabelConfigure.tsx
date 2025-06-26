@@ -1,4 +1,3 @@
-// LabelConfigure.tsx
 import React, { useEffect, useState } from "react";
 import "./LabelConfigure.css";
 import { API_BASE_URL } from '../../config';
@@ -68,59 +67,61 @@ const LabelConfigure: React.FC = () => {
                 className="search-input"
             />
 
-            <table className="label-table">
-                <thead>
-                <tr>
-                    <th>Label #</th>
-                    <th>Product</th>
-                    <th>Product ID</th>
-                    <th>Actions</th>
-                </tr>
-                </thead>
-                <tbody>
-                {filtered.map(label => (
-                    <tr key={label.labelId}>
-                        <td>{label.labelId}</td>
-                        <td>
-                            {editingLabelId === label.labelId ? (
-                                <input
-                                    type="text"
-                                    value={editedProduct}
-                                    onChange={e => setEditedProduct(e.target.value)}
-                                    className="edit-input"
-                                />
-                            ) : (
-                                label.productName
-                            )}
-                        </td>
-                        <td>{label.productId}</td>
-                        <td>
-                            {editingLabelId === label.labelId ? (
-                                <button
-                                    onClick={() => handleSave(label.labelId)}
-                                    className="save-btn"
-                                >
-                                    Save
-                                </button>
-                            ) : (
-                                <button
-                                    onClick={() => handleEdit(label.labelId, label.productName)}
-                                    className="edit-btn"
-                                >
-                                    Edit
-                                </button>
-                            )}
-                            <button
-                                onClick={() => handleDelete(label.labelId)}
-                                className="delete-btn"
-                            >
-                                Delete
-                            </button>
-                        </td>
+            <div className="table-scroll-wrapper">
+                <table className="label-table">
+                    <thead>
+                    <tr>
+                        <th>Label #</th>
+                        <th>Product</th>
+                        <th>Product ID</th>
+                        <th>Actions</th>
                     </tr>
-                ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                    {filtered.map(label => (
+                        <tr key={label.labelId}>
+                            <td>{label.labelId}</td>
+                            <td>
+                                {editingLabelId === label.labelId ? (
+                                    <input
+                                        type="text"
+                                        value={editedProduct}
+                                        onChange={e => setEditedProduct(e.target.value)}
+                                        className="edit-input"
+                                    />
+                                ) : (
+                                    label.productName
+                                )}
+                            </td>
+                            <td>{label.productId}</td>
+                            <td>
+                                {editingLabelId === label.labelId ? (
+                                    <button
+                                        onClick={() => handleSave(label.labelId)}
+                                        className="save-btn"
+                                    >
+                                        Save
+                                    </button>
+                                ) : (
+                                    <button
+                                        onClick={() => handleEdit(label.labelId, label.productName)}
+                                        className="edit-btn"
+                                    >
+                                        Edit
+                                    </button>
+                                )}
+                                <button
+                                    onClick={() => handleDelete(label.labelId)}
+                                    className="delete-btn"
+                                >
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                    ))}
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 };

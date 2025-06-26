@@ -79,53 +79,56 @@ const PriceManagementPage: React.FC = () => {
                 style={{ marginBottom: '1rem' }}
                 onChange={(e) => setSearchQuery(e.target.value)}
             />
-            <TableContainer component={Paper}>
-                <Table>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>Product ID</TableCell>
-                            <TableCell>Product Name</TableCell>
-                            <TableCell>Category ID</TableCell>
-                            <TableCell>Current Price</TableCell>
-                            <TableCell>New Price</TableCell>
-                            <TableCell>Action</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {products.filter(product => {
-                            const query = searchQuery.toLowerCase();
-                            return (
-                                product.ProductID.toString().includes(query) ||
-                                product.Name.toLowerCase().includes(query)
-                            );
-                        }).map(product => (
-                            <TableRow key={product.ProductID}>
-                                <TableCell>{product.ProductID}</TableCell>
-                                <TableCell>{product.Name}</TableCell>
-                                <TableCell>{product.CategoryID}</TableCell>
-                                <TableCell>{Number(product.Price).toFixed(2)}</TableCell>
-                                <TableCell>
-                                    <TextField
-                                        type="number"
-                                        value={priceUpdates[product.ProductID] ?? ''}
-                                        onChange={(e) => handlePriceChange(product.ProductID, parseFloat(e.target.value))}
-                                        size="small"
-                                    />
-                                </TableCell>
-                                <TableCell>
-                                    <Button
-                                        variant="contained"
-                                        color="primary"
-                                        onClick={() => handleUpdatePrice(product.ProductID)}
-                                    >
-                                        Update
-                                    </Button>
-                                </TableCell>
+
+            <div className="price-table-scroll-wrapper">
+                <TableContainer component={Paper}>
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>Product ID</TableCell>
+                                <TableCell>Product Name</TableCell>
+                                <TableCell>Category ID</TableCell>
+                                <TableCell>Current Price</TableCell>
+                                <TableCell>New Price</TableCell>
+                                <TableCell>Action</TableCell>
                             </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+                        </TableHead>
+                        <TableBody>
+                            {products.filter(product => {
+                                const query = searchQuery.toLowerCase();
+                                return (
+                                    product.ProductID.toString().includes(query) ||
+                                    product.Name.toLowerCase().includes(query)
+                                );
+                            }).map(product => (
+                                <TableRow key={product.ProductID}>
+                                    <TableCell>{product.ProductID}</TableCell>
+                                    <TableCell>{product.Name}</TableCell>
+                                    <TableCell>{product.CategoryID}</TableCell>
+                                    <TableCell>{Number(product.Price).toFixed(2)}</TableCell>
+                                    <TableCell>
+                                        <TextField
+                                            type="number"
+                                            value={priceUpdates[product.ProductID] ?? ''}
+                                            onChange={(e) => handlePriceChange(product.ProductID, parseFloat(e.target.value))}
+                                            size="small"
+                                        />
+                                    </TableCell>
+                                    <TableCell>
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                            onClick={() => handleUpdatePrice(product.ProductID)}
+                                        >
+                                            Update
+                                        </Button>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            </div>
         </div>
     );
 };

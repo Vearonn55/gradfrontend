@@ -6,32 +6,57 @@
     border-radius: 16px;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    flex-direction: column;
+    height: 85vh; /* Sayfa yüksekliğini sınırla */
+    overflow: hidden;
 }
 
-.price-management-container h1 {
+.price-management-container h2 {
     text-align: center;
-    margin-bottom: 32px;
+    margin-bottom: 24px;
     color: #2c3e50;
     font-size: 2rem;
 }
 
-.price-table-container {
-    overflow-x: auto;
+/* Scrollable alan sadece tabloya uygulanır */
+.price-table-scroll-wrapper {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 6px;
+    max-height: 100%;
+    scrollbar-width: thin;
 }
 
+.price-table-scroll-wrapper::-webkit-scrollbar {
+    width: 6px;
+}
+.price-table-scroll-wrapper::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 4px;
+}
+.price-table-scroll-wrapper::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+/* Tablo hücre stilleri */
 .price-table th,
-.price-table td {
+.price-table td,
+.MuiTableCell-root {
     padding: 16px;
     border-bottom: 1px solid #e0e0e0;
     text-align: left;
 }
 
-.price-table th {
-    background-color: #007bff;
-    color: white;
+/* Tablo başlığı için özel arka plan */
+.MuiTableHead-root .MuiTableCell-head {
+    background-color: #007bff !important;
+    color: white !important;
+    font-weight: bold;
     font-size: 1rem;
 }
 
+/* Input alanları */
 .price-input {
     width: 120px;
     padding: 8px;
@@ -39,16 +64,30 @@
     border-radius: 6px;
 }
 
-button {
+/* Sadece bu sayfa içindeki MUI button'lar için özel stil */
+.price-management-container .MuiButton-root {
     padding: 8px 16px;
-    border: none;
-    background: #28a745;
+    background-color: #e74c3c;
     color: white;
     border-radius: 6px;
     cursor: pointer;
     font-weight: bold;
+    text-transform: none;
 }
 
-button:hover {
-    background: #218838;
+.price-management-container .MuiButton-root:hover {
+    background-color: #c0392b;
+}
+
+/* Responsive düzeltme */
+@media (max-width: 768px) {
+    .price-management-container {
+        padding: 20px;
+        height: 90vh;
+    }
+
+    .MuiTableCell-root {
+        padding: 12px;
+        font-size: 14px;
+    }
 }

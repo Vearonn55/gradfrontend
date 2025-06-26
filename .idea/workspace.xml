@@ -6,7 +6,12 @@
   <component name="ChangeListManager">
     <list default="true" id="955dce90-4707-4fd5-9eb3-12ed35ca5014" name="Changes" comment=" frontend refind">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/SalesPage/SalesPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/SalesPage/SalesPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/AlertsManagement/AlertsManagementPage.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/AlertsManagement/AlertsManagementPage.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/LabelConfigure/LabelConfigure.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/LabelConfigure/LabelConfigure.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/LabelConfigure/LabelConfigure.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/LabelConfigure/LabelConfigure.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/PriceManagementPage/PriceManagementPage.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/PriceManagementPage/PriceManagementPage.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/PriceManagementPage/PriceManagementPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/PriceManagementPage/PriceManagementPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/config.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,22 +36,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;sulkalar&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/kaansulkalar/Desktop/gradfrontend&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/Users/kaansulkalar/Desktop/gradfrontend/node_modules/typescript/lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "/Users/kaansulkalar/Desktop/gradfrontend",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "ts.external.directory.path": "/Users/kaansulkalar/Desktop/gradfrontend/node_modules/typescript/lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -76,6 +81,8 @@
       <workItem from="1747684505276" duration="4623000" />
       <workItem from="1747750895268" duration="6004000" />
       <workItem from="1747763076135" duration="1464000" />
+      <workItem from="1750959170528" duration="44000" />
+      <workItem from="1750959221113" duration="1785000" />
     </task>
     <servers />
   </component>

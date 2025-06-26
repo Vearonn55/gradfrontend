@@ -3,6 +3,10 @@
   max-width: 1000px;
   margin: 0 auto;
   font-family: Arial, sans-serif;
+  height: 85vh; /* Sabit yükseklik */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .sales-card {
@@ -10,7 +14,10 @@
   padding: 1.5rem;
   border-radius: 12px;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
-  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
 }
 
 .sales-card h2,
@@ -99,6 +106,28 @@
   color: #333;
 }
 
+/* 🔥 SCROLLABLE TABLE */
+.sales-table {
+  flex: 1;
+  overflow-y: auto;
+  max-height: 100%;
+  padding-right: 6px;
+  scrollbar-width: thin;
+}
+
+.sales-table::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sales-table::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 4px;
+}
+
+.sales-table::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
 .sales-table table {
   width: 100%;
   border-collapse: collapse;
@@ -118,10 +147,31 @@
 
 .sales-table th {
   background-color: #3498db;
-  color: white;       
+  color: white;
   font-weight: bold;
 }
 
 .sales-table tr:last-child td {
   border-bottom: none;
+}
+
+/* Mobil uyum */
+@media (max-width: 768px) {
+  .sales-form {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+  }
+
+  .sales-form select,
+  .sales-form input,
+  .unit-price,
+  .total-price,
+  .sales-form button {
+    grid-column: 1 / 2 !important;
+  }
+
+  .sales-page-container {
+    padding: 1rem;
+    height: auto;
+  }
 }

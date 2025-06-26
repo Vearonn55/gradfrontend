@@ -14,7 +14,6 @@ h2 {
     margin-bottom: 16px;
 }
 
-/* NEW: search bar + filter aligned in row */
 .search-filter-bar {
     display: flex;
     justify-content: center;
@@ -94,6 +93,28 @@ h2 {
     margin-top: 30px;
 }
 
+/* 🔥 Yeni scrollable alanlar */
+.alerts-content > div {
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 8px;
+    scrollbar-width: thin;
+}
+
+/* Scrollbar stili (isteğe bağlı) */
+.alerts-content > div::-webkit-scrollbar {
+    width: 6px;
+}
+
+.alerts-content > div::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 4px;
+}
+
+.alerts-content > div::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
 .alert-card,
 .history-card {
     background: #f9f9f9;
@@ -161,5 +182,9 @@ h2 {
 
     .export-buttons {
         flex-direction: column;
+    }
+
+    .alerts-content > div {
+        max-height: 300px; /* Mobilde daha kısa */
     }
 }
