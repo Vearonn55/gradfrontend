@@ -36,7 +36,7 @@ const ReportsAndAnalyticsPage: React.FC = () => {
     .filter(id => !isNaN(id));
 
     useEffect(() => {
-        const savedToken = localStorage.getItem('token');
+        const savedToken = localStorage.getItem('authtoken');
         if (savedToken) setToken(savedToken);
     }, []);
 

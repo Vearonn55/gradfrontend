@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+ import React, { useState } from "react";
 import { Routes, Route, Navigate, useLocation, useNavigate } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import DashboardPage from "../DashboardPage/DashboardPage";
@@ -54,4 +54,4 @@ const MainLayout: React.FC = () => {
     );
 };
 
-export default MainLayout;
+export default MainLayout; 
