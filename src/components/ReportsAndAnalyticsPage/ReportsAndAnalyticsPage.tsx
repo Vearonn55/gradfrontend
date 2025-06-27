@@ -1,5 +1,4 @@
 import { API_BASE_URL } from '../../config';
-
 import React, { useState, useEffect } from 'react';
 import DateRangePicker from './DateRangePicker';
 import PriceHistoryChart from './PriceHistoryChart';
@@ -31,117 +30,146 @@ const ReportsAndAnalyticsPage: React.FC = () => {
     const [token, setToken] = useState<string | null>(null);
 
     const selectedProductIds = productIdInput
-    .split(',')
-    .map(id => parseInt(id.trim()))
-    .filter(id => !isNaN(id));
+        .split(',')
+        .map(id => parseInt(id.trim()))
+        .filter(id => !isNaN(id));
 
+    // ✅ Fix token name mismatch
     useEffect(() => {
-        const savedToken = localStorage.getItem('authtoken');
+        const savedToken = localStorage.getItem('authToken');
         if (savedToken) setToken(savedToken);
     }, []);
 
-        useEffect(() => {
-            if (!token || selectedProductIds.length === 0) return;
+    // ✅ Fetch analytics data
+    useEffect(() => {
+        if (!token || selectedProductIds.length === 0) return;
 
-            const fetchAllData = async () => {
-                const token = localStorage.getItem('authToken');
-                if (!token) {
-                    console.warn("⚠ No token found in localStorage.");
-                    return;
+        const fetchAllData = async () => {
+            const fetchedPriceHistory: PriceHistoryData[] = [];
+            const fetchedSalesData: SalesData[] = [];
+
+            for (const id of selectedProductIds) {
+                try {
+                    const productRes = await axios.get(`${API_BASE_URL}/api/products/${id}`, {
+                        headers: { Authorization: `Bearer ${token}` }
+                    });
+                    const product = productRes.data;
+
+                    const priceRes = await axios.get(
+                        `${API_BASE_URL}/api/analytics/price-history/${id}?startDate=${startDate}&endDate=${endDate}`,
+                        { headers: { Authorization: `Bearer ${token}` } }
+                    );
+                    priceRes.data.forEach((entry: any) => {
+                        fetchedPriceHistory.push({
+                            date: entry.date.split('T')[0],
+                            price: parseFloat(product.Price),
+                            product: product.Name,
+                            stock: product.StockQuantity
+                        });
+                    });
+
+                    const salesRes = await axios.get(
+                        `${API_BASE_URL}/api/analytics/sales-trends/${id}?startDate=${startDate}&endDate=${endDate}`,
+                        { headers: { Authorization: `Bearer ${token}` } }
+                    );
+                    salesRes.data.forEach((entry: any) => {
+                        fetchedSalesData.push({
+                            date: entry.date.split('T')[0],
+                            sales: parseInt(entry.totalSold),
+                            product: product.Name,
+                            stock: product.StockQuantity
+                        });
+                    });
+                } catch (error) {
+                    console.error(`Failed to fetch data for product ID ${id}`, error);
                 }
-                const priceResult: PriceHistoryData[] = [];
-                const salesResult: SalesData[] = [];
+            }
 
-                for (const id of selectedProductIds) {
-                    try {
-                        const productRes = await axios.get(`${API_BASE_URL}/api/products/${id}`, {
-                            headers: { Authorization: `Bearer ${token}` }
-                        });
-                        const product = productRes.data;
+            setPriceHistory(fetchedPriceHistory);
+            setSalesData(fetchedSalesData);
+        };
 
-                        const priceRes = await axios.get(
-                            `${API_BASE_URL}/api/analytics/price-history/${id}?startDate=${startDate}&endDate=${endDate}`,
-                            { headers: { Authorization: `Bearer ${token}` } }
-                        );
-                        priceRes.data.forEach((entry: any) => {
-                            priceResult.push({
-                                date: entry.date.split('T')[0],
-                                price: parseFloat(product.Price), // ✅ fix: ensure number
-                                             product: product.Name,
-                                             stock: product.StockQuantity
-                            });
-                        });
+        fetchAllData();
+    }, [startDate, endDate, productIdInput, token]);
 
-                        const salesRes = await axios.get(
-                            `${API_BASE_URL}/api/analytics/sales-trends/${id}?startDate=${startDate}&endDate=${endDate}`,
-                            { headers: { Authorization: `Bearer ${token}` } }
-                        );
-                        salesRes.data.forEach((entry: any) => {
-                            salesResult.push({
-                                date: entry.date.split('T')[0],
-                                sales: parseInt(entry.totalSold),
-                                             product: product.Name,
-                                             stock: product.StockQuantity
-                            });
-                        });
-                    } catch (error) {
-                        console.error(`Failed to fetch data for product ID ${id}`, error);
-                    }
-                }
-
-                console.log("✅ Sales data pushed:", salesResult);
-                console.log("✅ Price data pushed:", priceResult);
-                setPriceHistory(priceResult);
-                setSalesData(salesResult);
-            };
-
-            fetchAllData();
-        }, [startDate, endDate, productIdInput, token]);
-
+    // ✅ Show friendly message when product IDs are empty
+    if (selectedProductIds.length === 0) {
         return (
             <div className="reports-container">
+                <h1>Reports and Analytics</h1>
+                <div className="filters-container">
+                    <div className="date-picker-wrapper">
+                        <DateRangePicker
+                            onDateChange={(start, end) => {
+                                setStartDate(start);
+                                setEndDate(end);
+                            }}
+                        />
+                    </div>
+                    <div className="product-selector">
+                        <label htmlFor="productIdInput">Enter Product IDs:</label>
+                        <input
+                            id="productIdInput"
+                            type="text"
+                            placeholder="e.g. 1, 3, 5"
+                            className="product-id-input"
+                            value={productIdInput}
+                            onChange={(e) => setProductIdInput(e.target.value)}
+                        />
+                    </div>
+                </div>
+                <p style={{ textAlign: 'center', color: '#888', marginTop: '2rem' }}>
+                    Please enter one or more product IDs to view reports.
+                </p>
+            </div>
+        );
+    }
+
+    // ✅ Main Render
+    return (
+        <div className="reports-container">
             <h1>Reports and Analytics</h1>
 
             <div className="filters-container">
-            <div className="date-picker-wrapper">
-            <DateRangePicker
-            onDateChange={(start, end) => {
-                setStartDate(start);
-                setEndDate(end);
-            }}
-            />
-            </div>
+                <div className="date-picker-wrapper">
+                    <DateRangePicker
+                        onDateChange={(start, end) => {
+                            setStartDate(start);
+                            setEndDate(end);
+                        }}
+                    />
+                </div>
 
-            <div className="product-selector">
-            <label htmlFor="productIdInput">Enter Product IDs:</label>
-            <input
-            id="productIdInput"
-            type="text"
-            placeholder="e.g. 1, 3, 5"
-            className="product-id-input"
-            value={productIdInput}
-            onChange={(e) => setProductIdInput(e.target.value)}
-            />
-            </div>
+                <div className="product-selector">
+                    <label htmlFor="productIdInput">Enter Product IDs:</label>
+                    <input
+                        id="productIdInput"
+                        type="text"
+                        placeholder="e.g. 1, 3, 5"
+                        className="product-id-input"
+                        value={productIdInput}
+                        onChange={(e) => setProductIdInput(e.target.value)}
+                    />
+                </div>
             </div>
 
             <div className="charts-grid">
-            <div className="chart-card">
-            <PriceHistoryChart data={priceHistory} />
-            <div className="download-report-button">
-            <DownloadReportButton reportName="PriceHistory" data={priceHistory} />
-            </div>
-            </div>
+                <div className="chart-card">
+                    <PriceHistoryChart data={priceHistory} />
+                    <div className="download-report-button">
+                        <DownloadReportButton reportName="PriceHistory" data={priceHistory} />
+                    </div>
+                </div>
 
-            <div className="chart-card">
-            <SalesTrendsChart data={salesData} />
-            <div className="download-report-button">
-            <DownloadReportButton reportName="SalesTrends" data={salesData} />
+                <div className="chart-card">
+                    <SalesTrendsChart data={salesData} />
+                    <div className="download-report-button">
+                        <DownloadReportButton reportName="SalesTrends" data={salesData} />
+                    </div>
+                </div>
             </div>
-            </div>
-            </div>
-            </div>
-        );
+        </div>
+    );
 };
 
 export default ReportsAndAnalyticsPage;
