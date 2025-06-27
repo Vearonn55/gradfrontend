@@ -3,6 +3,7 @@ import { API_BASE_URL } from '../../config';
 import React, { useEffect, useState, useMemo } from "react";
 import axios from "axios";
 import "./SaleReports.css";
+import jsPDF from "jspdf";
 
 interface Sale {
     SaleID: number;
@@ -55,8 +56,18 @@ const SaleReports: React.FC = () => {
     };
 
     const exportPDF = (sale: Sale) => {
-        alert(`PDF export for Sale ID ${sale.SaleID} not implemented.`);
-    };
+    const doc = new jsPDF();
+    doc.setFontSize(16);
+    doc.text("Sale Report", 14, 20);
+
+    doc.setFontSize(12);
+    doc.text(`Sale ID: ${sale.SaleID}`, 14, 40);
+    doc.text(`Product ID: ${sale.ProductID}`, 14, 50);
+    doc.text(`Quantity: ${sale.Quantity}`, 14, 60);
+    doc.text(`Sale DateTime: ${new Date(sale.SaleDateTime).toLocaleString()}`, 14, 70);
+
+    doc.save(`sale_${sale.SaleID}.pdf`);
+};
 
     return (
         <div className="sale-reports-container">
